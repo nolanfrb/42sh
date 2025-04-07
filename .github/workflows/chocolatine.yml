@@ -104,7 +104,7 @@ jobs:
 
       - name: Check executables exist and are executable
         run: |
-            if [ -n "${{ env.EXECUTABLES }}" ]; then
+            if [ -n "${{ env.EXECUTABLES }}" ] && [ "${{ env.EXECUTABLES }}" != "" ]; then
               for executable in $(echo ${{ env.EXECUTABLES }} | tr "," "\n"); do
                   if [ ! -f "$executable" ]; then
                       echo "::error file=$executable::Executable $executable not found"
@@ -119,7 +119,7 @@ jobs:
 
       - name: Test libs targets
         run: |
-          if [ -n "${{ env.LIBRARIES }}" ]; then
+          if [ -n "${{ env.LIBRARIES }}" ] && [ "${{ env.LIBRARIES }}" != "" ]; then
             for lib in $(echo ${{ env.LIBRARIES }} | tr "," "\n"); do
               if [ ! -f "$lib" ]; then
                   echo "::error file=$lib::Library $lib not found"
