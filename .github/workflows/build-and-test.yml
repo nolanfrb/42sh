@@ -11,8 +11,6 @@ on:
 env:
   MIRROR_URL: "git@github.com:EpitechPGEPromo2029/B-PSU-200-NAN-2-1-42sh-nolan.fribault.git"
   EXECUTABLES: "42sh"
-  LIBRARIES: ""
-
 
 jobs:
   is_mirror_repo:
@@ -116,21 +114,6 @@ jobs:
                   fi
               done
             fi
-
-      - name: Test libs targets
-        run: |
-          if [ -n "${{ env.LIBRARIES }}" ] && [ "${{ env.LIBRARIES }}" != "" ]; then
-            for lib in $(echo ${{ env.LIBRARIES }} | tr "," "\n"); do
-              if [ ! -f "$lib" ]; then
-                  echo "::error file=$lib::Library $lib not found"
-                  exit 1
-              fi
-              if ! [[ "$lib" =~ \.(a|so)$ ]]; then
-                  echo "::error file=$lib::File $lib is not a library (.a or .so extension required)"
-                  exit 1
-              fi
-            done
-          fi
 
   run_tests:
     name: Run Unit Tests
