@@ -125,7 +125,7 @@ jobs:
                   echo "::error file=$lib::Library $lib not found"
                   exit 1
               fi
-              if [[ ! "$lib" =~ \.(a|so)$ ]]; then
+              if ! [[ "$lib" =~ \.(a|so)$ ]]; then
                   echo "::error file=$lib::File $lib is not a library (.a or .so extension required)"
                   exit 1
               fi
