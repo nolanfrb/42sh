@@ -1,0 +1,17 @@
+*~
+*.log
+*.o
+a.out
+*.json
+*.rdr
+*.gcda
+*.gcno
+gcovr/
+run-tests.sh
+main
+sos.sh
+test
+unit_tests
+*:Zone.Identifier
+lib/libmy.a
+lib/libprintf.a
