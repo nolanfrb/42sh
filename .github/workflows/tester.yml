@@ -1,0 +1,34 @@
+name: tester
+
+on:
+  pull_request:
+    branches: ["main"]
+
+env:
+  EXECUTABLES: "42sh"
+
+jobs:
+  build:
+     runs-on: ubuntu-latest
+     container: epitechcontent/epitest-docker:latest
+     steps:
+       - name: checkout code
+         uses: actions/checkout@v4
+ 
+       - name: Run Makefile
+         run: make
+ 
+       - name: Copy binary to tests
+         run: cp ${{ env.EXECUTABLES }} tests/
+ 
+       - name: Run tests and compare results
+         working-directory: ./tests
+         run: |
+           echo "Running tests..."
+           ./tester.sh > test.txt || exit 1
+           if grep -q "KO" test.txt; then
+             echo "Tests failed!"
+             exit 1
+           fi
+           echo "All tests passed!"
+           exit 0
