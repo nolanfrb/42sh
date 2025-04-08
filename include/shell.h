@@ -30,12 +30,34 @@ typedef enum node_type_e {
     NODE_OR
 } node_type_t;
 
+typedef struct command_node_s {
+    char **argv;
+} command_node_t;
+
+typedef struct pipe_node_s {
+    struct ast_node_s *left;
+    struct ast_node_s *right;
+} pipe_node_t;
+
+typedef struct redirection_node_s {
+    struct ast_node_s *child;
+    redirection_type_t type;
+    char *filename;
+} redirection_node_t;
+
+typedef struct sequence_node_s {
+    struct ast_node_s *left;
+    struct ast_node_s *right;
+} sequence_node_t;
+
 typedef struct ast_node_s {
     node_type_t type;
-    ast_node_t *left;
-    ast_node_t *right;
-    char **argv;
-    char *filename;
+    union {
+        command_node_t command;
+        pipe_node_t pipe;
+        redirection_node_t redir;
+        sequence_node_t sequence;
+    } data;
 } ast_node_t;
 
 void (*execute_functions[])(ast_node_t*) = {
