@@ -6,6 +6,7 @@
 #include <string.h>
 #include <signal.h>
 #include "shell.h"
+#include "command.h"
 
 Test(execute_command, successful_command, .init = cr_redirect_stdout)
 {

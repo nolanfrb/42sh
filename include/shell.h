@@ -60,10 +60,7 @@ typedef struct ast_node_s {
     } data;
 } ast_node_t;
 
-// Function prototypes for execution
-int execute_command(ast_node_t *node, struct shell_s *shell_var);
-
-int (*execute_functions[])(ast_node_t*, shell_t*) = {
+void (*execute_functions[])(ast_node_t*) = {
     [NODE_COMMAND] = execute_command,
     [NODE_PIPE] = execute_pipe,
     [NODE_REDIRECT] = execute_redirect,
@@ -88,7 +85,5 @@ struct shell_s {
     char **env;
     char **local_vars;
 };
-
-
 
 #endif /* !SHELL_H_ */
