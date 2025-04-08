@@ -1,1 +1,2 @@
 tests/test_main.c
+tests/execute_command_test.c

@@ -60,7 +60,15 @@ typedef struct ast_node_s {
     } data;
 } ast_node_t;
 
-void (*execute_functions[])(ast_node_t*) = {
+// Function prototypes for execution
+int execute_command(ast_node_t *node, struct shell_s *shell_var);
+/*void execute_pipe(ast_node_t *node);
+void execute_redirect(ast_node_t *node);
+void execute_sequence(ast_node_t *node);
+void execute_and(ast_node_t *node);
+void execute_or(ast_node_t *node);*/
+
+/*int (*execute_functions[])(ast_node_t*, shell_t*) = {
     [NODE_COMMAND] = execute_command,
     [NODE_PIPE] = execute_pipe,
     [NODE_REDIRECT] = execute_redirect,
@@ -68,7 +76,7 @@ void (*execute_functions[])(ast_node_t*) = {
     [NODE_AND] = execute_and,
     [NODE_OR] = execute_or
 };
-
+*/
 typedef struct command_s {
     char **av;
     int ac;
@@ -85,5 +93,7 @@ struct shell_s {
     char **env;
     char **local_vars;
 };
+
+
 
 #endif /* !SHELL_H_ */
