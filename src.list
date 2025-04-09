@@ -1,1 +1,3 @@
 src/main.c
+src/parser/ast.c
+src/parser/lexer.c
