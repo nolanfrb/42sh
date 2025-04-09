@@ -8,10 +8,11 @@
 #ifndef INCLUDED_COMMAND_H
     #define INCLUDED_COMMAND_H
 
+#include "shell.h"
 typedef struct command_info_s {
     int command_count;
     ast_node_t **commands;
-    pid_t **pids;
+    pid_t *pids;
     int (*pipes)[2];
 } command_info_t;
 
