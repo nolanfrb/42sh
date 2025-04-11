@@ -122,19 +122,31 @@ ast_node_t *parse_subshell(char **tokens, int *pos)
     ast_node_t *node = NULL;
     ast_node_t *child = NULL;
 
-    if (!tokens[*pos] || strcmp(tokens[*pos], "(") != 0)
-        return parse_command(tokens, pos);
-    (*pos)++;
-    child = parse_sequence(tokens, pos);
-    if (!tokens[*pos] || strcmp(tokens[*pos], ")") != 0) {
-        fprintf(stderr, "error: missing closing parenthesis\n");
-        return NULL;
+    printf("parse_subshell %s\n", tokens[*pos]);
+    if (tokens[*pos] && strcmp(tokens[*pos], "(") == 0) {
+        (*pos)++;
+        child = parse_sequence(tokens, pos);
+        if (!child) {
+            fprintf(stderr, "error: missing subshell content\n");
+            return NULL;
+        }
+        if (tokens[*pos] && strcmp(tokens[*pos], ")") == 0) {
+            (*pos)++;
+            node = malloc(sizeof(ast_node_t));
+            if (!node) {
+                perror("malloc");
+                return NULL;
+            }
+            node->type = NODE_SUBSHELL;
+            node->data.subshell.child = child;
+        } else {
+            fprintf(stderr, "error: missing closing parenthesis\n");
+            free(child);
+            return NULL;
+        }
+    } else {
+        node = parse_command(tokens, pos);
     }
-    (*pos)++;
-    node = malloc(sizeof(ast_node_t));
-    node->type = NODE_SUBSHELL;
-    node->data.subshell.child = child;
-    return node;
 }
 
 ast_node_t *parse_redirect(char **tokens, int *pos)
