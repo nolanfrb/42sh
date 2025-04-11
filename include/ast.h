@@ -7,6 +7,7 @@
 
 #ifndef AST_H
     #define AST_H
+    #include "shell.h"
 
 typedef struct word_info_s word_info_t;
 typedef int (*command_func_t)(shell_t *);
