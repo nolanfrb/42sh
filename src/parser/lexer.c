@@ -13,7 +13,7 @@
 #include "ast.h"
 
 static const char *SPECIAL_TOKENS[] = {
-    "&&", "||", ">>", "<<", ">", "<", "|", ";", "&", NULL
+    "(", ")", "&&", "||", ">>", "<<", ">", "<", "|", ";", "&", NULL
 };
 
 static bool is_delimiter(char c, char *delimiters)
