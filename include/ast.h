@@ -17,15 +17,15 @@ extern const char *REDIRECTION_TOKENS[];
 typedef struct word_info_s word_info_t;
 typedef int (*command_func_t)(shell_t *);
 typedef enum node_type_e node_type_t;
-typedef enum redirection_type_e redirection_type_t;
+typedef enum redirect_type_e redirect_type_t;
 typedef struct ast_node_s ast_node_t;
 typedef struct command_node_s command_node_t;
-typedef struct redirection_node_s redirection_node_t;
+typedef struct redirect_node_s redirect_node_t;
 typedef struct binary_node_s binary_node_t;
 typedef struct subshell_node_s subshell_node_t;
 typedef union data_u data_t;
 
-enum redirection_type_e {
+enum redirect_type_e {
     REDIR_NONE,
     REDIR_IN,
     REDIR_OUT,
@@ -51,9 +51,9 @@ struct subshell_node_s {
     ast_node_t *child;
 };
 
-struct redirection_node_s {
+struct redirect_node_s {
     ast_node_t *child;
-    redirection_type_t type;
+    redirect_type_t type;
     char *filename;
 };
 
@@ -64,7 +64,7 @@ struct binary_node_s {
 
 union data_u {
     command_node_t *command;
-    redirection_node_t redir;
+    redirect_node_t redir;
     binary_node_t binop;
     subshell_node_t subshell;
 };
@@ -99,7 +99,8 @@ ast_node_t *parse_and_or(char **tokens, int *pos);
 ast_node_t *parse_subshell(char **tokens, int *pos);
 
 // utils
-bool is_operator(char *token);
+bool is_special_op(char *token);
+bool is_redirect_op(char *token);
 
 // free
 void free_ast(ast_node_t *node);
