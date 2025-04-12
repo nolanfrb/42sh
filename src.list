@@ -2,3 +2,4 @@ src/main.c
 src/parser/ast.c
 src/parser/lexer.c
 src/parser/utils/is_operator.c
+src/parser/parse_redirect.c

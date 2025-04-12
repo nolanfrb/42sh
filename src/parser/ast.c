@@ -91,7 +91,7 @@ ast_node_t *parse_command(char **tokens, int *pos)
         free(command);
         return NULL;
     }
-    while (tokens[*pos] && is_operator(tokens[*pos]) == false) {
+    while (tokens[*pos] && is_special_op(tokens[*pos]) == false) {
         arg_count++;
         (*pos)++;
     }
@@ -102,9 +102,8 @@ ast_node_t *parse_command(char **tokens, int *pos)
         free(command);
         return NULL;
     }
-    for (int i = 0; i < arg_count; i++) {
+    for (int i = 0; i < arg_count; i++)
         command->argv[i] = tokens[start_pos + i];
-    }
     command->argv[arg_count] = NULL;
     node->type = NODE_COMMAND;
     node->data.command = command;
@@ -143,36 +142,4 @@ ast_node_t *parse_subshell(char **tokens, int *pos)
     return node;
 }
 
-ast_node_t *parse_redirect(char **tokens, int *pos)
-{
-    ast_node_t *node = parse_subshell(tokens, pos);
-    ast_node_t *redir = malloc(sizeof(ast_node_t));
-
-    if (!redir) {
-        perror("malloc");
-        return NULL;
-    }
-    while (tokens[*pos] && (strcmp(tokens[*pos], "<") == 0 ||
-            strcmp(tokens[*pos], ">") == 0 ||
-            strcmp(tokens[*pos], ">>") == 0)) {
-        redir->type = NODE_REDIRECT;
-        redir->data.redir.child = node;
-        redir->data.redir.type = REDIR_NONE;
-        if (strcmp(tokens[*pos], "<") == 0)
-            redir->data.redir.type = REDIR_IN;
-        else if (strcmp(tokens[*pos], ">") == 0)
-            redir->data.redir.type = REDIR_OUT;
-        else if (strcmp(tokens[*pos], ">>") == 0)
-            redir->data.redir.type = REDIR_APPEND;
-        (*pos)++;
-        if (!tokens[*pos]) {
-            fprintf(stderr, "error: missing filename\n");
-            return NULL;
-        }
-        redir->data.redir.filename = tokens[*pos];
-        (*pos)++;
-        node = redir;
-    }
-    return node;
-}
 
