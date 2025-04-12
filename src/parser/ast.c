@@ -91,13 +91,7 @@ ast_node_t *parse_command(char **tokens, int *pos)
         free(command);
         return NULL;
     }
-    while (tokens[*pos] && strcmp(tokens[*pos], ";") != 0 &&
-           strcmp(tokens[*pos], "|") != 0 &&
-           strcmp(tokens[*pos], "&&") != 0 &&
-           strcmp(tokens[*pos], "||") != 0 &&
-           strcmp(tokens[*pos], "<") != 0 &&
-           strcmp(tokens[*pos], ">") != 0 &&
-           strcmp(tokens[*pos], ">>") != 0) {
+    while (tokens[*pos] && is_operator(tokens[*pos]) == false) {
         arg_count++;
         (*pos)++;
     }
@@ -122,7 +116,6 @@ ast_node_t *parse_subshell(char **tokens, int *pos)
     ast_node_t *node = NULL;
     ast_node_t *child = NULL;
 
-    printf("parse_subshell %s\n", tokens[*pos]);
     if (tokens[*pos] && strcmp(tokens[*pos], "(") == 0) {
         (*pos)++;
         child = parse_sequence(tokens, pos);
@@ -147,6 +140,7 @@ ast_node_t *parse_subshell(char **tokens, int *pos)
     } else {
         node = parse_command(tokens, pos);
     }
+    return node;
 }
 
 ast_node_t *parse_redirect(char **tokens, int *pos)
