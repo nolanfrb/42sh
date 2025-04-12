@@ -12,7 +12,7 @@
 #include "shell.h"
 #include "ast.h"
 
-static const char *SPECIAL_TOKENS[] = {
+const char *SPECIAL_TOKENS[] = {
     "(", ")", "&&", "||", ">>", "<<", ">", "<", "|", ";", "&", NULL
 };
 

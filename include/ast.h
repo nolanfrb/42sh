@@ -8,6 +8,11 @@
 #ifndef AST_H
     #define AST_H
     #include "shell.h"
+    #include <stdlib.h>
+    #define OPERATOR_COUNT 12
+
+extern const char *SPECIAL_TOKENS[];
+extern const char *REDIRECTION_TOKENS[];
 
 typedef struct word_info_s word_info_t;
 typedef int (*command_func_t)(shell_t *);
@@ -85,10 +90,18 @@ struct word_info_s {
 };
 
 char **lexer(char *cmd_line);
+
 ast_node_t *parse_sequence(char **tokens, int *pos);
 ast_node_t *parse_pipes(char **tokens, int *pos);
 ast_node_t *parse_redirect(char **tokens, int *pos);
 ast_node_t *parse_command(char **tokens, int *pos);
 ast_node_t *parse_and_or(char **tokens, int *pos);
 ast_node_t *parse_subshell(char **tokens, int *pos);
+
+// utils
+bool is_operator(char *token);
+
+// free
+void free_ast(ast_node_t *node);
+
 #endif
