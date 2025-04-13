@@ -9,6 +9,10 @@
 #include <string.h>
 #include "lexer.h"
 
+const char *SPECIAL_TOKENS[] = {
+    "(", ")", "&&", "||", ">>", "<<", ">", "<", "|", ";", "&", NULL
+};
+
 int check_special_token(const char *cmd_line, int pos)
 {
     for (int i = 0; SPECIAL_TOKENS[i] != NULL; i++) {
