@@ -1,7 +1,9 @@
 src/main.c
-src/parser/ast.c
 src/parser/lexer.c
 src/parser/utils/is_operator.c
 src/parser/parse_redirect.c
 src/parser/parse_subshell.c
 src/parser/parse_command.c
+src/parser/parse_sequence.c
+src/parser/parse_pipes.c
+src/parser/parse_and_or.c
