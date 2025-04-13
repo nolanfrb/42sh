@@ -8,7 +8,8 @@
 #include <criterion/criterion.h>
 #include "ast.h"
 
-static ast_node_t *mock_command_node(const char *cmd) {
+static ast_node_t *mock_command_node(const char *cmd)
+{
     ast_node_t *node = malloc(sizeof(ast_node_t));
     command_node_t *cmd_node = malloc(sizeof(command_node_t));
     char **argv = malloc(sizeof(char *) * 2);
@@ -151,7 +152,7 @@ Test(parse_redirect, input_and_output_redirection) {
 }
 
 Test(get_redirection_type, invalid_redirection_operator_triggers_redir_none) {
-    const char *tokens[] = {"cat", "<<<", "input.txt"};
+    char *tokens[] = {"cat", "<<<", "input.txt"};
     int pos = 0;
     redirect_type_t type = get_redirection_type(tokens[1]);
     int result = process_redirect_node(NULL, tokens, &pos);
