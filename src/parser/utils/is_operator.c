@@ -6,6 +6,7 @@
 */
 
 #include "ast.h"
+#include "lexer.h"
 #include <string.h>
 
 bool is_special_op(char *token)
