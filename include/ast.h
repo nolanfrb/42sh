@@ -11,7 +11,6 @@
     #include <stdlib.h>
     #define OPERATOR_COUNT 12
 
-extern const char *SPECIAL_TOKENS[];
 extern const char *REDIRECTION_TOKENS[];
 
 typedef struct word_info_s word_info_t;
