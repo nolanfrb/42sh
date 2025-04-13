@@ -92,3 +92,4 @@ Test(parse_subshell, subshell_then_logical_op) {
 
     free_ast(node);
 }
+
