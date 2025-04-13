@@ -42,7 +42,7 @@ int handle_special_token(char *cmd_line, int *i,
     int token_idx = check_special_token(cmd_line, *i);
 
     if (token_idx == -1)
-        return;
+        return 84;
     if (word_info->start != -1 &&
         add_word_to_list(cmd_line, word_info, i) != 0)
         return 84;
