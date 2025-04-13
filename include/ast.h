@@ -98,6 +98,10 @@ ast_node_t *parse_command(char **tokens, int *pos);
 ast_node_t *parse_and_or(char **tokens, int *pos);
 ast_node_t *parse_subshell(char **tokens, int *pos);
 
+
+int process_redirect_node(ast_node_t **node, char **tokens, int *pos);
+redirect_type_t get_redirection_type(const char *token);
+
 // utils
 bool is_special_op(char *token);
 bool is_redirect_op(char *token);
