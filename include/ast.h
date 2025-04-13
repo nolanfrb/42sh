@@ -105,6 +105,9 @@ redirect_type_t get_redirection_type(const char *token);
 // utils
 bool is_special_op(char *token);
 bool is_redirect_op(char *token);
+ast_node_t *create_binop_node(
+    node_type_t type, ast_node_t *left, ast_node_t *right
+);
 
 // free
 void free_ast(ast_node_t *node);
