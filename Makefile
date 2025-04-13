@@ -13,8 +13,6 @@ T_SRC = $(shell cat tests_src.list)
 
 T_SRC += $(filter-out src/main.c, $(SRC))
 
-HFILE = shell.h
-
 HFILE_PATH = ./include/
 
 CFLAGS = -Wall -Wextra
