@@ -1,1 +1,3 @@
 tests/test_main.c
+tests/parser/tests_redirect.c
+tests/parser/tests_operators.c
