@@ -78,13 +78,6 @@ struct ast_node_s {
 //     [NODE_OR] = execute_or
 // };
 
-struct word_info_s {
-    int start;
-    char **words;
-    int word_idx;
-};
-
-char **lexer(char *cmd_line);
 ast_node_t *parse_sequence(char **tokens, int *pos);
 ast_node_t *parse_pipes(char **tokens, int *pos);
 ast_node_t *parse_redirect(char **tokens, int *pos);
