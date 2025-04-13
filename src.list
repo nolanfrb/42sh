@@ -3,3 +3,5 @@ src/parser/ast.c
 src/parser/lexer.c
 src/parser/utils/is_operator.c
 src/parser/parse_redirect.c
+src/parser/parse_subshell.c
+src/parser/parse_command.c
