@@ -19,6 +19,8 @@ const char *REDIRECTION_TOKENS[] = {
 
 redirect_type_t get_redirection_type(const char *token)
 {
+    if (!token)
+        return REDIR_NONE;
     if (strcmp(token, "<") == 0)
         return REDIR_IN;
     if (strcmp(token, ">") == 0)
@@ -48,11 +50,11 @@ ast_node_t *create_redir_node(
     return node;
 }
 
-static int process_redirect_node(ast_node_t **node, char **tokens, int *pos)
+int process_redirect_node(ast_node_t **node, char **tokens, int *pos)
 {
     char *filename = NULL;
-    redirect_type_t redir_type = get_redirection_type(tokens[*pos]);
     ast_node_t *redir = NULL;
+    redirect_type_t redir_type = get_redirection_type(tokens[*pos]);
 
     if (redir_type == REDIR_NONE)
         return -1;
