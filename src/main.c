@@ -31,6 +31,7 @@ static void main_loop(shell_t *shell_info)
             break;
         if (user_input[0] != '\n') {
             ast = built_ast_struct(user_input);
+            free(user_input);
         }
     }
 }
