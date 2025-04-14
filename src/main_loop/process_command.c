@@ -23,5 +23,5 @@ const int (*execute_functions[])(ast_node_t *, shell_t *) = {
 
 int process_command(ast_node_t *ast, shell_t *shell_info)
 {
-    return execute_functions[ast->type](ast, shell_info);
+    execute_functions[ast->type](ast, shell_info);
 }
