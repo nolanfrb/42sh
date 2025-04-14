@@ -5,11 +5,23 @@
 ** utils
 */
 
+#include "ast.h"
 #include <signal.h>
 #include <sys/stat.h>
 #include <errno.h>
 #include <stdio.h>
 #include <sys/wait.h>
+
+bool is_builtin_cmd(ast_node_t *node)
+{
+    char *builtin_cmd[] = {"cd", "exit", "setenv", "unsetenv", "env", NULL};
+
+    for (int i = 0; builtin_cmd[i]; i++) {
+        if (strcmp(node->data.command->argv[0], builtin_cmd[i]) == 0)
+            return true;
+    }
+    return false;
+}
 
 void handle_exit_status(int status)
 {
