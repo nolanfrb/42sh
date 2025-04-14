@@ -7,6 +7,7 @@
 
 #include "command.h"
 #include "shell.h"
+#include "ast.h"
 #include <unistd.h>
 #include <sys/wait.h>
 #include <stdlib.h>
@@ -19,9 +20,9 @@ static int count_pipe_commands(ast_node_t *node)
     int count = 1;
     ast_node_t *current = node;
 
-    while (current->type == NODE_PIPE && current->data.pipe.right) {
+    while (current->type == NODE_PIPE && current->data.binop.right) {
         count++;
-        current = current->data.pipe.right;
+        current = current->data.binop.right;
     }
     return count;
 }
@@ -32,18 +33,18 @@ static void fill_pipe_commands(ast_node_t *node, ast_node_t **commands,
     ast_node_t *current = node;
     int i = 0;
 
-    commands[i] = current->data.pipe.left;
+    commands[i] = current->data.binop.left;
     i++;
-    while (current->type == NODE_PIPE && current->data.pipe.right &&
+    while (current->type == NODE_PIPE && current->data.binop.right &&
         i < count) {
-        if (current->data.pipe.right->type == NODE_PIPE) {
-            commands[i] = current->data.pipe.right->data.pipe.left;
+        if (current->data.binop.right->type == NODE_PIPE) {
+            commands[i] = current->data.binop.right->data.binop.left;
             i++;
         } else {
-            commands[i] = current->data.pipe.right;
+            commands[i] = current->data.binop.right;
             i++;
         }
-        current = current->data.pipe.right;
+        current = current->data.binop.right;
     }
 }
 
@@ -135,6 +136,7 @@ static void cleanup_command_info(command_info_t *command_info)
 int execute_pipe(ast_node_t *node, struct shell_s *shell_var)
 {
     command_info_t *command_info = malloc(sizeof(command_info_t));
+    int status = 0;
 
     if (!command_info)
         return -1;
@@ -144,6 +146,7 @@ int execute_pipe(ast_node_t *node, struct shell_s *shell_var)
         cleanup_command_info(command_info);
         return -1;
     }
+    waitpid(command_info->pids[command_info->command_count], &status, 0);
     close_pipes(command_info->pipes, command_info->command_count - 1);
     cleanup_command_info(command_info);
     return 0;
