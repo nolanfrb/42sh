@@ -11,63 +11,7 @@
     #include <stdbool.h>
 
 typedef struct shell_s shell_t;
-typedef int (*command_func_t)(shell_t *);
-
-typedef enum redirection_type_e {
-    REDIR_NONE,
-    REDIR_IN,
-    REDIR_OUT,
-    REDIR_APPEND,
-    REDIR_HEREDOC
-} redirection_type_t;
-
-typedef enum node_type_e {
-    NODE_COMMAND,
-    NODE_PIPE,
-    NODE_REDIRECT,
-    NODE_SEQUENCE,
-    NODE_AND,
-    NODE_OR
-} node_type_t;
-
-typedef struct command_node_s {
-    char **argv;
-} command_node_t;
-
-typedef struct pipe_node_s {
-    struct ast_node_s *left;
-    struct ast_node_s *right;
-} pipe_node_t;
-
-typedef struct redirection_node_s {
-    struct ast_node_s *child;
-    redirection_type_t type;
-    char *filename;
-} redirection_node_t;
-
-typedef struct sequence_node_s {
-    struct ast_node_s *left;
-    struct ast_node_s *right;
-} sequence_node_t;
-
-typedef struct ast_node_s {
-    node_type_t type;
-    union {
-        command_node_t command;
-        pipe_node_t pipe;
-        redirection_node_t redir;
-        sequence_node_t sequence;
-    } data;
-} ast_node_t;
-
-void (*execute_functions[])(ast_node_t*) = {
-    [NODE_COMMAND] = execute_command,
-    [NODE_PIPE] = execute_pipe,
-    [NODE_REDIRECT] = execute_redirect,
-    [NODE_SEQUENCE] = execute_sequence,
-    [NODE_AND] = execute_and,
-    [NODE_OR] = execute_or
-};
+typedef struct ast_node_s ast_node_t;
 
 typedef struct command_s {
     char **av;
@@ -75,15 +19,20 @@ typedef struct command_s {
     bool is_builtin;
 } command_t;
 
-typedef struct redirection_s {
-    redirection_type_t type;
-    char *filename;
-    int fd;
-} redirection_t;
+// typedef struct redirection_s {
+//     redirection_type_t type;
+//     char *filename;
+//     int fd;
+// } redirection_t;
 
 struct shell_s {
     char **env;
     char **local_vars;
+    int exit_code;
 };
+
+ast_node_t *built_ast_struct(char *user_input);
+void process_command(ast_node_t *ast, shell_t *shell_info);
+char *read_command(void);
 
 #endif /* !SHELL_H_ */
