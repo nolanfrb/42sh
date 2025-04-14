@@ -68,6 +68,20 @@ static void close_pipes(int pipes[][2], int count)
     }
 }
 
+static int execute_child_command(command_info_t *command_info, int i,
+    struct shell_s *shell_var)
+{
+    if (is_builtin_cmd(command_info->commands[i]))
+        return -1;
+    if (command_info->pids[i] == 0) {
+        execve(command_info->commands[i]->data.command->argv[0],
+            command_info->commands[i]->data.command->argv, shell_var->env);
+        handle_command_not_found
+        (command_info->commands[i]->data.command->argv[0]);
+    }
+    return -1;
+}
+
 static void handle_child_process(int i, command_info_t *command_info,
     struct shell_s *shell_var)
 {
@@ -76,7 +90,7 @@ static void handle_child_process(int i, command_info_t *command_info,
     if (i < command_info->command_count - 1)
         dup2(command_info->pipes[i][1], STDOUT_FILENO);
     close_pipes(command_info->pipes, command_info->command_count - 1);
-    execute_command(command_info->commands[i], shell_var);
+    execute_child_command(command_info, i, shell_var);
     exit(1);
 }
 
