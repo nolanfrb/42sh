@@ -11,6 +11,7 @@
 #include <errno.h>
 #include <stdio.h>
 #include <sys/wait.h>
+#include <string.h>
 
 bool is_builtin_cmd(ast_node_t *node)
 {

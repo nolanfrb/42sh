@@ -16,3 +16,4 @@ src/parser/parse_sequence.c
 src/parser/parse_pipes.c
 src/parser/parse_and_or.c
 src/main_loop/handle_user_input.c
+src/main_loop/process_command.c
