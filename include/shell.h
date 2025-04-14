@@ -30,4 +30,6 @@ struct shell_s {
     int exit_code;
 };
 
+ast_node_t *built_ast_struct(char *user_input);
+
 #endif /* !SHELL_H_ */
