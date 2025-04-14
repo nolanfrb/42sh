@@ -11,7 +11,7 @@
 #include <unistd.h>
 #include <stdio.h>
 
-static char *read_command(void)
+char *read_command(void)
 {
     char *line = NULL;
     size_t len = 0;
