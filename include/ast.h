@@ -11,7 +11,6 @@
     #include <stdlib.h>
     #define OPERATOR_COUNT 12
 
-extern const char *SPECIAL_TOKENS[];
 extern const char *REDIRECTION_TOKENS[];
 
 typedef struct word_info_s word_info_t;
@@ -82,14 +81,6 @@ struct ast_node_s {
 //     [NODE_AND] = execute_and,
 //     [NODE_OR] = execute_or
 // };
-
-struct word_info_s {
-    int start;
-    char **words;
-    int word_idx;
-};
-
-char **lexer(char *cmd_line);
 
 ast_node_t *parse_sequence(char **tokens, int *pos);
 ast_node_t *parse_pipes(char **tokens, int *pos);
