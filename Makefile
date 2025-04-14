@@ -17,7 +17,7 @@ HFILE_PATH = ./include/
 
 CFLAGS = -Wall -Wextra
 
-CRITERION = -lcriterion -lgcov --coverage -fprofile-arcs -ftest-coverage
+CRITERION = -lcriterion --coverage -fprofile-arcs -ftest-coverage
 
 BINARY = 42sh
 
