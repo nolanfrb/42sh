@@ -14,7 +14,7 @@
 
 static void display_prompt(void)
 {
-    write(STDOUT_FILENO, "$>", strlen("$>"));
+    write(STDOUT_FILENO, "$>", 2);
 }
 
 static void main_loop(shell_t *shell_info)
