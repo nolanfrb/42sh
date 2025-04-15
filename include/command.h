@@ -23,5 +23,6 @@ bool is_builtin_cmd(ast_node_t *node);
 // Function prototypes for execution
 int execute_command(ast_node_t *node, struct shell_s *shell_var);
 int execute_pipe(ast_node_t *node, struct shell_s *shell_var);
+int execute_or(ast_node_t *ast, shell_t *shell_info);
 
 #endif

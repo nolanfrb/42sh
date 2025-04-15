@@ -38,5 +38,5 @@ int execute_command(ast_node_t *node, struct shell_s *shell_var)
         handle_exit_status(status);
         return 128 + WTERMSIG(status);
     }
-    return -1;
+    return 0;
 }
