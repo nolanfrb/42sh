@@ -13,3 +13,5 @@ tests/lexer/test_handle_delimiter.c
 tests/lexer/test_handle_special_token.c
 tests/lexer/test_lexer.c
 tests/env/test_env_free.c
+tests/env/test_env_get.c
+tests/env/test_env_init.c
