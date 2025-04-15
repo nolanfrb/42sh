@@ -16,3 +16,4 @@ tests/env/test_env_free.c
 tests/env/test_env_get.c
 tests/env/test_env_init.c
 tests/env/test_env_set.c
+tests/env/test_env_unset.c
