@@ -32,7 +32,7 @@ static int update_existing_env_var(shell_t *shell, const char *var,
 static int add_new_env_var(shell_t *shell, char *new_var)
 {
     size_t new_size = sizeof(char *) * (shell->env_size + 2);
-    char **new_env_array = realloc(shell->env_array, new_size); // a re-tester car avant my_realloc
+    char **new_env_array = realloc(shell->env_array, new_size);
 
     if (!new_env_array) {
         free(new_var);
