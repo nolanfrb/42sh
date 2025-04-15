@@ -25,8 +25,10 @@ typedef struct command_s {
 // } redirection_t;
 
 struct shell_s {
-    char **env;
+    char **env_array;
+    int env_size;
     char **local_vars;
+    int local_size;
     int exit_code;
 };
 
