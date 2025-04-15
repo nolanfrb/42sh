@@ -6,6 +6,12 @@
 .vscode
 *.txt
 
+##MAC
+.DS_Store
+*.swp
+*.swo
+
+
 .idea
 unit_tests
 42sh

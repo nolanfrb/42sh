@@ -6,3 +6,14 @@ tests/parser/tests_commands.c
 tests/parser/tests_pipes.c
 tests/parser/tests_and_or.c
 tests/parser/tests_sequence.c
+tests/lexer/test_check_special_token.c
+tests/lexer/test_count_words.c
+tests/lexer/test_extract_word.c
+tests/lexer/test_handle_delimiter.c
+tests/lexer/test_handle_special_token.c
+tests/lexer/test_lexer.c
+tests/env/test_env_free.c
+tests/env/test_env_get.c
+tests/env/test_env_init.c
+tests/env/test_env_set.c
+tests/env/test_env_unset.c
