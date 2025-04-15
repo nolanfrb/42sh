@@ -17,9 +17,9 @@ char *get_env_value(shell_t *shell, const char *var)
 
     if (!shell || !var)
         return NULL;
-    len = my_strlen(var);
+    len = strlen(var);
     while (i < shell->env_size) {
-        if (my_strncmp(shell->env_array[i], var, len) == 0 &&
+        if (strncmp(shell->env_array[i], var, len) == 0 &&
             shell->env_array[i][len] == '=') {
             return shell->env_array[i] + len + 1;
         }
