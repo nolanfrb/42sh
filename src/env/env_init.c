@@ -55,15 +55,36 @@ static char **copy_env_array(char **env, int env_size)
     return env_array;
 }
 
+static bool init_shell_env(shell_t *shell, char **env)
+{
+    shell->env_size = count_env_size(env);
+    shell->env_array = copy_env_array(env, shell->env_size);
+    if (!shell->env_array)
+        return false;
+    return true;
+}
+
+static bool init_shell_locals(shell_t *shell)
+{
+    shell->local_vars = malloc(sizeof(char *));
+    if (!shell->local_vars)
+        return false;
+    shell->local_vars[0] = NULL;
+    shell->local_size = 0;
+    return true;
+}
+
 shell_t *init_shell(char **env)
 {
     shell_t *shell = malloc(sizeof(shell_t));
 
     if (!shell)
         return NULL;
-    shell->env_size = count_env_size(env);
-    shell->env_array = copy_env_array(env, shell->env_size);
-    if (!shell->env_array) {
+    if (!init_shell_env(shell, env)) {
+        free(shell);
+        return NULL;
+    }
+    if (!init_shell_locals(shell)) {
         free(shell);
         return NULL;
     }
