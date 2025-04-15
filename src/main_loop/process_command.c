@@ -13,10 +13,10 @@ const int (*execute_functions[])(ast_node_t *, shell_t *) = {
     [NODE_COMMAND] = execute_command,
     [NODE_PIPE] = execute_pipe,
     [NODE_OR] = execute_or,
+    [NODE_AND] = execute_and,
     /*
     [NODE_REDIRECT] = execute_redirect,
     [NODE_SEQUENCE] = execute_sequence,
-    [NODE_AND] = execute_and,
     [NODE_SUBSHELL] = execute_subshell,
     */
 };
