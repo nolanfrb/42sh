@@ -28,7 +28,7 @@ static void free_local_vars(shell_t *shell)
 
     if (!shell->local_vars)
         return;
-    while (i < shell->env_size) {
+    while (i < shell->local_size) {
         free(shell->local_vars[i]);
         i++;
     }
