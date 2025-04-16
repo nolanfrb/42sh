@@ -31,6 +31,10 @@ static void main_loop(shell_t *shell_info)
             break;
         if (user_input[0] != '\n') {
             ast = built_ast_struct(user_input);
+            if (ast == NULL) {
+                free(user_input);
+                continue;
+            }
             process_command(ast, shell_info);
             free(user_input);
         }
