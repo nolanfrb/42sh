@@ -14,7 +14,9 @@ char *get_env_value(shell_t *shell, const char *var);
 shell_t *init_shell(char **env);
 void set_env_value(shell_t *shell, const char *var, const char *value);
 void unset_env_value(shell_t *shell, const char *var);
-
+char *get_local_value(shell_t *shell, const char *var);
+void set_local_value(shell_t *shell, const char *var, const char *value);
+void unset_local_value(shell_t *shell, const char *var);
 
 
 #endif
