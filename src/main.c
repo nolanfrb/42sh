@@ -14,7 +14,7 @@
 
 static void display_prompt(void)
 {
-    write(STDOUT_FILENO, "$>", strlen("$>"));
+    write(STDOUT_FILENO, "$>", 2);
 }
 
 static void main_loop(shell_t *shell_info)
@@ -32,6 +32,7 @@ static void main_loop(shell_t *shell_info)
         if (user_input[0] != '\n') {
             ast = built_ast_struct(user_input);
             process_command(ast, shell_info);
+            free(user_input);
         }
     }
 }

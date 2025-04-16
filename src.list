@@ -20,3 +20,11 @@ src/parser/parse_pipes.c
 src/parser/parse_and_or.c
 src/main_loop/handle_user_input.c
 src/main_loop/process_command.c
+src/env/env_free.c
+src/env/env_get.c
+src/env/env_init.c
+src/env/env_set.c
+src/env/env_unset.c
+src/env/local_get.c
+src/env/local_set.c
+src/env/local_unset.c
