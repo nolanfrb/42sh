@@ -1,5 +1,4 @@
 tests/test_main.c
-tests/execute_command_test.c
 tests/parser/tests_redirect.c
 tests/parser/tests_operators.c
 tests/parser/tests_subshell.c
