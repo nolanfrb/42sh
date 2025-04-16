@@ -1,4 +1,6 @@
 src/main.c
+src/command_execution/execute_command.c
+src/command_execution/utils.c
 src/lexer/lexer.c
 src/lexer/check_special_token.c
 src/lexer/count_words.c
@@ -14,6 +16,7 @@ src/parser/parse_sequence.c
 src/parser/parse_pipes.c
 src/parser/parse_and_or.c
 src/main_loop/handle_user_input.c
+src/main_loop/process_command.c
 src/env/env_free.c
 src/env/env_get.c
 src/env/env_init.c

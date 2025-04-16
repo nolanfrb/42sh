@@ -8,6 +8,7 @@
 #ifndef AST_H
     #define AST_H
     #include "shell.h"
+    #include "command.h"
     #include <stdlib.h>
     #define OPERATOR_COUNT 12
 
@@ -73,14 +74,16 @@ struct ast_node_s {
     data_t data;
 };
 
-// void (*execute_functions[])(ast_node_t*) = {
-//     [NODE_COMMAND] = execute_command,
-//     [NODE_PIPE] = execute_pipe,
-//     [NODE_REDIRECT] = execute_redirect,
-//     [NODE_SEQUENCE] = execute_sequence,
-//     [NODE_AND] = execute_and,
-//     [NODE_OR] = execute_or
-// };
+extern int (*execute_functions[])(ast_node_t *, shell_t *);
+
+
+/*
+    [NODE_PIPE] = execute_pipe,
+    [NODE_REDIRECT] = execute_redirect,
+    [NODE_SEQUENCE] = execute_sequence,
+    [NODE_AND] = execute_and,
+    [NODE_OR] = execute_or
+*/
 
 ast_node_t *parse_sequence(char **tokens, int *pos);
 ast_node_t *parse_pipes(char **tokens, int *pos);
