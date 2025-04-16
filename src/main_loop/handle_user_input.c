@@ -32,12 +32,12 @@ ast_node_t *built_ast_struct(char *user_input)
     tokens = lexer(user_input);
     if (!tokens) {
         fprintf(stderr, "Lexer failed\n");
-        exit(1);
+        return NULL;
     }
     ast = parse_sequence(tokens, &pos);
     if (!ast) {
         fprintf(stderr, "Parser failed\n");
-        exit(1);
+        return NULL;
     }
     return ast;
 }
