@@ -11,6 +11,7 @@
     #include <stdbool.h>
 
 typedef struct shell_s shell_t;
+typedef struct ast_node_s ast_node_t;
 
 typedef struct command_s {
     char **av;
@@ -31,5 +32,9 @@ struct shell_s {
     int local_size;
     int exit_code;
 };
+
+ast_node_t *built_ast_struct(char *user_input);
+void process_command(ast_node_t *ast, shell_t *shell_info);
+char *read_command(void);
 
 #endif /* !SHELL_H_ */
