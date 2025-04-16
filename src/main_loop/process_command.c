@@ -16,6 +16,7 @@ int process_command(ast_node_t *ast, shell_t *shell_info)
         [NODE_PIPE] = execute_pipe,
         [NODE_OR] = execute_or,
         [NODE_AND] = execute_and,
+        [NODE_SEQUENCE] = execute_sequence,
     };
 
     return execute_functions[ast->type](ast, shell_info);
