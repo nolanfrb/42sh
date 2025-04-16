@@ -17,6 +17,7 @@ int process_command(ast_node_t *ast, shell_t *shell_info)
         [NODE_OR] = execute_or,
         [NODE_AND] = execute_and,
         [NODE_SEQUENCE] = execute_sequence,
+        [NODE_REDIRECT] = execute_redirect,
     };
 
     return execute_functions[ast->type](ast, shell_info);

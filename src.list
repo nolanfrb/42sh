@@ -4,6 +4,7 @@ src/command_execution/execute_pipe_command.c
 src/command_execution/execute_or_command.c
 src/command_execution/execute_and_command.c
 src/command_execution/execute_sequence_command.c
+src/command_execution/execute_redirect_command.c
 src/command_execution/utils.c
 src/lexer/lexer.c
 src/lexer/check_special_token.c
