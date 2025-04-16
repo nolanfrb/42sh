@@ -24,3 +24,5 @@ src/env/env_get.c
 src/env/env_init.c
 src/env/env_set.c
 src/env/env_unset.c
+src/env/local_get.c
+src/env/local_unset.c
