@@ -1,5 +1,6 @@
 src/main.c
 src/command_execution/execute_command.c
+src/command_execution/execute_pipe_command.c
 src/command_execution/utils.c
 src/lexer/lexer.c
 src/lexer/check_special_token.c
