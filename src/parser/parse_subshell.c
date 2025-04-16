@@ -49,11 +49,11 @@ static ast_node_t *handle_subshell_content(char **tokens, int *pos)
     ast_node_t *child = parse_sequence(tokens, pos);
 
     if (!child) {
-        fprintf(stderr, "error: missing subshell content\n");
+        fprintf(stderr, "Invalid null command.\n");
         return NULL;
     }
     if (!tokens[*pos] || strcmp(tokens[*pos], ")") != 0) {
-        fprintf(stderr, "error: missing closing parenthesis\n");
+        fprintf(stderr, "Too many ('s.\n");
         free(child);
         return NULL;
     }
