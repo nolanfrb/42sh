@@ -28,7 +28,7 @@ int execute_command(ast_node_t *node, struct shell_s *shell_var)
     pid = fork();
     if (pid == 0) {
         execve(node->data.command->argv[0], node->data.command->argv,
-            shell_var->env);
+            shell_var->env_array);
         handle_command_not_found(node->data.command->argv[0]);
     }
     waitpid(pid, &status, 0);
