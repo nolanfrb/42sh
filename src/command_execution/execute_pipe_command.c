@@ -75,7 +75,8 @@ static int execute_child_command(command_info_t *command_info, int i,
         return -1;
     if (command_info->pids[i] == 0) {
         execve(command_info->commands[i]->data.command->argv[0],
-            command_info->commands[i]->data.command->argv, shell_var->env);
+            command_info->commands[i]->data.command->argv,
+            shell_var->env_array);
         handle_command_not_found
         (command_info->commands[i]->data.command->argv[0]);
     }
