@@ -33,3 +33,5 @@ src/env/local_unset.c
 src/command_execution/get_command_path.c
 src/utils/strcat.c
 src/command_execution/get_redirect_handler.c
+src/globbings/get_file.c
+src/globbings/globbings.c

@@ -12,6 +12,8 @@
 #include <stdio.h>
 #include <string.h>
 
+#include "globbings.h"
+
 static void display_prompt(void)
 {
     write(STDOUT_FILENO, "$>", 2);
@@ -31,6 +33,8 @@ static void main_loop(shell_t *shell_info)
             break;
         if (user_input[0] != '\n') {
             ast = built_ast_struct(user_input);
+            //printf("%s\n", ast->data.command->argv[1]);
+            globbings(ast);
             process_command(ast, shell_info);
             free(user_input);
         }
