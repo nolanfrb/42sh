@@ -52,8 +52,7 @@ static int handle_setenv_errors(shell_t *shell, char **args)
 static int print_environment(shell_t *shell)
 {
     for (int i = 0; shell->env_array[i]; i++) {
-        printf(shell->env_array[i]);
-        putchar('\n');
+        printf("%s\n", shell->env_array[i]);
     }
     return 0;
 }

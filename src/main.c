@@ -42,6 +42,8 @@ int main(int argc, char **argv, char **env)
 {
     shell_t *shell = init_shell(env);
 
+    (void)argc;
+    (void)argv;
     main_loop(shell);
     return 0;
 }
