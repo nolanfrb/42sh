@@ -10,7 +10,7 @@
 #include "redirect_cmd.h"
 #include <fcntl.h>
 #include <unistd.h>
-#include <wait.h>
+#include <sys/wait.h>
 #include "string.h"
 #include <stdio.h>
 
