@@ -35,3 +35,4 @@ src/utils/strcat.c
 src/command_execution/get_redirect_handler.c
 src/builtins/builtin_env.c
 src/builtins/builtins.c
+src/builtins/builtin_setenv.c
