@@ -31,8 +31,7 @@ int and_or_error_handling(ast_node_t *node)
         if (status != 0)
             return status;
     }
-    if (node->data.binop.right != NULL) {
+    if (node->data.binop.right != NULL)
         status = ast_error_handling(node->data.binop.right);
-    }
     return 0;
 }
