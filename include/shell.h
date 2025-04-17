@@ -38,4 +38,11 @@ int process_command(ast_node_t *ast, shell_t *shell_info);
 char *read_command(void);
 int builtin_env(shell_t *shell, char **args);
 int builtin_setenv(shell_t *shell, char **args);
+int builtin_unsetenv(shell_t *shell, char **args);
+int builtin_echo(shell_t *shell, char **args);
+int is_double_quoted(char *str);
+int is_single_quoted(char *str);
+void print_env_variable(shell_t *shell, char *var);
+void handle_double_quotes(shell_t *shell, char *arg);
+void print_single_quoted(char *arg);
 #endif /* !SHELL_H_ */

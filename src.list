@@ -36,3 +36,6 @@ src/command_execution/get_redirect_handler.c
 src/builtins/builtin_env.c
 src/builtins/builtins.c
 src/builtins/builtin_setenv.c
+src/builtins/builtin_unsetenv.c
+src/builtins/builtin_echo.c
+src/builtins/echo_utils.c
