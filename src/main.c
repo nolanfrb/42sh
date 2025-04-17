@@ -45,5 +45,5 @@ int main(int argc, char **argv, char **env)
     (void)argc;
     (void)argv;
     main_loop(shell);
-    return 0;
+    return shell->exit_code;
 }
