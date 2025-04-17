@@ -14,12 +14,6 @@
 #include "string.h"
 #include <stdio.h>
 
-const void (*redirect_handlers[])(char *) = {
-    [REDIR_OUT] = handle_output_redirection,
-    [REDIR_APPEND] = handle_append_redirection,
-    [REDIR_IN] = handle_input_redirection,
-    [REDIR_HEREDOC] = handle_heredoc_redirection,
-};
 
 void handle_output_redirection(char *filepath)
 {
@@ -82,11 +76,16 @@ int execute_redirect(ast_node_t *node, struct shell_s *shell_info)
 {
     pid_t pid = fork();
     int status;
+    void (*handler)(char *) = get_redirect_handler(node->data.redir.type);
 
+    if (handler == NULL) {
+        fprintf(stderr, "error: invalid redirection type\n");
+        return 1;
+    }
     if (pid == -1) {
         return 1;
     } else if (pid == 0) {
-        redirect_handlers[node->data.redir.type](node->data.redir.filename);
+        handler(node->data.redir.filename);
         exit(process_command(node->data.redir.child, shell_info));
     } else {
         waitpid(pid, &status, 0);
