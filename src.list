@@ -33,3 +33,11 @@ src/env/local_unset.c
 src/command_execution/get_command_path.c
 src/utils/strcat.c
 src/command_execution/get_redirect_handler.c
+src/builtins/builtin_env.c
+src/builtins/builtins.c
+src/builtins/builtin_setenv.c
+src/builtins/builtin_unsetenv.c
+src/builtins/builtin_echo.c
+src/builtins/echo_utils.c
+src/builtins/builtin_cd.c
+src/builtins/builtin_exit.c

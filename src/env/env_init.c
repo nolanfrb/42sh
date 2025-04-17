@@ -80,6 +80,8 @@ shell_t *init_shell(char **env)
 
     if (!shell)
         return NULL;
+    shell->env_size = count_env_size(env);
+    shell->env_array = copy_env_array(env, shell->env_size);
     if (!init_shell_env(shell, env)) {
         free(shell);
         return NULL;
@@ -88,6 +90,7 @@ shell_t *init_shell(char **env)
         free(shell);
         return NULL;
     }
+    shell->local_size = 0;
     shell->exit_code = 0;
     return shell;
 }
