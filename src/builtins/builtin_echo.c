@@ -6,6 +6,7 @@
 */
 
 #include "shell.h"
+#include "builtins.h"
 #include "env.h"
 #include "command.h"
 #include <stdio.h>

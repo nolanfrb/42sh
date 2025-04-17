@@ -5,7 +5,7 @@
 ** builtins
 */
 
-#include "shell.h"
+#include "builtins.h"
 #include "ast.h"
 #include <sys/types.h>
 
