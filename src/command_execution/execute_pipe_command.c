@@ -163,8 +163,8 @@ int execute_pipe(ast_node_t *node, struct shell_s *shell_var)
         cleanup_command_info(command_info);
         return -1;
     }
-    waitpid(command_info->pids[command_info->command_count], &status, 0);
     close_pipes(command_info->pipes, command_info->command_count - 1);
+    waitpid(command_info->pids[command_info->command_count - 1], &status, 0);
     cleanup_command_info(command_info);
     return 0;
 }
