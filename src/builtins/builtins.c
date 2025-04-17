@@ -11,7 +11,7 @@
 
 static const builtin_t builtins[] = {
     {"cd", &builtin_cd},
-    // {"exit", &builtin_exit},
+    {"exit", &builtin_exit},
     {"setenv", &builtin_setenv},
     {"unsetenv", &builtin_unsetenv},
     {"env", &builtin_env},

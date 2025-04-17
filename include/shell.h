@@ -46,4 +46,5 @@ void print_env_variable(shell_t *shell, char *var);
 void handle_double_quotes(shell_t *shell, char *arg);
 void print_single_quoted(char *arg);
 int builtin_cd(shell_t *shell, char **args);
+int builtin_exit(shell_t *shell, char **args);
 #endif /* !SHELL_H_ */
