@@ -22,12 +22,13 @@ int execute_command(ast_node_t *node, struct shell_s *shell_var)
 {
     pid_t pid;
     int status;
+    char *full_path = build_path(shell_var, node->data.command->argv[0]);
 
     if (is_builtin_cmd(node))
         return -1;
     pid = fork();
     if (pid == 0) {
-        execve(node->data.command->argv[0], node->data.command->argv,
+        execve(full_path, node->data.command->argv,
             shell_var->env_array);
         handle_command_not_found(node->data.command->argv[0]);
     }

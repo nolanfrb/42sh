@@ -30,3 +30,6 @@ src/env/env_unset.c
 src/env/local_get.c
 src/env/local_set.c
 src/env/local_unset.c
+src/command_execution/get_command_path.c
+src/utils/strcat.c
+src/command_execution/get_redirect_handler.c
