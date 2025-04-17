@@ -10,7 +10,7 @@
 #include <sys/types.h>
 
 static const builtin_t builtins[] = {
-    // {"cd", &builtin_cd},
+    {"cd", &builtin_cd},
     // {"exit", &builtin_exit},
     {"setenv", &builtin_setenv},
     {"unsetenv", &builtin_unsetenv},
