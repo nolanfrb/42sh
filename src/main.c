@@ -37,12 +37,10 @@ static void main_loop(shell_t *shell_info)
     }
 }
 
-int main(int argc, char **argv, char **env)
+int main(void)
 {
     shell_t *shell_info = malloc(sizeof(shell_t));
 
-    (void)argc;
-    (void)argv;
     main_loop(shell_info);
     return 0;
 }
