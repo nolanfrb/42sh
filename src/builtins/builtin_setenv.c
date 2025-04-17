@@ -38,6 +38,7 @@ static int handle_setenv_errors(shell_t *shell, char **args)
 {
     if (args[2] && args[3]) {
         printf("setenv: Too many arguments.\n");
+        shell->exit_code = 1;
         return 84;
     }
     if (!is_valid_env_name(args[1])) {
