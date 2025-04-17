@@ -36,5 +36,6 @@ struct shell_s {
 ast_node_t *built_ast_struct(char *user_input);
 int process_command(ast_node_t *ast, shell_t *shell_info);
 char *read_command(void);
+int builtin_env(shell_t *shell, char **args);
 
 #endif /* !SHELL_H_ */

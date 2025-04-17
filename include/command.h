@@ -26,6 +26,11 @@ typedef struct path_search_s {
     shell_t *shell;
 } path_search_t;
 
+typedef struct builtin_s {
+    char *name;
+    int (*func)(shell_t *, char **);
+} builtin_t;
+
 // Utility functions
 void handle_command_not_found(char *command);
 void handle_exit_status(int status);
@@ -41,5 +46,8 @@ void (*get_redirect_handler(redirect_type_t type))(char *);
 
 char *build_path(shell_t *shell, char *command);
 char *my_strcat(char *dest, char const *str);
+
+// Function prototypes for builtins
+const builtin_t *get_builtins(void);
 
 #endif
