@@ -120,8 +120,6 @@ int builtin_cd(shell_t *shell, char **args)
 
     if (args[1] && args[1][0] == '~')
         needs_free = 1;
-    if (args[1] && strcmp(args[1], "-") == 0)
-        return 1;
     if (handle_cd_target_error(shell, target_dir, old_pwd, needs_free))
         return 1;
     update_oldpwd(shell, old_pwd);
