@@ -69,16 +69,18 @@ static void close_pipes(int pipes[][2], int count)
 }
 
 static int execute_child_command(command_info_t *command_info, int i,
-    struct shell_s *shell_var)
+    shell_t *shell_var)
 {
-    if (is_builtin_cmd(command_info->commands[i]))
+    ast_node_t *node = command_info->commands[i];
+    char *full_path = build_path(shell_var, node->data.command->argv[0]);
+
+    if (is_builtin_cmd(node) || !full_path)
         return -1;
     if (command_info->pids[i] == 0) {
-        execve(command_info->commands[i]->data.command->argv[0],
-            command_info->commands[i]->data.command->argv,
+        execve(full_path,
+            node->data.command->argv,
             shell_var->env_array);
-        handle_command_not_found
-        (command_info->commands[i]->data.command->argv[0]);
+        handle_command_not_found(node->data.command->argv[0]);
     }
     return -1;
 }
