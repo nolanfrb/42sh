@@ -35,19 +35,6 @@ static void free_local_vars(shell_t *shell)
     free(shell->local_vars);
 }
 
-static void free_cmd_args(char **cmd_args)
-{
-    int i = 0;
-
-    if (!cmd_args)
-        return;
-    while (cmd_args[i]) {
-        free(cmd_args[i]);
-        i++;
-    }
-    free(cmd_args);
-}
-
 void free_shell(shell_t *shell)
 {
     if (!shell)
