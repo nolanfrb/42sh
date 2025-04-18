@@ -42,6 +42,10 @@ static int execute_external_command(
     pid_t pid = fork();
     int status;
 
+    if (pid == -1) {
+        perror("fork failed");
+        return -1;
+    }
     if (pid == 0) {
         child_process(full_path, node, shell_var);
         exit(1);
