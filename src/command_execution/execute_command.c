@@ -33,7 +33,6 @@ int execute_builtin(ast_node_t *node, struct shell_s *shell_var)
         if (strcmp(node->data.command->argv[0], builtins[i].name) == 0)
             return builtins[i].func(shell_var, node->data.command->argv);
     }
-    
     return -1;
 }
 
