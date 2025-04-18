@@ -61,11 +61,11 @@ static int print_environment(shell_t *shell)
 int builtin_setenv(shell_t *shell, char **args)
 {
     if (!shell || !args || !args[0])
-        return 84;
+        return 1;
     if (!args[1])
         return print_environment(shell);
     if (handle_setenv_errors(shell, args) != 0)
-        return 84;
+        return 1;
     set_env_value(shell, args[1], args[2] ? args[2] : "");
     return 0;
 }

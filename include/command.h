@@ -43,6 +43,7 @@ int execute_and(ast_node_t *ast, shell_t *shell_info);
 int execute_sequence(ast_node_t *ast, shell_t *shell_info);
 int execute_redirect(ast_node_t *node, struct shell_s *shell_var);
 void (*get_redirect_handler(redirect_type_t type))(char *);
+int execute_builtin(ast_node_t *node, struct shell_s *shell_var);
 
 char *build_path(shell_t *shell, char *command);
 char *my_strcat(char *dest, char const *str);
