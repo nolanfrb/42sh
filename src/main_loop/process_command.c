@@ -22,5 +22,6 @@ int process_command(ast_node_t *ast, shell_t *shell_info)
 
     if (ast == NULL)
         return 0;
-    return execute_functions[ast->type](ast, shell_info);
+    shell_info->exit_code = execute_functions[ast->type](ast, shell_info);
+    return shell_info->exit_code;
 }
