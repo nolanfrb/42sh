@@ -1,4 +1,3 @@
-src/main.c
 src/command_execution/execute_command.c
 src/command_execution/execute_pipe_command.c
 src/command_execution/execute_or_command.c
@@ -35,10 +34,7 @@ src/utils/strcat.c
 src/command_execution/get_redirect_handler.c
 src/builtins/builtin_env.c
 src/builtins/builtins.c
-src/builtins/builtin_setenv.c
 src/builtins/builtin_unsetenv.c
 src/builtins/builtin_echo.c
-src/builtins/echo_utils.c
-src/builtins/builtin_cd.c
 src/builtins/builtin_exit.c
 src/utils/printf_flush.c

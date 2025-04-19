@@ -20,3 +20,8 @@ tests/env/test_env_unset.c
 tests/env/test_local_get.c
 tests/env/test_local_set.c
 tests/env/test_local_unset.c
+tests/builtins/test_builtin_setenv.c
+tests/builtins/test_builtin_unsetenv.c
+tests/builtins/test_echo_utils.c
+tests/builtins/test_builtin_cd.c
+
