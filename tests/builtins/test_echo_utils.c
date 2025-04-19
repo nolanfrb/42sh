@@ -12,7 +12,7 @@
 #include "shell.h"
 #include "src/builtins/echo_utils.c"
 
-void redirect_all_stdout_echo(void)
+void redirect_all_stdout_echo_utils(void)
 {
     cr_redirect_stdout();
     cr_redirect_stderr();
@@ -34,14 +34,14 @@ Test(is_single_quoted, should_detect_correctly)
     cr_assert_eq(is_single_quoted("\"hello\""), 0);
 }
 
-Test(print_single_quoted, should_remove_quotes, .init = redirect_all_stdout_echo)
+Test(print_single_quoted, should_remove_quotes, .init = redirect_all_stdout_echo_utils)
 {
     print_single_quoted("'hello'");
     cr_assert_stdout_eq_str("hello");
 }
 
 
-Test(handle_double_quotes, should_remove_and_print_string, .init = redirect_all_stdout_echo)
+Test(handle_double_quotes, should_remove_and_print_string, .init = redirect_all_stdout_echo_utils)
 {
     shell_t shell = {0};
     handle_double_quotes(&shell, "\"hello\"");
@@ -70,7 +70,7 @@ Test(get_env_value, should_find_value)
     free(shell.env_array);
 }
 
-Test(print_env_variable, should_print_value_of_existing_variable, .init = redirect_all_stdout_echo)
+Test(print_env_variable, should_print_value_of_existing_variable, .init = redirect_all_stdout_echo_utils)
 {
     shell_t shell = {0};
     shell.env_array = malloc(sizeof(char *) * 2);
@@ -87,7 +87,7 @@ Test(print_env_variable, should_print_value_of_existing_variable, .init = redire
     free(shell.env_array);
 }
 
-Test(print_env_variable, should_print_error_when_variable_undefined, .init = redirect_all_stdout_echo)
+Test(print_env_variable, should_print_error_when_variable_undefined, .init = redirect_all_stdout_echo_utils)
 {
     shell_t shell = {0};
     shell.env_array = malloc(sizeof(char *) * 1);

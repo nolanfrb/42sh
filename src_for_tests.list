@@ -35,6 +35,5 @@ src/command_execution/get_redirect_handler.c
 src/builtins/builtin_env.c
 src/builtins/builtins.c
 src/builtins/builtin_unsetenv.c
-src/builtins/builtin_echo.c
 src/builtins/builtin_exit.c
 src/utils/printf_flush.c
