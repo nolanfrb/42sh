@@ -6,21 +6,16 @@
 ##
 
 SRC = $(shell cat src.list)
+T_SRC = $(shell cat tests_src.list)
+SRC_FOR_TESTS = $(shell cat src_for_tests.list)
 
 OBJ = $(SRC:.c=.o)
 
-T_SRC = $(shell cat tests_src.list)
-
-T_SRC += $(filter-out src/main.c, $(SRC))
-
 HFILE_PATH = ./include/
-
 CFLAGS = -Wall -Wextra
-
 CRITERION = -lcriterion --coverage -fprofile-arcs -ftest-coverage
 
 BINARY = 42sh
-
 T_BINARY = unit_tests
 
 all: $(BINARY)
@@ -28,14 +23,15 @@ all: $(BINARY)
 $(BINARY): $(OBJ)
 	@echo "🛠️  [BUILD] Compilation du binaire..."
 	@gcc $(SRC) -o $(BINARY) -I $(HFILE_PATH) $(CFLAGS) -g
-	@echo "✅  Compilation réussie ! 🎯"
+	@echo "✅ Compilation réussie ! 🎯"
 
 %.o: %.c
 	@gcc -c $< -o $@ -I $(HFILE_PATH) $(CFLAGS)
 
-tests_run:	fclean $(OBJ) $(LIBMY) create_cover
+tests_run: fclean create_cover
 	@echo "🔁 Running tests..."
-	gcc -o $(T_BINARY) $(T_SRC) -I $(HFILE_PATH) $(CFLAGS) $(CRITERION)
+	gcc -o $(T_BINARY) $(T_SRC) $(SRC_FOR_TESTS) \
+		-I $(HFILE_PATH) $(CFLAGS) $(CRITERION)
 	./$(T_BINARY)
 	gcovr --exclude tests/
 	gcovr --exclude tests/ --branches
@@ -48,7 +44,7 @@ create_cover:
 clean:
 	@echo "🛠️  [BUILD] Nettoyage des fichiers objets..."
 	@rm -f $(OBJ)
-	@echo "✅  Nettoyage terminé."
+	@echo "✅ Nettoyage terminé."
 
 fclean: clean
 	@echo "🛠️  [BUILD] Nettoyage complet..."
@@ -57,6 +53,6 @@ fclean: clean
 	@rm -f *.gcov
 	@rm -f *.gcno
 	@rm -f *.gcda
-	@echo "✅  Nettoyage complet effectué."
+	@echo "✅ Nettoyage complet effectué."
 
 re: fclean all
