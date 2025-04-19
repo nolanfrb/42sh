@@ -17,12 +17,12 @@ int builtin_unsetenv(shell_t *shell, char **args)
     if (!shell || !args || !args[0])
         return 1;
     if (!args[1]) {
-        printf("unsetenv: Too few arguments.\n");
+        printf_flush("unsetenv: Too few arguments.\n");
         shell->exit_code = 1;
         return 1;
     }
     if (args[2]) {
-        printf("unsetenv: Too many arguments.\n");
+        printf_flush("unsetenv: Too many arguments.\n");
         shell->exit_code = 1;
         return 1;
     }
