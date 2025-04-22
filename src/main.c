@@ -18,10 +18,24 @@ static void display_prompt(void)
     write(STDOUT_FILENO, "$>", 2);
 }
 
+static void handle_user_input(shell_t *shell_info, char *user_input)
+{
+    ast_node_t *ast;
+
+    if (user_input[0] != '\n') {
+        ast = built_ast_struct(user_input);
+        if (ast == NULL) {
+            free(user_input);
+            return;
+        }
+        process_command(ast, shell_info);
+        free(user_input);
+    }
+}
+
 static void main_loop(shell_t *shell_info)
 {
     int is_interactive = isatty(STDIN_FILENO);
-    ast_node_t *ast;
     char *user_input;
 
     while (1) {
@@ -30,15 +44,7 @@ static void main_loop(shell_t *shell_info)
         user_input = read_command();
         if (user_input == NULL)
             break;
-        if (user_input[0] != '\n') {
-            ast = built_ast_struct(user_input);
-            if (ast == NULL) {
-                free(user_input);
-                continue;
-            }
-            process_command(ast, shell_info);
-            free(user_input);
-        }
+        handle_user_input(shell_info, user_input);
     }
 }
 
