@@ -13,6 +13,7 @@ struct recursive_data {
     int *count;
     int deepth;
     int max_deepth;
+    char **files;
 } typedef recursive_data_t;
 
 /*utility function to get a list of all the file*/

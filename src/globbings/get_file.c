@@ -43,7 +43,7 @@ static int max_deepth(const char *path) {
     return depth;
 }
 
-static void get_all_files_recursive(const char *base_path, char ***files, int *count, int deepth, int max_deepth) {
+static void get_all_files_recursive(const char *base_path, char ***files, int *count, int deepth, int max_deepth, recursive_data_t *data) {
     DIR *dir = opendir(strtok(base_path, "*"));
     struct dirent *entry;
     char *full_path = NULL;
@@ -51,7 +51,7 @@ static void get_all_files_recursive(const char *base_path, char ***files, int *c
     deepth += 1;
     if (!dir)
         return;
-    if (deepth >= max_deepth) {
+    if (deepth >= data->max_deepth) {
         closedir(dir);
         return;
     }
@@ -62,13 +62,13 @@ static void get_all_files_recursive(const char *base_path, char ***files, int *c
         if (!full_path)
             continue;
         if (is_directory(full_path)) {
-            get_all_files_recursive(full_path, files, count, deepth, max_deepth);
+            get_all_files_recursive(full_path, files, count, deepth, max_deepth, data);
         } else {
-            *files = realloc(*files, sizeof(char *) * (*count + 1));
+            *files = realloc(*files, sizeof(char *) * (*data->count + 1));
             if (!*files)
                 return;
-            (*files)[*count] = full_path;
-            (*count)++;
+            (*files)[*data->count] = full_path;
+            (*data->count)++;
             continue;
         }
         free(full_path);
@@ -84,9 +84,10 @@ char **get_files(const char *start_path, int *count) {
     if (start_path == NULL || start_path[0] == '\0')
         return NULL;
     data->count = count;
+    printf("test\n");
     data->deepth = 0;
     data->max_deepth = max_deepth(start_path);
-    get_all_files_recursive(start_path, &files, count, 0, max_deepth(start_path));
+    get_all_files_recursive(start_path, &files, count, 0, max_deepth(start_path), data);
     printf("count = %i\n", (*count));
     for (int i = 0; files[i]; i++) {
         printf("%s\n", files[i]);
