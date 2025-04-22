@@ -12,28 +12,49 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/stat.h>
+#include "globbings.h"
 
-int is_directory(const char *path) {
+static int is_directory(const char *path) {
     struct stat st;
     return stat(path, &st) == 0 && S_ISDIR(st.st_mode);
 }
 
-char *join_path(const char *dir, const char *file) {
+static char *join_path(const char *dir, const char *file) {
     size_t len = strlen(dir) + strlen(file) + 2;
     char *full = malloc(len);
     if (!full)
         return NULL;
-    snprintf(full, len, "%s/%s", dir, file);
+    if (dir[strlen(dir) - 1] == '/')
+        snprintf(full, len, "%s%s", dir, file);
+    else
+        snprintf(full, len, "%s/%s", dir, file);
     return full;
 }
 
-void get_all_files_recursive(const char *base_path, char ***files, int *count) {
-    DIR *dir = opendir(base_path);
+static int max_deepth(const char *path) {
+    int depth = 1;
+    const char *p = path;
+
+    while (*p) {
+        if (*p == '/')
+            depth++;
+        p++;
+    }
+    return depth;
+}
+
+static void get_all_files_recursive(const char *base_path, char ***files, int *count, int deepth, int max_deepth) {
+    DIR *dir = opendir(strtok(base_path, "*"));
     struct dirent *entry;
     char *full_path = NULL;
 
+    deepth += 1;
     if (!dir)
         return;
+    if (deepth >= max_deepth) {
+        closedir(dir);
+        return;
+    }
     while ((entry = readdir(dir)) != NULL) {
         if (strcmp(entry->d_name, ".") == 0 || strcmp(entry->d_name, "..") == 0)
             continue;
@@ -41,7 +62,7 @@ void get_all_files_recursive(const char *base_path, char ***files, int *count) {
         if (!full_path)
             continue;
         if (is_directory(full_path)) {
-            get_all_files_recursive(full_path, files, count);
+            get_all_files_recursive(full_path, files, count, deepth, max_deepth);
         } else {
             *files = realloc(*files, sizeof(char *) * (*count + 1));
             if (!*files)
@@ -57,10 +78,16 @@ void get_all_files_recursive(const char *base_path, char ***files, int *count) {
 
 char **get_files(const char *start_path, int *count) {
     char **files = NULL;
-
-    *count = 0;
-    get_all_files_recursive(start_path, &files, count);
-    printf("%i\n", (*count));
+    recursive_data_t *data = malloc(sizeof(recursive_data_t));
+    if (!data)
+        return NULL;
+    if (start_path == NULL || start_path[0] == '\0')
+        return NULL;
+    data->count = count;
+    data->deepth = 0;
+    data->max_deepth = max_deepth(start_path);
+    get_all_files_recursive(start_path, &files, count, 0, max_deepth(start_path));
+    printf("count = %i\n", (*count));
     for (int i = 0; files[i]; i++) {
         printf("%s\n", files[i]);
     }

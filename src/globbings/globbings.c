@@ -9,6 +9,8 @@
 #include "globbings.h"
 #include <stdio.h>
 #include <fnmatch.h>
+#include <ftw.h>
+#include <string.h>
 
 static int check_globbings(ast_node_t *node)
 {
@@ -25,5 +27,10 @@ int globbings(ast_node_t *node)
     int count = 0;
     char **files;
 
+    printf("start globbings\n");
     files = get_files(node->data.command->argv[1], &count);
+    for (int i = 0; files[i]; i++) {
+        free(files[i]);
+    }
 }
+
