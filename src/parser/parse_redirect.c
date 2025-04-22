@@ -85,6 +85,8 @@ ast_node_t *parse_redirect(char **tokens, int *pos)
 {
     ast_node_t *node = parse_subshell(tokens, pos);
 
+    if (!node)
+        return NULL;
     while (tokens[*pos] && is_redirect_op(tokens[*pos])) {
         if (process_redirect_node(&node, tokens, pos) == -1)
             return NULL;
