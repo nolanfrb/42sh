@@ -1,6 +1,7 @@
 src/main.c
 src/command_execution/execute_command.c
-src/command_execution/execute_pipe_command.c
+src/command_execution/pipe/execute_pipe_command.c
+src/command_execution/pipe/get_pipe_command.c
 src/command_execution/execute_or_command.c
 src/command_execution/execute_and_command.c
 src/command_execution/execute_sequence_command.c

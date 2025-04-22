@@ -51,4 +51,6 @@ char *my_strcat(char *dest, char const *str);
 // Function prototypes for builtins
 const builtin_t *get_builtins(void);
 
+// Function prototypes for pipes
+ast_node_t **collect_pipe_commands(ast_node_t *node, int *count);
 #endif
