@@ -66,14 +66,18 @@ ast_node_t *parse_and_or(char **tokens, int *pos)
     ast_node_t *and_or = NULL;
     node_type_t type;
 
-    if (!left)
+    if (!left) {
+        fprintf(stderr, "Invalid null command.\n");
         return NULL;
+    }
     while (tokens[*pos] && is_and_or_operator(tokens[*pos])) {
         type = get_operator_type(tokens[*pos]);
         (*pos)++;
         right = parse_pipes(tokens, pos);
-        if (!right)
+        if (!right) {
+            fprintf(stderr, "Invalid null command.\n");
             return NULL;
+        }
         and_or = create_binop_node(type, left, right);
         if (!and_or)
             return NULL;
