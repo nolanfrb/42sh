@@ -23,17 +23,6 @@ static void close_pipes(int pipes[][2], int count)
     }
 }
 
-static int execute_builtin(ast_node_t *node, shell_t *shell_var)
-{
-    const builtin_t *builtins = get_builtins();
-
-    for (int i = 0; builtins[i].name != NULL; i++) {
-        if (strcmp(node->data.command->argv[0], builtins[i].name) == 0)
-            return builtins[i].func(shell_var, node->data.command->argv);
-    }
-    return -1;
-}
-
 static int execute_child_command(command_info_t *command_info, int i,
     shell_t *shell_var)
 {
