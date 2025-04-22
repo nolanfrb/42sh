@@ -35,3 +35,4 @@ src/utils/strcat.c
 src/command_execution/get_redirect_handler.c
 src/globbings/get_file.c
 src/globbings/globbings.c
+src/globbings/get_directory.c

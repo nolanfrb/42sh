@@ -44,10 +44,14 @@ static int max_deepth(const char *path) {
 }
 
 static void get_all_files_recursive(const char *base_path, char ***files, int *count, int deepth, int max_deepth, recursive_data_t *data) {
-    DIR *dir = opendir(strtok(base_path, "*"));
+    char *new_path = strtok(base_path, "*");
+    if (new_path == NULL)
+        new_path = strdup(".");
+    DIR *dir = opendir(new_path);
     struct dirent *entry;
     char *full_path = NULL;
 
+    
     deepth += 1;
     if (!dir)
         return;
@@ -56,6 +60,9 @@ static void get_all_files_recursive(const char *base_path, char ***files, int *c
         return;
     }
     while ((entry = readdir(dir)) != NULL) {
+        printf("file entry: %s\n", entry->d_name);
+        if (entry->d_name[0] == '.')
+            continue;
         if (strcmp(entry->d_name, ".") == 0 || strcmp(entry->d_name, "..") == 0)
             continue;
         full_path = join_path(base_path, entry->d_name);
@@ -84,13 +91,9 @@ char **get_files(const char *start_path, int *count) {
     if (start_path == NULL || start_path[0] == '\0')
         return NULL;
     data->count = count;
-    printf("test\n");
     data->deepth = 0;
     data->max_deepth = max_deepth(start_path);
+    printf("file max deepth: %i\n", data->max_deepth);
     get_all_files_recursive(start_path, &files, count, 0, max_deepth(start_path), data);
-    printf("count = %i\n", (*count));
-    for (int i = 0; files[i]; i++) {
-        printf("%s\n", files[i]);
-    }
     return files;
 }
