@@ -17,5 +17,7 @@ int ast_error_handling(ast_node_t *node)
         return -1;
     if (node->type == NODE_AND || node->type == NODE_OR)
         status = and_or_error_handling(node);
+    if (node->type == NODE_PIPE)
+        status = pipe_error_handling(node);
     return status;
 }
