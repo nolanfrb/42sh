@@ -95,6 +95,7 @@ ast_node_t *create_binop_node(
 // error handling
 int and_or_error_handling(ast_node_t *node);
 int ast_error_handling(ast_node_t *node);
+int pipe_error_handling(ast_node_t *node);
 char *user_input_error_handling(char **user_input);
 
 // free
