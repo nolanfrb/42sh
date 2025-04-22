@@ -1,6 +1,6 @@
 ##
 ## EPITECH PROJECT, 2024
-## B-CPE-110-NAN-1-1-my_radar-lukas.renaud
+## 42sh
 ## File description:
 ## Makefile
 ##
@@ -12,7 +12,7 @@ SRC_FOR_TESTS = $(shell cat src_for_tests.list)
 OBJ = $(SRC:.c=.o)
 
 HFILE_PATH = ./include/
-CFLAGS = -Wall -Wextra
+CFLAGS = -Wall -Wextra -I$(HFILE_PATH)
 CRITERION = -lcriterion --coverage -fprofile-arcs -ftest-coverage
 
 BINARY = 42sh
@@ -22,20 +22,19 @@ all: $(BINARY)
 
 $(BINARY): $(OBJ)
 	@echo "🛠️  [BUILD] Compilation du binaire..."
-	@gcc $(SRC) -o $(BINARY) -I $(HFILE_PATH) $(CFLAGS) -g
+	@gcc $(SRC) -o $(BINARY) $(CFLAGS) -g
 	@echo "✅ Compilation réussie ! 🎯"
 
 %.o: %.c
-	@gcc -c $< -o $@ -I $(HFILE_PATH) $(CFLAGS)
+	@gcc -c $< -o $@ $(CFLAGS)
 
 tests_run: fclean create_cover
 	@echo "🔁 Running tests..."
-	gcc -o $(T_BINARY) $(T_SRC) $(SRC_FOR_TESTS) \
-		-I $(HFILE_PATH) $(CFLAGS) $(CRITERION)
-	./$(T_BINARY)
-	gcovr --exclude tests/
-	gcovr --exclude tests/ --branches
-	gcovr --exclude tests/ --html-details gcovr/coverage.html
+	@gcc -o $(T_BINARY) $(T_SRC) $(SRC_FOR_TESTS) $(CFLAGS) $(CRITERION) -iquote .
+	@./$(T_BINARY)
+	@gcovr --exclude tests/
+	@gcovr --exclude tests/ --branches
+	@gcovr --exclude tests/ --html-details gcovr/coverage.html
 	@echo "✅ Tests run."
 
 create_cover:
@@ -50,9 +49,7 @@ fclean: clean
 	@echo "🛠️  [BUILD] Nettoyage complet..."
 	@rm -f $(BINARY)
 	@rm -f $(T_BINARY)
-	@rm -f *.gcov
-	@rm -f *.gcno
-	@rm -f *.gcda
+	@rm -f *.gcov *.gcno *.gcda
 	@echo "✅ Nettoyage complet effectué."
 
 re: fclean all
