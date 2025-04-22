@@ -20,3 +20,4 @@ tests/env/test_env_unset.c
 tests/env/test_local_get.c
 tests/env/test_local_set.c
 tests/env/test_local_unset.c
+tests/parser/tests_ast_build.c
