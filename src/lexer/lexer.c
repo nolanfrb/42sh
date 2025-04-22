@@ -26,14 +26,22 @@ static int process_special_token(char *cmd_line, int *i,
 static int process_cmd_line(char *cmd_line, word_info_t *word_info,
     char *delimiters)
 {
+    int inhibitor_result;
     int special_token_result;
 
     for (int i = 0; cmd_line[i] != '\0'; i++) {
-        special_token_result = process_special_token(cmd_line, &i, word_info);
-        if (special_token_result == 84)
+        inhibitor_result = handle_inhibitors(cmd_line, &i, word_info);
+        if (inhibitor_result == 84)
             return 84;
-        if (special_token_result == 1)
+        if (inhibitor_result == 1)
             continue;
+        if (!is_inhibited_position(cmd_line, i)) {
+            special_token_result = process_special_token(cmd_line, &i, word_info);
+            if (special_token_result == 84)
+                return 84;
+            if (special_token_result == 1)
+                continue;
+        }
         if (handle_delimiter(cmd_line, &i, word_info, delimiters) != 0)
             return 84;
     }
