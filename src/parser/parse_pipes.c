@@ -32,11 +32,15 @@ ast_node_t *parse_pipes(char **tokens, int *pos)
     while (tokens[*pos] && strcmp(tokens[*pos], "|") == 0) {
         (*pos)++;
         right = parse_redirect(tokens, pos);
-        if (!right)
+        if (!right) {
+            fprintf(stderr, "Invalid null command.\n");
             return NULL;
+        }
         left = create_pipe_node(left, right);
-        if (!left)
+        if (!left) {
+            fprintf(stderr, "Invalid null command.\n");
             return NULL;
+        }
     }
     return left;
 }
