@@ -10,10 +10,8 @@
 #include "ast.h"
 
 
-int and_or_error_handling(ast_node_t *node)
+static int validate_and_or_node(ast_node_t *node)
 {
-    int status = 0;
-
     if (!node) {
         fprintf(stderr, "Error: Node is NULL\n");
         return -1;
@@ -26,6 +24,15 @@ int and_or_error_handling(ast_node_t *node)
         fprintf(stderr, "Invalid null command.\n");
         return -1;
     }
+    return 0;
+}
+
+int and_or_error_handling(ast_node_t *node)
+{
+    int status = validate_and_or_node(node);
+
+    if (status != 0)
+        return status;
     if (node->data.binop.left) {
         status = ast_error_handling(node->data.binop.left);
         if (status != 0)
