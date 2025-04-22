@@ -85,9 +85,7 @@ ast_node_t *parse_and_or(char **tokens, int *pos)
 {
     ast_node_t *left = parse_pipes(tokens, pos);
 
-    if (!left) {
-        fprintf(stderr, "Invalid null command.\n");
+    if (!left)
         return NULL;
-    }
     return parse_and_or_recursive(left, tokens, pos);
 }
