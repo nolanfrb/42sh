@@ -1,5 +1,11 @@
 src/main.c
 src/command_execution/execute_command.c
+src/command_execution/pipe/execute_pipe_command.c
+src/command_execution/pipe/get_pipe_command.c
+src/command_execution/execute_or_command.c
+src/command_execution/execute_and_command.c
+src/command_execution/execute_sequence_command.c
+src/command_execution/execute_redirect_command.c
 src/command_execution/utils.c
 src/lexer/lexer.c
 src/lexer/check_special_token.c
@@ -28,3 +34,14 @@ src/env/local_unset.c
 src/parser/error_handling/error_handling_and_or.c
 src/parser/error_handling/ast_error_handling.c
 src/main_loop/user_input_error_handling.c
+src/command_execution/get_command_path.c
+src/utils/strcat.c
+src/command_execution/get_redirect_handler.c
+src/builtins/builtin_env.c
+src/builtins/builtins.c
+src/builtins/builtin_setenv.c
+src/builtins/builtin_unsetenv.c
+src/builtins/builtin_echo.c
+src/builtins/echo_utils.c
+src/builtins/builtin_cd.c
+src/builtins/builtin_exit.c

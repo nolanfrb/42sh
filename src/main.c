@@ -7,6 +7,7 @@
 
 #include "shell.h"
 #include "ast.h"
+#include "env.h"
 #include "lexer.h"
 #include <unistd.h>
 #include <stdio.h>
@@ -43,10 +44,13 @@ static void main_loop(shell_t *shell_info)
 
 int main(int argc, char **argv, char **env)
 {
-    shell_t *shell_info = malloc(sizeof(shell_t));
+    shell_t *shell = init_shell(env);
+    int exit_code;
 
     (void)argc;
     (void)argv;
-    main_loop(shell_info);
-    return 0;
+    main_loop(shell);
+    exit_code = shell->exit_code;
+    free_shell(shell);
+    return exit_code;
 }

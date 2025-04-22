@@ -6,21 +6,22 @@
 */
 
 #include "ast.h"
+#include "command.h"
 #include <stdio.h>
 
-const int (*execute_functions[])(ast_node_t *, shell_t *) = {
-    [NODE_COMMAND] = execute_command,
-    /*
-    [NODE_PIPE] = execute_pipe,
-    [NODE_REDIRECT] = execute_redirect,
-    [NODE_SEQUENCE] = execute_sequence,
-    [NODE_AND] = execute_and,
-    [NODE_OR] = execute_or,
-    [NODE_SUBSHELL] = execute_subshell,
-    */
-};
-
-void process_command(ast_node_t *ast, shell_t *shell_info)
+int process_command(ast_node_t *ast, shell_t *shell_info)
 {
-    execute_functions[ast->type](ast, shell_info);
+    static int (*execute_functions[])(ast_node_t *, shell_t *) = {
+        [NODE_COMMAND] = execute_command,
+        [NODE_PIPE] = execute_pipe,
+        [NODE_OR] = execute_or,
+        [NODE_AND] = execute_and,
+        [NODE_SEQUENCE] = execute_sequence,
+        [NODE_REDIRECT] = execute_redirect,
+    };
+
+    if (ast == NULL)
+        return 0;
+    shell_info->exit_code = execute_functions[ast->type](ast, shell_info);
+    return shell_info->exit_code;
 }
