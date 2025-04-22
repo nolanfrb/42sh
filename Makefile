@@ -30,7 +30,8 @@ $(BINARY): $(OBJ)
 
 tests_run: fclean create_cover
 	@echo "🔁 Running tests..."
-	@gcc -o $(T_BINARY) $(T_SRC) $(SRC_FOR_TESTS) $(CFLAGS) $(CRITERION) -iquote .
+	@gcc -o $(T_BINARY) $(T_SRC) $(SRC_FOR_TESTS) \
+		$(CFLAGS) $(CRITERION) -iquote .
 	@./$(T_BINARY)
 	@gcovr --exclude tests/
 	@gcovr --exclude tests/ --branches
