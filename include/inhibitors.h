@@ -11,4 +11,6 @@
     #define BACKSLASH '\\'
     #define ANTI_QUOTE '\''
 
+bool is_inhibited_delimiter(const char *line, int pos);
+
 #endif /* !INHIBITORS_H_ */
