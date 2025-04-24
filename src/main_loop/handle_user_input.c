@@ -14,27 +14,29 @@
 #include <stdlib.h>
 #include <string.h>
 
-static char *resolve_history_event(shell_t *shell, char *line)
+static char *handle_history_expansion(
+    shell_t *shell, char *line, bool *had_error)
 {
-    char *resolved = NULL;
+    char *resolved = history_resolve(shell->history, line);
 
-    if (!shell || !shell->history || !line)
-        return line;
-    resolved = history_resolve(shell->history, line);
     if (!resolved) {
         handle_history_error(line);
+        shell->exit_code = 1;
+        *had_error = true;
         free(line);
         return NULL;
     }
     free(line);
     line = strdup(resolved);
-    if (!line)
+    if (!line) {
+        *had_error = true;
         return NULL;
+    }
     printf("%s\n", line);
     return line;
 }
 
-char *read_command(shell_t *shell)
+char *read_command(shell_t *shell, bool *had_error)
 {
     char *line = NULL;
     size_t len = 0;
@@ -44,11 +46,12 @@ char *read_command(shell_t *shell)
         return NULL;
     }
     line[strcspn(line, "\n")] = '\0';
-    if (line && shell && shell->history && line[0] == '!')
-        line = resolve_history_event(shell, line);
-    if (!line)
-        return NULL;
-    if (line[0] != '\0')
+    if (line && shell && shell->history && line[0] == '!') {
+        line = handle_history_expansion(shell, line, had_error);
+        if (!line)
+            return NULL;
+    }
+    if (line && shell && shell->history && line[0] != '\0')
         history_add(shell->history, line);
     return line;
 }

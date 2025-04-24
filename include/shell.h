@@ -46,5 +46,5 @@ typedef struct history_s {
 
 ast_node_t *built_ast_struct(char *user_input);
 int process_command(ast_node_t *ast, shell_t *shell_info);
-char *read_command(shell_t *shell);
+char *read_command(shell_t *shell, bool *had_error);
 #endif /* !SHELL_H_ */
