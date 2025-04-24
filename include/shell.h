@@ -9,9 +9,13 @@
     #define SHELL_H_
     #define DEFAULT_PATH "/bin:/usr/bin:/usr/local/bin:/sbin:/usr/sbin"
     #include <stdbool.h>
+    #include "builtins.h"
 
 typedef struct shell_s shell_t;
 typedef struct ast_node_s ast_node_t;
+typedef struct history_s history_t;
+
+
 
 typedef struct command_s {
     char **av;
@@ -31,9 +35,16 @@ struct shell_s {
     char **local_vars;
     int local_size;
     int exit_code;
+    history_t *history;
 };
+
+typedef struct history_s {
+    char **entries;
+    int count;
+    int capacity;
+} history_t;
 
 ast_node_t *built_ast_struct(char *user_input);
 int process_command(ast_node_t *ast, shell_t *shell_info);
-char *read_command(void);
+char *read_command(shell_t *shell);
 #endif /* !SHELL_H_ */

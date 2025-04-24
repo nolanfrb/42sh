@@ -27,7 +27,7 @@ static void main_loop(shell_t *shell_info)
     while (1) {
         if (is_interactive)
             display_prompt();
-        user_input = read_command();
+        user_input = read_command(shell_info);
         if (user_input == NULL)
             break;
         if (user_input[0] != '\n') {

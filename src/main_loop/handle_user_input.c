@@ -8,10 +8,33 @@
 #include "shell.h"
 #include "ast.h"
 #include "lexer.h"
+#include "builtins.h"
 #include <unistd.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
-char *read_command(void)
+static char *resolve_history_event(shell_t *shell, char *line)
+{
+    char *resolved = NULL;
+
+    if (!shell || !shell->history || !line)
+        return line;
+    resolved = history_resolve(shell->history, line);
+    if (!resolved) {
+        handle_history_error(line);
+        free(line);
+        return NULL;
+    }
+    free(line);
+    line = strdup(resolved);
+    if (!line)
+        return NULL;
+    printf("%s\n", line);
+    return line;
+}
+
+char *read_command(shell_t *shell)
 {
     char *line = NULL;
     size_t len = 0;
@@ -20,6 +43,13 @@ char *read_command(void)
         free(line);
         return NULL;
     }
+    line[strcspn(line, "\n")] = '\0';
+    if (line && shell && shell->history && line[0] == '!')
+        line = resolve_history_event(shell, line);
+    if (!line)
+        return NULL;
+    if (line[0] != '\0')
+        history_add(shell->history, line);
     return line;
 }
 

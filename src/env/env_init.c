@@ -82,6 +82,7 @@ shell_t *init_shell(char **env)
         return NULL;
     shell->env_size = count_env_size(env);
     shell->env_array = copy_env_array(env, shell->env_size);
+    shell->history = init_history();
     if (!init_shell_env(shell, env)) {
         free(shell);
         return NULL;
