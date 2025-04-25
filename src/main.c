@@ -22,7 +22,7 @@ static void handle_user_input(shell_t *shell_info, char *user_input)
 {
     ast_node_t *ast;
 
-    if (user_input[0] != '\n') {
+    if (user_input && user_input[0] != '\n') {
         ast = built_ast_struct(user_input);
         if (ast == NULL) {
             free(user_input);
@@ -37,12 +37,14 @@ static void main_loop(shell_t *shell_info)
 {
     int is_interactive = isatty(STDIN_FILENO);
     char *user_input;
+    bool had_error = false;
 
     while (1) {
+        had_error = false;
         if (is_interactive)
             display_prompt();
-        user_input = read_command();
-        if (user_input == NULL)
+        user_input = read_command(shell_info, &had_error);
+        if (user_input == NULL && !had_error)
             break;
         handle_user_input(shell_info, user_input);
     }
