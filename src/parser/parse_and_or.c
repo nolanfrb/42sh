@@ -59,25 +59,31 @@ ast_node_t *create_binop_node(
  * @param pos Pointer to the current position in the token array
  * @return The parsed AST node, or NULL on error
  */
-ast_node_t *parse_and_or(char **tokens, int *pos)
+ast_node_t *parse_and_or_recursive(ast_node_t *left, char **tokens, int *pos)
 {
-    ast_node_t *left = parse_pipes(tokens, pos);
     ast_node_t *right = NULL;
     ast_node_t *and_or = NULL;
     node_type_t type;
 
-    if (!left)
-        return NULL;
     while (tokens[*pos] && is_and_or_operator(tokens[*pos])) {
         type = get_operator_type(tokens[*pos]);
         (*pos)++;
         right = parse_pipes(tokens, pos);
-        if (!right)
+        if (!right) {
+            fprintf(stderr, "Invalid null command.\n");
             return NULL;
+        }
         and_or = create_binop_node(type, left, right);
         if (!and_or)
             return NULL;
         left = and_or;
     }
     return left;
+}
+
+ast_node_t *parse_and_or(char **tokens, int *pos)
+{
+    ast_node_t *left = parse_pipes(tokens, pos);
+
+    return parse_and_or_recursive(left, tokens, pos);
 }

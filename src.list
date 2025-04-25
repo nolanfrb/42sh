@@ -31,6 +31,9 @@ src/env/env_unset.c
 src/env/local_get.c
 src/env/local_set.c
 src/env/local_unset.c
+src/parser/error_handling/error_handling_and_or.c
+src/parser/error_handling/ast_error_handling.c
+src/main_loop/user_input_error_handling.c
 src/command_execution/get_command_path.c
 src/utils/strcat.c
 src/command_execution/get_redirect_handler.c
@@ -43,3 +46,4 @@ src/builtins/echo_utils.c
 src/builtins/builtin_cd.c
 src/builtins/builtin_exit.c
 src/builtins/builtin_history.c
+src/parser/error_handling/pipe_error_handling.c
