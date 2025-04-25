@@ -19,10 +19,11 @@ history_t *init_history(void)
 
     if (!hist)
         return NULL;
-        hist->entries = malloc(
-            sizeof(history_entry_t) * INITIAL_HISTORY_CAPACITY);
-    if (!hist->entries)
+    hist->entries = malloc(sizeof(history_entry_t) * INITIAL_HISTORY_CAPACITY);
+    if (!hist->entries) {
+        free(hist);
         return NULL;
+    }
     hist->count = 0;
     hist->capacity = INITIAL_HISTORY_CAPACITY;
     return hist;
