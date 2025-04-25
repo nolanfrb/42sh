@@ -10,6 +10,8 @@
 #include <string.h>
 #include "shell.h"
 #include "builtins.h"
+#include "env.h"
+#include <time.h>
 
 history_t *init_history(void)
 {
@@ -17,7 +19,8 @@ history_t *init_history(void)
 
     if (!hist)
         return NULL;
-    hist->entries = malloc(sizeof(char *) * INITIAL_HISTORY_CAPACITY);
+        hist->entries = malloc(
+            sizeof(history_entry_t) * INITIAL_HISTORY_CAPACITY);
     if (!hist->entries)
         return NULL;
     hist->count = 0;
@@ -27,8 +30,8 @@ history_t *init_history(void)
 
 static bool realloc_history_entries(history_t *hist)
 {
-    char **new_entries = realloc(hist->entries,
-        hist->capacity * 2 * sizeof(char *));
+    history_entry_t *new_entries = realloc(hist->entries,
+        hist->capacity * 2 * sizeof(history_entry_t));
 
     if (!new_entries)
         return false;
@@ -37,16 +40,35 @@ static bool realloc_history_entries(history_t *hist)
     return true;
 }
 
+static char *get_current_time_str(void)
+{
+    time_t now = time(NULL);
+    struct tm *tm_info = localtime(&now);
+    char *time_str = malloc(6);
+
+    if (!tm_info || !time_str)
+        return NULL;
+    strftime(time_str, 6, "%H:%M", tm_info);
+    return time_str;
+}
+
 void history_add(history_t *hist, const char *line)
 {
+    char *timestamp;
+
     if (!line || !hist)
         return;
     if (hist->count >= hist->capacity) {
         if (!realloc_history_entries(hist))
             return;
     }
-    hist->entries[hist->count] = strdup(line);
-    if (hist->entries[hist->count])
+    timestamp = get_current_time_str();
+    if (!timestamp)
+        return;
+    hist->entries[hist->count].command = strdup(line);
+    hist->entries[hist->count].timestamp = timestamp;
+    if (hist->entries[hist->count].command != NULL &&
+        hist->entries[hist->count].timestamp != NULL)
         hist->count++;
 }
 
@@ -55,8 +77,8 @@ static char *resolve_by_prefix(history_t *hist, const char *prefix)
     size_t len = strlen(prefix);
 
     for (int i = hist->count - 1; i >= 0; i--) {
-        if (strncmp(hist->entries[i], prefix, len) == 0)
-            return hist->entries[i];
+        if (strncmp(hist->entries[i].command, prefix, len) == 0)
+            return hist->entries[i].command;
     }
     return NULL;
 }
@@ -70,13 +92,13 @@ char *history_resolve(history_t *hist, const char *input)
     if (strcmp(input, "!!") == 0) {
         if (hist->count == 0)
             return NULL;
-        return hist->entries[hist->count - 1];
+        return hist->entries[hist->count - 1].command;
     }
     if (input[1] >= '0' && input[1] <= '9') {
         idx = atoi(&input[1]);
         if (idx <= 0 || idx > hist->count)
             return NULL;
-        return hist->entries[idx - 1];
+        return hist->entries[idx - 1].command;
     }
     return resolve_by_prefix(hist, input + 1);
 }
@@ -95,7 +117,10 @@ int builtin_history(shell_t *shell, char **args)
     if (!shell || !shell->history)
         return 0;
     for (int i = 0; i < shell->history->count; i++) {
-        printf("%d  %s\n", i + 1, shell->history->entries[i]);
+        printf("%6d\t%s\t%s\n",
+            i + 1,
+            shell->history->entries[i].timestamp,
+            shell->history->entries[i].command);
     }
     return 0;
 }

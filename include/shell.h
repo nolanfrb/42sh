@@ -38,8 +38,13 @@ struct shell_s {
     history_t *history;
 };
 
+typedef struct {
+    char *command;
+    char *timestamp;
+} history_entry_t;
+
 typedef struct history_s {
-    char **entries;
+    history_entry_t *entries;
     int count;
     int capacity;
 } history_t;
