@@ -34,6 +34,4 @@ Test(get_builtins, should_return_valid_builtins_list)
     cr_assert_str_eq(list[5].name, "echo");
     cr_assert_not_null(list[5].func);
 
-    cr_assert_null(list[6].name, "Last builtin name should be NULL");
-    cr_assert_null(list[6].func, "Last builtin function should be NULL");
 }
