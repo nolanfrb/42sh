@@ -9,6 +9,7 @@
 #include "shell.h"
 
 
+
 static void free_env_array(shell_t *shell)
 {
     int i = 0;

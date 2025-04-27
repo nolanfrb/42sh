@@ -16,6 +16,7 @@ static const builtin_t builtins[] = {
     {"unsetenv", &builtin_unsetenv},
     {"env", &builtin_env},
     {"echo", &builtin_echo},
+    {"history", &builtin_history},
     {NULL, NULL}
 };
 

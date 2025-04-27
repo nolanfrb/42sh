@@ -63,11 +63,11 @@ void print_env_variable(shell_t *shell, char *var)
     char *value = get_env_value(shell, var + 1);
 
     if (!value) {
-        printf("%s: Undefined variable.\n", var + 1);
+        printf_flush("%s: Undefined variable.\n", var + 1);
         shell->exit_code = 1;
         return;
     }
-    printf("%s", value);
+    printf_flush("%s", value);
     shell->exit_code = 0;
 }
 
@@ -79,9 +79,9 @@ static void print_quoted_env(shell_t *shell, char *unquoted)
 static void print_quoted_string(char *arg, char *unquoted)
 {
     if (unquoted)
-        printf("%s", unquoted);
+        printf_flush("%s", unquoted);
     else
-        printf("%s", arg);
+        printf_flush("%s", arg);
 }
 
 void handle_double_quotes(shell_t *shell, char *arg)
@@ -89,7 +89,7 @@ void handle_double_quotes(shell_t *shell, char *arg)
     char *unquoted = remove_quotes(arg);
 
     if (!unquoted) {
-        printf("%s", arg);
+        printf_flush("%s", arg);
         return;
     }
     if (unquoted[0] == '$')
@@ -104,9 +104,9 @@ void print_single_quoted(char *arg)
     char *unquoted = remove_quotes(arg);
 
     if (!unquoted) {
-        printf("%s", arg);
+        printf_flush("%s", arg);
         return;
     }
-    printf("%s", unquoted);
+    printf_flush("%s", unquoted);
     free(unquoted);
 }
