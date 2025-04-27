@@ -52,7 +52,7 @@ static char *get_target_directory(shell_t *shell, char *arg)
     if (strcmp(arg, "-") == 0) {
         oldpwd_value = get_env_value(shell, "OLDPWD");
         if (!oldpwd_value) {
-            printf(": No such file or directory.\n");
+            printf_flush(": No such file or directory.\n");
             shell->exit_code = 1;
             return NULL;
         }
@@ -66,14 +66,14 @@ static int check_cd_conditions(shell_t *shell, char *target_dir, char *old_pwd)
     struct stat path_stat;
 
     if (!target_dir) {
-        printf("cd: HOME not set\n");
+        printf_flush("cd: HOME not set\n");
         shell->exit_code = 1;
         free(old_pwd);
         return 1;
     }
     if (stat(target_dir, &path_stat) == 0 && !S_ISDIR(path_stat.st_mode)) {
-        printf("%s", target_dir);
-        printf(": Not a directory.\n");
+        printf_flush("%s", target_dir);
+        printf_flush(": Not a directory.\n");
         shell->exit_code = 1;
         free(old_pwd);
         return 1;
@@ -86,8 +86,8 @@ static int handle_cd_errors(shell_t *shell, char *target_dir, char *old_pwd)
     if (check_cd_conditions(shell, target_dir, old_pwd))
         return 1;
     if (chdir(target_dir) == -1) {
-        printf("%s", target_dir);
-        printf(": No such file or directory.\n");
+        printf_flush("%s", target_dir);
+        printf_flush(": No such file or directory.\n");
         shell->exit_code = 1;
         free(old_pwd);
         return 1;
@@ -99,7 +99,7 @@ static int handle_cd_target_error(
     shell_t *shell, char *target_dir, char *old_pwd, int needs_free)
 {
     if (!target_dir) {
-        printf("cd: HOME not set\n");
+        printf_flush("cd: HOME not set\n");
         shell->exit_code = 1;
         free(old_pwd);
         return 1;
