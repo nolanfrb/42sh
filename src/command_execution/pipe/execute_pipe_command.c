@@ -15,51 +15,6 @@
 #include <string.h>
 #include <signal.h>
 
-static int count_pipe_commands(ast_node_t *node)
-{
-    int count = 1;
-    ast_node_t *current = node;
-
-    while (current->type == NODE_PIPE && current->data.binop.right) {
-        count++;
-        current = current->data.binop.right;
-    }
-    return count;
-}
-
-static void fill_pipe_commands(ast_node_t *node, ast_node_t **commands,
-    int count)
-{
-    ast_node_t *current = node;
-    int i = 0;
-
-    commands[i] = current->data.binop.left;
-    i++;
-    while (current->type == NODE_PIPE && current->data.binop.right &&
-        i < count) {
-        if (current->data.binop.right->type == NODE_PIPE) {
-            commands[i] = current->data.binop.right->data.binop.left;
-            i++;
-        } else {
-            commands[i] = current->data.binop.right;
-            i++;
-        }
-        current = current->data.binop.right;
-    }
-}
-
-static ast_node_t **collect_pipe_commands(ast_node_t *node, int *count)
-{
-    ast_node_t **commands;
-
-    *count = count_pipe_commands(node);
-    commands = malloc(sizeof(ast_node_t *) * (*count));
-    if (!commands)
-        return NULL;
-    fill_pipe_commands(node, commands, *count);
-    return commands;
-}
-
 static void close_pipes(int pipes[][2], int count)
 {
     for (int i = 0; i < count; i++) {
@@ -74,12 +29,16 @@ static int execute_child_command(command_info_t *command_info, int i,
     ast_node_t *node = command_info->commands[i];
     char *full_path = build_path(shell_var, node->data.command->argv[0]);
 
-    if (is_builtin_cmd(node) || !full_path)
-        return -1;
+    if (is_builtin_cmd(node)) {
+        free(full_path);
+        exit(execute_builtin(node, shell_var));
+    }
+    if (!full_path) {
+        handle_command_not_found(node->data.command->argv[0]);
+        exit(1);
+    }
     if (command_info->pids[i] == 0) {
-        execve(full_path,
-            node->data.command->argv,
-            shell_var->env_array);
+        execve(full_path, node->data.command->argv, shell_var->env_array);
         handle_command_not_found(node->data.command->argv[0]);
     }
     return -1;
@@ -123,8 +82,8 @@ static int initialize_command_info(command_info_t *command_info,
     ast_node_t *node)
 {
     command_info->command_count = 0;
-    command_info->commands = collect_pipe_commands(node,
-        &command_info->command_count);
+    command_info->commands = collect_pipe_commands
+    (node, &command_info->command_count);
     if (!command_info->commands)
         return -1;
     command_info->pipes = malloc(sizeof(int[2]) *
@@ -154,6 +113,7 @@ int execute_pipe(ast_node_t *node, struct shell_s *shell_var)
 {
     command_info_t *command_info = malloc(sizeof(command_info_t));
     int status = 0;
+    int last_status = 0;
 
     if (!command_info)
         return -1;
@@ -164,7 +124,11 @@ int execute_pipe(ast_node_t *node, struct shell_s *shell_var)
         return -1;
     }
     close_pipes(command_info->pipes, command_info->command_count - 1);
-    waitpid(command_info->pids[command_info->command_count - 1], &status, 0);
+    for (int i = 0; i < command_info->command_count; i++) {
+        waitpid(command_info->pids[i], &status, 0);
+        if (i == command_info->command_count - 1)
+            last_status = WEXITSTATUS(status);
+    }
     cleanup_command_info(command_info);
-    return 0;
+    return last_status;
 }
