@@ -25,13 +25,14 @@ static char *join_path(const char *dir, const char *file)
 {
     size_t len = strlen(dir) + strlen(file) + 2;
     char *full = malloc(len);
+    char *wildcard;
 
     if (!full)
         return NULL;
     if (dir[strlen(dir) - 1] == '/')
         snprintf(full, len, "%s%s", dir, file);
     else {
-        const char *wildcard = strchr(dir, '*');
+        wildcard = strchr(dir, '*');
         if (wildcard) {
             snprintf(full, len, "%.*s%s", (int)(wildcard - dir), dir, file);
         } else {
@@ -54,7 +55,7 @@ static int get_max_deepth(const char *path)
     return depth;
 }
 
-static void process_directory_entry(const char *base_path, struct dirent *entry, char ***files, recursive_data_t *data, int deepth)
+static void process_directory_entry(const char *base_path, struct dirent *entry, recursive_data_t *data, int deepth)
 {
     char *full_path = join_path(base_path, entry->d_name);
 
@@ -62,20 +63,20 @@ static void process_directory_entry(const char *base_path, struct dirent *entry,
         return;
     if (is_directory(full_path)) {
         printf("directory : %s\n", full_path);
-        get_all_files_recursive(full_path, files, data->count, deepth, data->max_deepth, data);
+        get_all_files_recursive(full_path, deepth, data);
     } else {
-        *files = realloc(*files, sizeof(char *) * (*data->count + 1));
-        if (!*files) {
+        data->files = realloc(data->files, sizeof(char *) * (*data->count + 1));
+        if (!data->files) {
             free(full_path);
             return;
         }
-        (*files)[*data->count] = full_path;
+        (data->files)[*data->count] = full_path;
         printf("file_in_array : %s\n", full_path);
         (*data->count)++;
     }
 }
 
-void get_all_files_recursive(const char *base_path, char ***files, int *count, int deepth, int max_deepth, recursive_data_t *data)
+void get_all_files_recursive(const char *base_path, int deepth, recursive_data_t *data)
 {
     char *base_path_copy = strdup(base_path);
     char *new_path;
@@ -101,7 +102,7 @@ void get_all_files_recursive(const char *base_path, char ***files, int *count, i
         if (entry->d_name[0] == '.' || strcmp(entry->d_name, ".") == 0 ||
             strcmp(entry->d_name, "..") == 0)
             continue;
-        process_directory_entry(base_path, entry, files, data, deepth);
+        process_directory_entry(base_path, entry, data, deepth);
     }
     closedir(dir);
     free(base_path_copy);
@@ -109,7 +110,6 @@ void get_all_files_recursive(const char *base_path, char ***files, int *count, i
 
 char **get_files(const char *start_path, int *count)
 {
-    char **files = NULL;
     recursive_data_t *data = malloc(sizeof(recursive_data_t));
     char *begining_directory;
 
@@ -122,6 +122,7 @@ char **get_files(const char *start_path, int *count)
     data->max_deepth = get_max_deepth(start_path);
     printf("file max deepth: %i\n", data->max_deepth);
     printf("start_path: %s\n", start_path);
-    get_all_files_recursive(start_path, &files, count, 0, get_max_deepth(start_path), data);
-    return files;
+    get_all_files_recursive(start_path, 0, data);
+    free(data);
+    return data->files;
 }

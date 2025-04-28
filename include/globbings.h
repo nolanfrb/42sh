@@ -19,7 +19,7 @@ struct recursive_data {
 /*utility function to get a list of all the file*/
 char **get_files(const char *path, int *count);
 char **get_directory(char *path, int *count);
-void get_all_files_recursive(const char *base_path, char ***files, int *count, int deepth, int max_deepth, recursive_data_t *data);
+void get_all_files_recursive(const char *base_path, int deepth, recursive_data_t *data);
 //void get_all_files_recursive(char *base_path, char ***files, recursive_data_t *data);
 
 int globbings(ast_node_t *node);
