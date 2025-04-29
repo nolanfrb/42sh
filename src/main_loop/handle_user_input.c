@@ -9,6 +9,7 @@
 #include "ast.h"
 #include "lexer.h"
 #include "builtins.h"
+#include "line_editing.h"
 #include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -39,19 +40,16 @@ static char *handle_history_expansion(
 char *read_command(shell_t *shell, bool *had_error)
 {
     char *line = NULL;
-    size_t len = 0;
 
-    if (getline(&line, &len, stdin) == -1) {
-        free(line);
+    line = read_command_line(shell, had_error);
+    if (!line)
         return NULL;
-    }
-    line[strcspn(line, "\n")] = '\0';
-    if (line && shell && shell->history && line[0] == '!') {
+    if (shell && shell->history && line[0] == '!') {
         line = handle_history_expansion(shell, line, had_error);
         if (!line)
             return NULL;
     }
-    if (line && shell && shell->history && line[0] != '\0')
+    if (shell && shell->history && line[0] != '\0')
         history_add(shell->history, line);
     return line;
 }

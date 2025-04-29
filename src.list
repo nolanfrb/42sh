@@ -48,3 +48,7 @@ src/builtins/builtin_exit.c
 src/utils/printf_flush.c
 src/builtins/builtin_history.c
 src/parser/error_handling/pipe_error_handling.c
+src/line_editing/escape_mappings.c
+src/line_editing/handlers.c
+src/line_editing/terminal_control.c
+src/line_editing/read_command_line.c
