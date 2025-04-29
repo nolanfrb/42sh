@@ -55,23 +55,39 @@ char *read_command(shell_t *shell, bool *had_error)
     return line;
 }
 
-ast_node_t *built_ast_struct(char *user_input)
+static bool handle_user_input_errors(char **tokens, shell_t *shell_info)
+{
+    if (user_input_error_handling(tokens) != 0) {
+        shell_info->exit_code = 1;
+        return true;
+    }
+    if (!tokens) {
+        fprintf(stderr, "Lexer failed\n");
+        return true;
+    }
+    return false;
+}
+
+ast_node_t *built_ast_struct(char *user_input, shell_t *shell_info)
 {
     char **tokens;
     ast_node_t *ast;
     int pos = 0;
 
-    tokens = lexer(user_input);
-    if (user_input_error_handling(tokens) != 0)
+    if (!user_input || user_input[0] == '\0')
         return NULL;
-    if (!tokens) {
-        fprintf(stderr, "Lexer failed\n");
+    tokens = lexer(user_input);
+    if (handle_user_input_errors(tokens, shell_info))
+        return NULL;
+    ast = parse_sequence(tokens, &pos);
+    if (ast_error_handling(ast) != 0) {
+        shell_info->exit_code = 1;
+        free(tokens);
         return NULL;
     }
-    ast = parse_sequence(tokens, &pos);
-    if (ast_error_handling(ast) != 0)
+    if (!ast) {
+        free(tokens);
         return NULL;
-    if (!ast)
-        return NULL;
+    }
     return ast;
 }
