@@ -144,6 +144,9 @@ void globbings(ast_node_t *node)
     if (!node || !node->data.command || !node->data.command->argv) {
         return;
     }
+    if (node->type != NODE_COMMAND) {
+        return;
+    }
     for (int i = 1; node->data.command->argv[i] != NULL; i++) {
         if (is_globbings_pattern(node->data.command->argv[i]) == 0)
             continue;

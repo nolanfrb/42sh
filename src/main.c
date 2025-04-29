@@ -13,7 +13,7 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "globbings.h"
+
 
 static void display_prompt(void)
 {
@@ -30,7 +30,6 @@ static void handle_user_input(shell_t *shell_info, char *user_input)
             free(user_input);
             return;
         }
-        globbings(ast);
         process_command(ast, shell_info);
         free(user_input);
     }
