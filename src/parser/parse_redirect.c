@@ -60,7 +60,7 @@ int process_redirect_node(ast_node_t **node, char **tokens, int *pos)
         return -1;
     (*pos)++;
     if (!tokens[*pos]) {
-        fprintf(stderr, "error: missing filename for redirection\n");
+        fprintf(stderr, "Missing name for redirect.\n");
         return -1;
     }
     filename = tokens[*pos];

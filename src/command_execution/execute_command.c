@@ -23,6 +23,8 @@ static void child_process(
 {
     execve(full_path, node->data.command->argv, shell_var->env_array);
     handle_command_not_found(node->data.command->argv[0]);
+    shell_var->exit_code = 1;
+    exit(1);
 }
 
 int execute_builtin(ast_node_t *node, struct shell_s *shell_var)
