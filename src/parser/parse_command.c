@@ -7,6 +7,7 @@
 
 #include "ast.h"
 #include <stdio.h>
+#include <string.h>
 
 /**
  * @brief Count the number of arguments in a command
@@ -22,6 +23,13 @@ static int count_command_arguments(char **tokens, int *pos)
     while (tokens[*pos] && is_special_op(tokens[*pos]) == false) {
         arg_count++;
         (*pos)++;
+    }
+    if (tokens[*pos] && is_special_op(tokens[*pos]) == true) {
+        if (strcmp(tokens[*pos], "(") == 0 && arg_count > 0) {
+            fprintf(stderr, "Badly placed ()'s.\n");
+            *pos = start_pos;
+            return 0;
+        }
     }
     *pos = start_pos;
     return arg_count;

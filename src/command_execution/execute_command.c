@@ -18,26 +18,58 @@
 #include <signal.h>
 #include <unistd.h>
 
-int execute_command(ast_node_t *node, struct shell_s *shell_var)
+static void child_process(
+    char *full_path, ast_node_t *node, struct shell_s *shell_var)
 {
-    pid_t pid;
-    int status;
-    char *full_path = build_path(shell_var, node->data.command->argv[0]);
+    execve(full_path, node->data.command->argv, shell_var->env_array);
+    handle_command_not_found(node->data.command->argv[0]);
+}
 
-    if (is_builtin_cmd(node))
+int execute_builtin(ast_node_t *node, struct shell_s *shell_var)
+{
+    const builtin_t *builtins = get_builtins();
+
+    for (int i = 0; builtins[i].name != NULL; i++) {
+        if (strcmp(node->data.command->argv[0], builtins[i].name) == 0)
+            return builtins[i].func(shell_var, node->data.command->argv);
+    }
+    return -1;
+}
+
+static int execute_external_command(
+    char *full_path, ast_node_t *node, struct shell_s *shell_var)
+{
+    pid_t pid = fork();
+    int status;
+
+    if (pid == -1) {
+        perror("fork failed");
         return -1;
-    pid = fork();
+    }
     if (pid == 0) {
-        execve(full_path, node->data.command->argv,
-            shell_var->env_array);
-        handle_command_not_found(node->data.command->argv[0]);
+        child_process(full_path, node, shell_var);
+        exit(1);
     }
     waitpid(pid, &status, 0);
-    if (WIFEXITED(status)) {
+    if (WIFEXITED(status))
         return WEXITSTATUS(status);
-    } else if (WIFSIGNALED(status)) {
+    if (WIFSIGNALED(status)) {
         handle_exit_status(status);
         return 128 + WTERMSIG(status);
     }
     return 0;
+}
+
+int execute_command(ast_node_t *node, struct shell_s *shell_var)
+{
+    char *full_path = build_path(shell_var, node->data.command->argv[0]);
+    int result = execute_builtin(node, shell_var);
+
+    if (result != -1) {
+        free(full_path);
+        return result;
+    }
+    result = execute_external_command(full_path, node, shell_var);
+    free(full_path);
+    return result;
 }

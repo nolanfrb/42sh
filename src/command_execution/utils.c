@@ -15,10 +15,10 @@
 
 bool is_builtin_cmd(ast_node_t *node)
 {
-    char *builtin_cmd[] = {"cd", "exit", "setenv", "unsetenv", "env", NULL};
+    const builtin_t *builtins = get_builtins();
 
-    for (int i = 0; builtin_cmd[i]; i++) {
-        if (strcmp(node->data.command->argv[0], builtin_cmd[i]) == 0)
+    for (int i = 0; builtins[i].name != NULL; i++) {
+        if (strcmp(node->data.command->argv[0], builtins[i].name) == 0)
             return true;
     }
     return false;
