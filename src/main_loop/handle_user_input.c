@@ -41,6 +41,7 @@ char *read_command(shell_t *shell, bool *had_error)
 {
     char *line = NULL;
 
+    shell->history_index = shell->history->count;
     line = read_command_line(shell, had_error);
     if (!line)
         return NULL;

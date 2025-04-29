@@ -35,7 +35,7 @@ static bool handle_input_character(
     shell_t *shell_info, char c, char *buffer, int *index)
 {
     if (c == 27) {
-        handle_escape_sequence(shell_info);
+        handle_escape_sequence(shell_info, buffer, index);
         return true;
     }
     if (c == 127) {
@@ -74,7 +74,8 @@ char *read_command_line(shell_t *shell_info, bool *had_error)
     int index = 0;
     bool reading = true;
 
-    (void)shell_info;
+    if (!shell_info)
+        return NULL;
     if (!buffer)
         return NULL;
     while (reading) {

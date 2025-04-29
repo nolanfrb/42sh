@@ -35,6 +35,7 @@ struct shell_s {
     char **local_vars;
     int local_size;
     int exit_code;
+    int history_index;
     history_t *history;
 };
 
