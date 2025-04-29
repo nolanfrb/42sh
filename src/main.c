@@ -23,7 +23,7 @@ static void handle_user_input(shell_t *shell_info, char *user_input)
     ast_node_t *ast;
 
     if (user_input && user_input[0] != '\n') {
-        ast = built_ast_struct(user_input);
+        ast = built_ast_struct(user_input, shell_info);
         if (ast == NULL) {
             free(user_input);
             return;
