@@ -83,6 +83,7 @@ ast_node_t *built_ast_struct(char *user_input, shell_t *shell_info)
     ast = parse_sequence(tokens, &pos);
     if (ast_error_handling(ast) != 0) {
         shell_info->exit_code = 1;
+        free(tokens);
         return NULL;
     }
     if (!ast) {
