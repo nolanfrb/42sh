@@ -18,6 +18,7 @@ int process_command(ast_node_t *ast, shell_t *shell_info)
         [NODE_AND] = execute_and,
         [NODE_SEQUENCE] = execute_sequence,
         [NODE_REDIRECT] = execute_redirect,
+        [NODE_SUBSHELL] = execute_subshell_command,
     };
 
     if (ast == NULL)
