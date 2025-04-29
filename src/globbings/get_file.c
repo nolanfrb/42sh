@@ -42,7 +42,7 @@ static char *join_path(const char *dir, const char *file)
     return full;
 }
 
-static int get_max_deepth(const char *path)
+static int get_max_depth(const char *path)
 {
     int depth = 1;
     const char *p = path;
@@ -128,7 +128,7 @@ char **get_files(const char *start_path, int *count)
         return NULL;
     data->count = count;
     data->deepth = 0;
-    data->max_deepth = get_max_deepth(start_path);
+    data->max_deepth = get_max_depth(start_path);
     get_all_files_recursive(start_path, 0, data);
     return data->files;
 }
