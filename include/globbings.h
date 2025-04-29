@@ -12,7 +12,7 @@
 typedef struct recursive_data {
     int *count;
     int deepth;
-    int max_deepth;
+    int max_depth;
     char **files;
 } recursive_data_t;
 
