@@ -24,7 +24,8 @@ static char *join_path(const char *dir, const char *file)
     return full;
 }
 
-static void add_to_directory(char ***directory, int *count_files, const char *new_path, const char *entry_name)
+static void add_to_directory(char ***directory, int *count_files,
+    const char *new_path, const char *entry_name)
 {
     char *full_path = join_path(new_path, entry_name);
 
@@ -40,11 +41,12 @@ static void add_to_directory(char ***directory, int *count_files, const char *ne
     free(full_path);
 }
 
-static void process_directory_entries(DIR *dir, char ***directory, int *count_files, const char *new_path)
+static void process_directory_entries(DIR *dir, char ***directory,
+    int *count_files, const char *new_path)
 {
     struct dirent *entry;
 
-    while (entry != NULL) {
+    while (1) {
         entry = readdir(dir);
         if (entry == NULL)
             break;

@@ -12,17 +12,12 @@
 #include <ftw.h>
 #include <string.h>
 
-static int is_globbing_pattern(const char *str)
-{
-    return (strchr(str, '*') || strchr(str, '?') ||
-            strchr(str, '[') || strchr(str, '{'));
-}
-
 static int is_globbings_pattern(char *pattern)
 {
     if (pattern == NULL)
         return 0;
-    if (strchr(pattern, '*') != NULL || strchr(pattern, '?') != NULL)
+    if (strchr(pattern, '*') != NULL || strchr(pattern, '?') != NULL ||
+    strchr(pattern, '[') != NULL || strchr(pattern, '{') != NULL)
         return 1;
     return 0;
 }
@@ -64,19 +59,25 @@ static char *get_pattern(char *src)
     return new_pattern;
 }
 
-static void replace_arg_with_matches(ast_node_t *node, int arg_idx, char **matches, int match_count)
+static int get_arg_count(ast_node_t *node)
 {
-    int arg_count = 0;
-    int new_arg_count = 0;
-    char **new_argv = NULL;
-    int i;
+    int count = 0;
 
-    while (node->data.command->argv[arg_count] != NULL)
-        arg_count++;
-    new_arg_count = arg_count - 1 + match_count;
-    new_argv = malloc(sizeof(char *) * (new_arg_count + 1));
+    while (node->data.command->argv[count] != NULL)
+        count++;
+    return count;
+}
+
+static char **create_new_argv(ast_node_t *node, int arg_idx, char **matches,
+    int match_count)
+{
+    int arg_count = get_arg_count(node);
+    char **new_argv = NULL;
+    int i = 0;
+
+    new_argv = malloc(sizeof(char *) * (arg_count - 1 + match_count + 1));
     if (!new_argv)
-        return;
+        return NULL;
     for (i = 0; i < arg_idx; i++)
         new_argv[i] = node->data.command->argv[i];
     for (int j = 0; j < match_count; j++) {
@@ -88,9 +89,31 @@ static void replace_arg_with_matches(ast_node_t *node, int arg_idx, char **match
         i++;
     }
     new_argv[i] = NULL;
+    return new_argv;
+}
+
+static void replace_arg_with_matches(ast_node_t *node, int arg_idx,
+    char **matches, int match_count)
+{
+    char **new_argv = NULL;
+
+    new_argv = create_new_argv(node, arg_idx, matches, match_count);
+    if (!new_argv)
+        return;
     free(node->data.command->argv[arg_idx]);
     free(node->data.command->argv);
     node->data.command->argv = new_argv;
+}
+
+static void handle_selected_files(ast_node_t *node, int i,
+    char **selected_file, int selected_count)
+{
+    if (selected_count > 0) {
+        replace_arg_with_matches(node, i, selected_file, selected_count);
+    } else {
+        free(node->data.command->argv[i]);
+        node->data.command->argv[i] = strdup(node->data.command->argv[i]);
+    }
 }
 
 static void put_globbings(ast_node_t *node, int i)
@@ -99,53 +122,31 @@ static void put_globbings(ast_node_t *node, int i)
     char **files = NULL;
     char **selected_file = NULL;
     char *pattern = get_pattern(node->data.command->argv[i]);
-    char *original_arg = strdup(node->data.command->argv[i]);
     int selected_count = 0;
 
-    if (node->data.command->argv[i][0] == '*') {
+    if (node->data.command->argv[i][0] == '*')
         node->data.command->argv[i][0] = '.';
-    }
     if (node->data.command->argv[i][strlen(node->data.command->argv[i]) - 1]
-    == '*' || node->data.command->argv[i][0] == '.') {
-        printf("in directory\n");
-        files = get_directory(node->data.command->argv[1], &count);
-    } else {
-        files = get_files(node->data.command->argv[1], &count);
-    }
-    printf("count = %i\n", count);
-    for (int i = 0; i < count; i++) {
-        printf("file found : %s\n", files[i]);
-    }
+    == '*' || node->data.command->argv[i][0] == '.')
+        files = get_directory(node->data.command->argv[i], &count);
+    else
+        files = get_files(node->data.command->argv[i], &count);
     selected_file = get_selected_files(files, pattern, count);
     if (selected_file != NULL) {
         while (selected_file[selected_count] != NULL)
             selected_count++;
     }
-    if (selected_count > 0) {
-        replace_arg_with_matches(node, i, selected_file, selected_count);
-    } else {
-        free(node->data.command->argv[i]);
-        node->data.command->argv[i] = original_arg;
-    }
-    for (int i = 0; selected_file[i] != NULL; i++) {
-        printf("selected file : %s\n", selected_file[i]);
-        free(selected_file[i]);
-    }
-    free(selected_file);
-    for (int i = 0; i < count; i++) {
-        free(files[i]);
-    }
-    free(files);
-    free(pattern);
-    files = NULL;
+    handle_selected_files(node, i, selected_file, selected_count);
 }
 
-int globbings(ast_node_t *node)
+void globbings(ast_node_t *node)
 {
+    if (!node || !node->data.command || !node->data.command->argv) {
+        return;
+    }
     for (int i = 1; node->data.command->argv[i] != NULL; i++) {
         if (is_globbings_pattern(node->data.command->argv[i]) == 0)
             continue;
         put_globbings(node, i);
-        printf("argv[%i] = %s\n", i, node->data.command->argv[i]);
     }
 }
