@@ -42,4 +42,7 @@ src/builtins/builtin_exit.c
 src/utils/printf_flush.c
 src/builtins/builtin_history.c
 src/parser/error_handling/pipe_error_handling.c
+src/globbings/get_file.c
+src/globbings/globbings.c
+src/globbings/get_directory.c
 src/command_execution/execute_subshell_command.c
