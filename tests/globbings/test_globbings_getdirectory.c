@@ -24,19 +24,19 @@ Test(get_directory, wrong_directory)
 Test(get_directory, simple_directory)
 {
     int count = 0;
-    char **files = get_directory("src/", &count);
+    char **files = get_directory("tests/globbings/", &count);
 
     cr_assert_not_null(files);
-    cr_assert_eq(count, 10);
+    cr_assert_eq(count, 4);
     free(files);
 }
 
 Test(get_directory, directory_without_trailing_slash)
 {
     int count = 0;
-    char **files = get_directory("src", &count);
+    char **files = get_directory("tests/globbings", &count);
 
     cr_assert_not_null(files);
-    cr_assert_eq(count, 10);
+    cr_assert_eq(count, 4);
     free(files);
 }

@@ -59,14 +59,14 @@ Test(globbings, simple_directory)
     node->data.command = malloc(sizeof(command_t));
     node->data.command->argv = malloc(sizeof(char *) * 3);
     node->data.command->argv[0] = strdup("ls");
-    node->data.command->argv[1] = strdup("src/*");
+    node->data.command->argv[1] = strdup("tests/globbings/*");
     node->data.command->argv[2] = NULL;
 
     globbings(node);
     cr_assert_eq(node->type, NODE_COMMAND);
     int i;
     for (i = 0; node->data.command->argv[i] != NULL; i++);
-    cr_assert_eq(i, 11);
+    cr_assert_eq(i, 5);
     for (int j = 0; j < i; j++) {
         cr_assert_not_null(node->data.command->argv[j]);
     }
