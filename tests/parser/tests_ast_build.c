@@ -23,7 +23,6 @@ void cr_mock_stdin(char *input) {
     stdin = mock_input;
 }
 
-// Tests pour read_command
 Test(read_command, simple_input) {
     const char *input = "ls -la\n";
     shell_t shell = {0};
@@ -65,7 +64,6 @@ Test(read_command, with_history) {
     bool had_error = false;
     char *result;
 
-    // Initialiser l'historique
     shell.history = init_history();
     cr_assert_not_null(shell.history);
 
@@ -77,12 +75,10 @@ Test(read_command, with_history) {
     cr_assert_str_eq(result, "ls -la");
     cr_assert_eq(had_error, false);
 
-    // Vérifier que l'historique a été mis à jour
     cr_assert_eq(shell.history->count, 1);
     cr_assert_str_eq(shell.history->entries[0].command, "ls -la");
 
     free(result);
-    // Libérer la mémoire
     free(shell.history->entries[0].command);
     free(shell.history->entries[0].timestamp);
     free(shell.history->entries);
@@ -94,12 +90,10 @@ Test(read_command, history_expansion_bang_bang) {
     bool had_error = false;
     char *result;
 
-    // Initialiser l'historique avec une commande
     shell.history = init_history();
     cr_assert_not_null(shell.history);
     history_add(shell.history, "echo hello");
 
-    // Simuler une entrée avec expansion d'historique !!
     cr_mock_stdin("!!\n");
 
     result = read_command(&shell, &had_error);
@@ -121,14 +115,12 @@ Test(read_command, history_expansion_by_number) {
     bool had_error = false;
     char *result;
 
-    // Initialiser l'historique avec plusieurs commandes
     shell.history = init_history();
     cr_assert_not_null(shell.history);
     history_add(shell.history, "ls");
     history_add(shell.history, "cd /tmp");
     history_add(shell.history, "echo test");
 
-    // Simuler une entrée avec expansion d'historique !2
     cr_mock_stdin("!2\n");
 
     result = read_command(&shell, &had_error);
@@ -138,7 +130,6 @@ Test(read_command, history_expansion_by_number) {
     cr_assert_eq(had_error, false);
 
     free(result);
-    // Libérer la mémoire
     for (int i = 0; i < shell.history->count; i++) {
         free(shell.history->entries[i].command);
         free(shell.history->entries[i].timestamp);
@@ -152,14 +143,12 @@ Test(read_command, history_expansion_by_prefix) {
     bool had_error = false;
     char *result;
 
-    // Initialiser l'historique avec plusieurs commandes
     shell.history = init_history();
     cr_assert_not_null(shell.history);
     history_add(shell.history, "ls -la");
     history_add(shell.history, "echo test");
     history_add(shell.history, "cd /usr/bin");
 
-    // Simuler une entrée avec expansion d'historique !ec
     cr_mock_stdin("!ec\n");
 
     result = read_command(&shell, &had_error);
@@ -169,7 +158,6 @@ Test(read_command, history_expansion_by_prefix) {
     cr_assert_eq(had_error, false);
 
     free(result);
-    // Libérer la mémoire
     for (int i = 0; i < shell.history->count; i++) {
         free(shell.history->entries[i].command);
         free(shell.history->entries[i].timestamp);
@@ -183,11 +171,9 @@ Test(read_command, history_expansion_error) {
     bool had_error = false;
     char *result;
 
-    // Initialiser l'historique
     shell.history = init_history();
     cr_assert_not_null(shell.history);
 
-    // Simuler une entrée avec expansion d'historique invalide
     cr_mock_stdin("!nonexistent\n");
 
     result = read_command(&shell, &had_error);
@@ -195,12 +181,10 @@ Test(read_command, history_expansion_error) {
     cr_assert_null(result);
     cr_assert_eq(had_error, true);
 
-    // Libérer la mémoire
     free(shell.history->entries);
     free(shell.history);
 }
 
-// Tests pour built_ast_struct
 Test(build_ast_struct, simple_input) {
     char *input = strdup("ls -la");
     shell_t shell = {0};
@@ -211,7 +195,6 @@ Test(build_ast_struct, simple_input) {
     cr_assert_not_null(ast);
 
     free(input);
-    // Note: il faudrait libérer l'AST ici, mais la fonction n'est pas fournie
 }
 
 Test(build_ast_struct, empty_input) {
@@ -245,7 +228,6 @@ Test(build_ast_struct, complex_input) {
     cr_assert_not_null(ast);
 
     free(input);
-    // Note: il faudrait libérer l'AST ici, mais la fonction n'est pas fournie
 }
 
 Test(build_ast_struct, error_handling) {
@@ -253,14 +235,8 @@ Test(build_ast_struct, error_handling) {
     shell_t shell = {0};
     ast_node_t *ast;
 
-    // Simuler une erreur dans le traitement de l'AST
-    // Note: comme nous n'avons pas accès à l'implémentation complète,
-    // ce test pourrait ne pas fonctionner comme prévu.
-    // Ajustez selon votre implémentation réelle.
-
     ast = built_ast_struct(input, &shell);
 
-    // Si le test échoue, vérifiez que shell_info->exit_code a été mis à jour
     if (!ast) {
         cr_assert_eq(shell.exit_code, 1);
     }
