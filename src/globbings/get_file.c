@@ -107,7 +107,7 @@ void get_all_files_recursive(const char *base_path, int deepth,
         new_path = ".";
     dir = opendir(new_path);
     deepth += 1;
-    if (!dir || deepth >= data->max_deepth) {
+    if (!dir || deepth >= data->max_depth) {
         if (dir)
             closedir(dir);
         free(base_path_copy);
@@ -128,7 +128,7 @@ char **get_files(const char *start_path, int *count)
         return NULL;
     data->count = count;
     data->deepth = 0;
-    data->max_deepth = get_max_depth(start_path);
+    data->max_depth = get_max_depth(start_path);
     get_all_files_recursive(start_path, 0, data);
     return data->files;
 }
