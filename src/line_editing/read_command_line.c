@@ -52,19 +52,19 @@ static bool handle_input_character(
     return true;
 }
 
-static bool process_character(
-    shell_t *shell_info, char *buffer, int *index, int *capacity)
+bool process_character(
+    shell_t *shell_info, char **buffer, int *index, int *capacity)
 {
     char c;
 
     if (read(STDIN_FILENO, &c, 1) <= 0)
         return false;
     if (*index + 1 >= *capacity) {
-        buffer = resize_buffer(buffer, capacity);
-        if (!buffer)
+        *buffer = resize_buffer(*buffer, capacity);
+        if (!*buffer)
             return false;
     }
-    return handle_input_character(shell_info, c, buffer, index);
+    return handle_input_character(shell_info, c, *buffer, index);
 }
 
 char *read_command_line(shell_t *shell_info, bool *had_error)
@@ -79,7 +79,7 @@ char *read_command_line(shell_t *shell_info, bool *had_error)
     if (!buffer)
         return NULL;
     while (reading) {
-        reading = process_character(shell_info, buffer, &index, &capacity);
+        reading = process_character(shell_info, &buffer, &index, &capacity);
     }
     buffer[index] = '\0';
     if (index == 0)
