@@ -17,12 +17,15 @@
 #include <sys/stat.h>
 #include <signal.h>
 #include <unistd.h>
+#include "globbings.h"
 
 static void child_process(
     char *full_path, ast_node_t *node, struct shell_s *shell_var)
 {
     execve(full_path, node->data.command->argv, shell_var->env_array);
     handle_command_not_found(node->data.command->argv[0]);
+    shell_var->exit_code = 1;
+    exit(1);
 }
 
 int execute_builtin(ast_node_t *node, struct shell_s *shell_var)
@@ -69,6 +72,7 @@ int execute_command(ast_node_t *node, struct shell_s *shell_var)
         free(full_path);
         return result;
     }
+    globbings(node);
     result = execute_external_command(full_path, node, shell_var);
     free(full_path);
     return result;
