@@ -9,7 +9,7 @@
 #include <criterion/redirect.h>
 #include "shell.h"
 #include "builtins.h"
-#include "src/builtins/builtin_cd.c"
+#include "src/commands/builtins/builtin_cd.c"
 
 void redirect_all_stdout_cd(void)
 {
