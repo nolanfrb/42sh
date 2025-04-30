@@ -10,7 +10,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "shell.h"
-#include "src/builtins/builtin_setenv.c"
+#include "src/commands/builtins/env/builtin_setenv.c"
 
 void redirect_all_stdout(void)
 {
