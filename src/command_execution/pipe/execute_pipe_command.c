@@ -39,45 +39,6 @@ static int execute_child_command(command_info_t *command_info, int i,
     return 1;
 }
 
-static void setup_child_pipes(int prev_pipe[2], int curr_pipe[2])
-{
-    if (prev_pipe[0] != -1) {
-        dup2(prev_pipe[0], STDIN_FILENO);
-        close(prev_pipe[0]);
-    }
-    if (prev_pipe[1] != -1)
-        close(prev_pipe[1]);
-    if (curr_pipe[1] != -1) {
-        dup2(curr_pipe[1], STDOUT_FILENO);
-        close(curr_pipe[1]);
-    }
-    if (curr_pipe[0] != -1)
-        close(curr_pipe[0]);
-}
-
-static void close_parent_pipes(int prev_pipe[2])
-{
-    if (prev_pipe[0] != -1)
-        close(prev_pipe[0]);
-    if (prev_pipe[1] != -1)
-        close(prev_pipe[1]);
-}
-
-static int create_pipe_if_needed(int curr_pipe[2], int prev_pipe[2], int i,
-    int command_count)
-{
-    curr_pipe[0] = -1;
-    curr_pipe[1] = -1;
-    if (i < command_count - 1) {
-        if (pipe(curr_pipe) == -1) {
-            perror("pipe");
-            close_parent_pipes(prev_pipe);
-            return -1;
-        }
-    }
-    return 0;
-}
-
 static int handle_fork_error(int prev_pipe[2], int curr_pipe[2])
 {
     perror("fork");
@@ -89,51 +50,58 @@ static int handle_fork_error(int prev_pipe[2], int curr_pipe[2])
     return -1;
 }
 
-static int setup_pipes_and_fork(command_info_t *command_info,
-    struct shell_s *shell_var)
+static int handle_special_command(ast_node_t *node, shell_t *shell_var)
 {
-    int prev_pipe[2] = {-1, -1};
-    int curr_pipe[2];
-
-    for (int i = 0; i < command_info->command_count; i++) {
-        if (create_pipe_if_needed(curr_pipe, prev_pipe, i,
-            command_info->command_count) == -1)
-            return -1;
-        command_info->pids[i] = fork();
-        if (command_info->pids[i] == -1)
-            return handle_fork_error(prev_pipe, curr_pipe);
-        if (command_info->pids[i] == 0) {
-            setup_child_pipes(prev_pipe, curr_pipe);
-            execute_child_command(command_info, i, shell_var);
-        }
-        close_parent_pipes(prev_pipe);
-        prev_pipe[0] = curr_pipe[0];
-        prev_pipe[1] = curr_pipe[1];
+    if (node->type == NODE_SUBSHELL) {
+        execute_subshell_command(node, shell_var);
+        return 1;
     }
-    close_parent_pipes(prev_pipe);
+    if (node->type == NODE_REDIRECT) {
+        execute_redirect(node, shell_var);
+        return 1;
+    }
     return 0;
 }
 
-static int initialize_command_info(command_info_t *command_info,
-    ast_node_t *node)
+static void handle_child(command_info_t *info, int idx, shell_t *shell)
 {
-    command_info->command_count = 0;
-    command_info->commands = collect_pipe_commands
-    (node, &command_info->command_count);
-    if (!command_info->commands)
-        return -1;
-    command_info->pipes = malloc(sizeof(int[2]) *
-    (command_info->command_count - 1));
-    if (!command_info->pipes) {
-        free(command_info->commands);
+    ast_node_t *node = info->commands[idx];
+
+    if (handle_special_command(node, shell) == 1) {
+        exit(0);
+    }
+    execute_child_command(info, idx, shell);
+}
+
+static int create_child_process(command_info_t *info, int idx,
+    shell_t *shell, pipe_state_t *state)
+{
+    info->pids[idx] = fork();
+    if (info->pids[idx] == -1) {
+        return handle_fork_error(state->prev, state->curr);
+    }
+    if (info->pids[idx] == 0) {
+        setup_child_pipes(state->prev, state->curr);
+        handle_child(info, idx, shell);
+    }
+    return 0;
+}
+
+static void update_pipe_state(pipe_state_t *state)
+{
+    close_parent_pipes(state->prev);
+    state->prev[0] = state->curr[0];
+    state->prev[1] = state->curr[1];
+}
+
+int process_pipe_command(command_info_t *info, int idx,
+    shell_t *shell, pipe_state_t *state)
+{
+    setup_pipes(state, idx, info->command_count);
+    if (create_child_process(info, idx, shell, state) != 0) {
         return -1;
     }
-    command_info->pids = malloc(sizeof(pid_t) * command_info->command_count);
-    if (!command_info->pids) {
-        free(command_info->pipes);
-        free(command_info->commands);
-        return -1;
-    }
+    update_pipe_state(state);
     return 0;
 }
 

@@ -18,6 +18,7 @@ typedef struct command_info_s {
     ast_node_t **commands;
     pid_t *pids;
     int (*pipes)[2];
+    int i;
 } command_info_t;
 
 typedef struct path_search_s {
@@ -30,6 +31,11 @@ typedef struct builtin_s {
     char *name;
     int (*func)(shell_t *, char **);
 } builtin_t;
+
+typedef struct {
+    int prev[2];
+    int curr[2];
+} pipe_state_t;
 
 // Utility functions
 void handle_command_not_found(char *command);
@@ -54,4 +60,14 @@ const builtin_t *get_builtins(void);
 
 // Function prototypes for pipes
 ast_node_t **collect_pipe_commands(ast_node_t *node, int *count);
+int initialize_command_info(command_info_t *command_info,
+    ast_node_t *node);
+int setup_pipes_and_fork(command_info_t *info, shell_t *shell);
+int create_pipe_if_needed(int curr_pipe[2], int prev_pipe[2], int i,
+    int command_count);
+void setup_child_pipes(int prev_pipe[2], int curr_pipe[2]);
+int process_pipe_command(command_info_t *info, int idx,
+    shell_t *shell, pipe_state_t *state);
+void close_parent_pipes(int prev_pipe[2]);
+void setup_pipes(pipe_state_t *state, int idx, int count);
 #endif
