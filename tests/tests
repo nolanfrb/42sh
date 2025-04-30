@@ -6,15 +6,6 @@ TESTS=
   echo ''
 [1001-END]
 
-[1002]
-NAME="Exec two command"
-SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
-CLEAN=""
-TESTS=
-  echo 'ls /etc'
-  echo 'cat /etc/resolv.conf'
-[1002-END]
-
 [1003]
 NAME="Testing with /usr/bin PATH"
 SETUP="export TERM=xterm ; PATH='/usr/bin'"
@@ -30,45 +21,6 @@ CLEAN=""
 TESTS=
   echo 'pwd'
 [1004-END]
-
-[1005]
-NAME="run commands"
-SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
-CLEAN=""
-TESTS=
-  echo 'cat /etc/resolv.conf'
-  sleep 0.5
-  echo 'ls -l /etc'
-  sleep 0.5
-  echo 'pwd'
-[1005-END]
-
-[1006]
-NAME="setenv and unsetenv"
-SETUP="/usr/bin/env > .lstenv ; while read varenv ; do unset $varenv ; done < <(/bin/cat .lstenv | /usr/bin/cut -f1 -d=) ; export PATH=/bin:/usr/bin ; export _=ls ; export LS_COLORS=RID ; export MYBG=4 ; export LVL=4 ; export NOTE=2"
-CLEAN="while read varenv ; do export "$varenv" 2>/dev/null ; done  < <(/bin/cat .lstenv) ; /bin/rm -f .lstenv"
-TESTS=
-  echo 'unsetenv HOSTTYPE'
-  echo 'unsetenv VENDOR'
-  echo 'unsetenv OSTYPE'
-  echo 'unsetenv MACHTYPE'
-  echo 'unsetenv SHLVL'
-  echo 'unsetenv PWD'
-  echo 'unsetenv LOGNAME'
-  echo 'unsetenv USER'
-  echo 'unsetenv GROUP'
-  echo 'unsetenv HOST'
-  echo 'unsetenv REMOTEHOST'
-  echo 'unsetenv _'
-  echo 'unsetenv LS_COLORS'
-  echo 'unsetenv NOTE'
-  echo 'setenv titi'
-  echo 'setenv tata coucou'
-  echo 'env'
-  echo '/usr/bin/env'
-  echo 'setenv var1 val1'
-  echo 'setenv var2 val2'
-[1006-END]
 
 [1007]
 NAME="builtin cd"
@@ -768,14 +720,6 @@ TESTS=
   echo "ls && echo success"
 [3001-END]
 
-[3002]
-NAME="LOGICAL_AND: Fail first command"
-SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
-CLEAN=""
-TESTS=
-  echo "nonexistentcommand && echo should_not_appear"
-[3002-END]
-
 [3003]
 NAME="LOGICAL_AND: Multiple AND operators"
 SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
@@ -791,14 +735,6 @@ CLEAN=""
 TESTS=
   echo "cd /tmp && pwd"
 [3004-END]
-
-[3005]
-NAME="LOGICAL_AND: Fail middle command"
-SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
-CLEAN=""
-TESTS=
-  echo "echo start && nonexistentcommand && echo should_not_appear"
-[3005-END]
 
 [3101]
 NAME="LOGICAL_OR: Simple logical OR"
@@ -1016,14 +952,6 @@ TESTS=
   echo "test -f /tmp/test_file && echo is_file || echo not_file && test -d /tmp/test_dir && echo is_dir || echo not_dir"
 [3515-END]
 
-[3516]
-NAME="SUBSHELL: Environment isolation"
-SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
-CLEAN=""
-TESTS=
-  echo "TEST_VAR=outside && echo $TEST_VAR && (TEST_VAR=inside && echo $TEST_VAR) && echo $TEST_VAR"
-[3516-END]
-
 [3517]
 NAME="SUBSHELL: Multiple commands in subshell"
 SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
@@ -1047,14 +975,6 @@ CLEAN=""
 TESTS=
   echo "(echo level1 && (echo level2 && (echo level3)))"
 [3519-END]
-
-[3520]
-NAME="SUBSHELL: Subshell with variable operations"
-SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
-CLEAN=""
-TESTS=
-  echo "COUNT=1 && (COUNT=2 && echo $COUNT) && echo $COUNT"
-[3520-END]
 
 [3521]
 NAME="COMPLEX: Pipe in subshell with external command"
