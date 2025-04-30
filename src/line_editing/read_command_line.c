@@ -10,6 +10,11 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <string.h>
+#include <stdio.h>
+#include <termios.h>
+#include <sys/ioctl.h>
+#include <fcntl.h>
 
 static void handle_backspace(char *buffer, int *index)
 {
@@ -67,6 +72,22 @@ bool process_character(
     return handle_input_character(shell_info, c, *buffer, index);
 }
 
+static char *read_non_interactive_input(bool *had_error)
+{
+    char *line = NULL;
+    size_t size = 0;
+    ssize_t len = getline(&line, &size, stdin);
+
+    if (len == -1) {
+        *had_error = true;
+        free(line);
+        return NULL;
+    }
+    if (line[len - 1] == '\n')
+        line[len - 1] = '\0';
+    return line;
+}
+
 char *read_command_line(shell_t *shell_info, bool *had_error)
 {
     int capacity = 16;
@@ -76,11 +97,12 @@ char *read_command_line(shell_t *shell_info, bool *had_error)
 
     if (!shell_info)
         return NULL;
+    if (!isatty(fileno(stdin)))
+        return read_non_interactive_input(had_error);
     if (!buffer)
         return NULL;
-    while (reading) {
+    while (reading)
         reading = process_character(shell_info, &buffer, &index, &capacity);
-    }
     buffer[index] = '\0';
     if (index == 0)
         *had_error = true;
