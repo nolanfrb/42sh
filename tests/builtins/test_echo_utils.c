@@ -10,7 +10,7 @@
 #include <stdlib.h>
 #include "builtins.h"
 #include "shell.h"
-#include "src/builtins/echo_utils.c"
+#include "src/commands/builtins/echo_utils.c"
 
 void redirect_all_stdout_echo_utils(void)
 {
