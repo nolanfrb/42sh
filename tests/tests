@@ -991,3 +991,11 @@ CLEAN="rm -f /tmp/complex_output"
 TESTS=
   echo "ls /etc > /tmp/complex_output && cat /tmp/complex_output || echo failed"
 [3522-END]
+
+[3600]
+NAME="Input redirection from non-existent file"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "ls < Make"
+[3600-END]
