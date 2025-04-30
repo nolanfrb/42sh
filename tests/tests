@@ -550,6 +550,22 @@ TESTS=
   echo "ls -l | sqfd | wc -l"
 [2114-END]
 
+[2115]
+NAME="PIPE: builtin command with pipe"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "history | cat -e"
+[2115-END]
+
+[2116]
+NAME="PIPE: ulimit = 10"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin' ; ulimit -n 10"
+CLEAN=""
+TESTS=
+  echo "cat test_main.c | cat | cat | cat | cat | cat | cat | cat | cat | cat"
+[2116-END]
+
 [2201]
 NAME="SEMICOLON: Simple semicolons"
 SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
