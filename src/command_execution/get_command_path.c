@@ -10,6 +10,7 @@
 #include <string.h>
 #include "shell.h"
 #include "command.h"
+#include "env.h"
 
 /**
  * @brief Expand tilde (~) in path to home directory
@@ -125,12 +126,12 @@ static int check_command_in_path(char *path_str, path_search_t *search)
  */
 char *build_path(shell_t *shell, char *command)
 {
-    char *path = getenv("PATH");
+    char *path = get_path(shell->env_array);
     path_search_t search = {0};
     int result;
 
-    if (!path)
-        path = DEFAULT_PATH;
+    if (strrchr(command, '/') != NULL)
+        return command;
     search.command = command;
     search.shell = shell;
     search.result_path = NULL;
