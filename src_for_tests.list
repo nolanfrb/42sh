@@ -47,3 +47,5 @@ src/globbings/globbings.c
 src/globbings/get_directory.c
 src/commands/command_execution/execute_subshell_command.c
 src/commands/command_execution/utils/path.c
+src/commands/command_execution/pipe/setup_pipe.c
+src/commands/command_execution/pipe/init_command.c
