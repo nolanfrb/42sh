@@ -18,4 +18,3 @@ char *get_path(char **env)
         path = DEFAULT_PATH;
     return path;
 }
-
