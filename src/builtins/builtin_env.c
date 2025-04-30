@@ -10,6 +10,16 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include "env.h"
+
+char *my_getenv(char const *name, char **env)
+{
+    for (int i = 0; env[i]; i++) {
+        if (strncmp(name, env[i], strlen(name)) == 0)
+            return env[i] + strlen(name) + 1;
+    }
+    return NULL;
+}
 
 int builtin_env(shell_t *shell, char **args)
 {
