@@ -29,9 +29,9 @@ static int execute_child_command(command_info_t *command_info, int i,
     }
     if (command_info->pids[i] == 0) {
         if (is_builtin_cmd(node)) {
-            return_value = execute_builtin(node, shell_var);
+            execute_builtin(node, shell_var);
             free(full_path);
-            exit(return_value);
+            exit(0);
         }
         execve(full_path, node->data.command->argv, shell_var->env_array);
         handle_command_not_found(node->data.command->argv[0]);
