@@ -46,7 +46,8 @@ Test(free_shell, should_free_env_array_properly)
 Test(free_shell, should_free_local_vars_properly)
 {
     shell_t *shell = malloc(sizeof(shell_t));
-    shell->env_size = 2;
+    shell->env_size = 0;
+    shell->local_size = 2;
     shell->local_vars = malloc(sizeof(char *) * 2);
     shell->local_vars[0] = strdup("VAR1=local");
     shell->local_vars[1] = strdup("VAR2=local");
