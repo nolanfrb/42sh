@@ -21,12 +21,18 @@ static int execute_child_command(command_info_t *command_info, int i,
     ast_node_t *node = command_info->commands[i];
     char *full_path = build_path(shell_var, node->data.command->argv[0]);
     int return_value = 0;
+    int return_value = 0;
 
     if (!full_path) {
         handle_command_not_found(node->data.command->argv[0]);
         exit(1);
     }
     if (command_info->pids[i] == 0) {
+        if (is_builtin_cmd(node)) {
+            return_value = execute_builtin(node, shell_var);
+            free(full_path);
+            exit(return_value);
+        }
         execve(full_path, node->data.command->argv, shell_var->env_array);
         handle_command_not_found(node->data.command->argv[0]);
         exit(1);
