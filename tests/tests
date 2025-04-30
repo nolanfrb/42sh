@@ -680,6 +680,14 @@ TESTS=
   echo "cat < /dev/null"
 [2504-END]
 
+[2505]
+NAME="REDIRECTION_INPUT: Input with a pipe"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "cat < test_main.c | cat > toto"
+[2505-END]
+
 [2507]
 NAME="REDIRECTION_OUTPUT: To special file"
 SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
@@ -991,6 +999,14 @@ CLEAN=""
 TESTS=
   echo "(echo level1 && (echo level2 && (echo level3)))"
 [3519-END]
+
+[3520]
+NAME="SUBSHELL: subshell with pipe"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "(echo toto; echo titi) | wc -l)"
+[3520-END]
 
 [3521]
 NAME="COMPLEX: Pipe in subshell with external command"
