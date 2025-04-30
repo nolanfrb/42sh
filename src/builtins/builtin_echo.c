@@ -28,7 +28,7 @@ static void print_arg(shell_t *shell, char *arg)
         print_env_variable(shell, arg);
         return;
     }
-    printf("%s", arg);
+    printf_flush("%s", arg);
 }
 
 static void print_args(shell_t *shell, char **args)
@@ -37,17 +37,17 @@ static void print_args(shell_t *shell, char **args)
 
     while (args[i]) {
         if (i > 1)
-            printf(" ");
+            printf_flush(" ");
         print_arg(shell, args[i]);
         i++;
     }
-    printf("\n");
+    printf_flush("\n");
 }
 
 int builtin_echo(shell_t *shell, char **args)
 {
     if (!args[1]) {
-        printf("\n");
+        printf_flush("\n");
         shell->exit_code = 0;
         return 0;
     }

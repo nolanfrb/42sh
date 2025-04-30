@@ -22,3 +22,14 @@ tests/env/test_local_set.c
 tests/env/test_local_unset.c
 tests/parser/tests_ast_build.c
 tests/utils/tests_strcat.c
+tests/builtins/test_builtin_setenv.c
+tests/builtins/test_builtin_unsetenv.c
+tests/builtins/test_echo_utils.c
+tests/builtins/test_builtin_cd.c
+tests/builtins/test_builtin_echo.c
+tests/builtins/test_builtin_env.c
+tests/builtins/test_builtin_exit.c
+tests/builtins/test_builtins.c
+tests/globbings/test_globbings_getfiles.c
+tests/globbings/test_globbings_getdirectory.c
+tests/globbings/test_globbings_main_function.c

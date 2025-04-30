@@ -1,0 +1,993 @@
+[1001]
+NAME="Nothing"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo ''
+[1001-END]
+
+[1003]
+NAME="Testing with /usr/bin PATH"
+SETUP="export TERM=xterm ; PATH='/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'pwd'
+[1003-END]
+
+[1004]
+NAME="Testing with /bin PATH"
+SETUP="export TERM=xterm ; PATH='/bin'"
+CLEAN=""
+TESTS=
+  echo 'pwd'
+[1004-END]
+
+[1007]
+NAME="builtin cd"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'cd ..'
+  echo 'ls -l'
+  echo 'cd /usr'
+  echo 'ls -l'
+[1007-END]
+
+[1008]
+NAME="many tab and space"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo -e "\t\t    ls\t     \t-l    \t\t  \t -a /usr   \t\t"
+[1008-END]
+
+[1009]
+NAME="Launch DivZero program with core dump"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "./my_divzero"
+[1009-END]
+
+[1012]
+NAME="Print calendar"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+    echo 'cal'
+    echo '/usr/bin/cal'
+[1012-END]
+
+[1013]
+NAME="Display hostname"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+    echo 'hostname'
+    echo '/bin/hostname'
+[1013-END]
+
+[1014]
+NAME="Show current date and time"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+    echo 'date'
+    echo '/bin/date'
+[1014-END]
+
+[1015]
+NAME="Print last logins"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+    echo 'last'
+    echo '/usr/bin/last'
+[1015-END]
+
+[1016]
+NAME="Show current user ID"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+    echo 'id'
+    echo '/usr/bin/id'
+[1016-END]
+
+[1017]
+NAME="Print kernel version"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+    echo 'uname -r'
+    echo '/bin/uname -r'
+[1017-END]
+
+[1018]
+NAME="Show system information"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+    echo 'uname -a'
+    echo '/bin/uname -a'
+[1018-END]
+
+[1019]
+NAME="Print current directory"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+    echo 'pwd'
+    echo '/bin/pwd'
+[1019-END]
+
+[1021]
+NAME="Change to home directory"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+    echo 'cd ~'
+    echo 'pwd'
+[1021-END]
+
+[1022]
+NAME="Change to previous directory"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+    echo 'cd /usr'
+    echo 'cd -'
+    echo 'pwd'
+[1022-END]
+
+[1023]
+NAME="Change to root directory"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+    echo 'cd /'
+    echo 'pwd'
+[1023-END]
+
+[1024]
+NAME="Change to parent directory"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+    echo 'cd ..'
+    echo 'pwd'
+[1024-END]
+
+[1025]
+NAME="Change to specific directory"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+    echo 'cd /etc'
+    echo 'pwd'
+[1025-END]
+
+
+[1026]
+NAME="Commande avec chemin direct"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo '/bin/ls'
+[1026-END]
+
+[1027]
+NAME="Changer vers le répertoire personnel"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'cd ~'
+  echo 'pwd'
+[1027-END]
+
+[1028]
+NAME="Changer vers le répertoire précédent"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'cd /usr'
+  echo 'cd -'
+  echo 'pwd'
+[1028-END]
+
+[1029]
+NAME="Commande simple"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'ls'
+[1029-END]
+
+[1031]
+NAME="Commande exit"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'exit'
+[1031-END]
+
+[1032]
+NAME="Commande introuvable"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'nonexistentcommand'
+[1032-END]
+
+[1034]
+NAME="setenv 1 args"
+SETUP="/usr/bin/env > .lstenv ; while read varenv ; do unset $varenv ; done < <(/bin/cat .lstenv | /usr/bin/cut -f1 -d=) ; export PATH=/bin:/usr/bin ; export _=ls ; export LS_COLORS=RID ; export MYBG=4 ; export LVL=4 ; export NOTE=2"
+CLEAN="while read varenv ; do unset $varenv 2>/dev/null ; done < <(/bin/cat .lstenv) ; /bin/rm -f .lstenv"
+TESTS=
+  echo 'setenv test'
+[1034-END]
+
+[1035]
+NAME="unsetenv no args"
+SETUP="/usr/bin/env > .lstenv ; while read varenv ; do unset $varenv ; done < <(/bin/cat .lstenv | /usr/bin/cut -f1 -d=) ; export PATH=/bin:/usr/bin ; export _=ls ; export LS_COLORS=RID ; export MYBG=4 ; export LVL=4 ; export NOTE=2"
+CLEAN="while read varenv ; do export "$varenv" 2>/dev/null ; done  < <(/bin/cat .lstenv) ; /bin/rm -f .lstenv"
+TESTS=
+  echo 'unsetenv'
+[1035-END]
+
+[1101]
+NAME="Test invalid command"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'invalidcommand'
+[1101-END]
+
+[1103]
+NAME="Test command with insufficient permissions"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'touch /root/testfile'
+[1103-END]
+
+[1104]
+NAME="Test command with non-existent file"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'cat nonexistentfile.txt'
+[1104-END]
+
+[1107]
+NAME="Test command with directory instead of file"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'cat /etc'
+[1107-END]
+
+[1108]
+NAME="Test command with invalid path"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'cd /invalidpath'
+[1108-END]
+
+[1110]
+NAME="Test setenv with end by ="
+SETUP=""
+CLEAN=""
+TESTS=
+  echo "setenv a="
+[1110-END]
+
+[1112]
+NAME="Test setenv with one argument"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+    echo 'setenv TESTVAR'
+[1112-END]
+
+[1113]
+NAME="Test setenv with two arguments"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+    echo 'setenv TESTVAR testvalue'
+[1113-END]
+
+[1114]
+NAME="Test unsetenv with no arguments"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+    echo 'unsetenv'
+[1114-END]
+
+[1115]
+NAME="Test unsetenv with one argument"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+    echo 'setenv TESTVAR testvalue'
+    echo 'unsetenv TESTVAR'
+[1115-END]
+
+[1116]
+NAME="Test unsetenv with non-existent variable"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+    echo 'unsetenv NONEXISTENTVAR'
+[1116-END]
+
+[1202]
+NAME="Test cd with absolute path"
+SETUP="mkdir -p /tmp/test_dir"
+CLEAN="rm -rf /tmp/test_dir"
+TESTS=
+    echo 'cd /tmp/test_dir'
+    echo 'pwd'
+[1202-END]
+
+[1203]
+NAME="Test cd with relative path"
+SETUP="mkdir -p /tmp/test_dir/subdir"
+CLEAN="rm -rf /tmp/test_dir"
+TESTS=
+    echo 'cd /tmp/test_dir'
+    echo 'cd subdir'
+    echo 'pwd'
+[1203-END]
+
+[1204]
+NAME="Test cd to parent directory"
+SETUP="mkdir -p /tmp/test_dir/subdir"
+CLEAN="rm -rf /tmp/test_dir"
+TESTS=
+    echo 'cd /tmp/test_dir/subdir'
+    echo 'cd ..'
+    echo 'pwd'
+[1204-END]
+
+[1205]
+NAME="Test cd to root directory"
+SETUP=""
+CLEAN=""
+TESTS=
+    echo 'cd /'
+    echo 'pwd'
+[1205-END]
+
+[1206]
+NAME="Test cd with '-' (switch to previous directory)"
+SETUP="mkdir -p /tmp/test_dir1 /tmp/test_dir2"
+CLEAN="rm -rf /tmp/test_dir1 /tmp/test_dir2"
+TESTS=
+    echo 'cd /tmp/test_dir1'
+    echo 'cd /tmp/test_dir2'
+    echo 'cd -'
+    echo 'pwd'
+[1206-END]
+
+[1207]
+NAME="Test cd with '~' (go to HOME)"
+SETUP=""
+CLEAN=""
+TESTS=
+    echo 'cd ~'
+    echo 'pwd'
+[1207-END]
+
+[1209]
+NAME="Test cd to non-existent directory"
+SETUP=""
+CLEAN=""
+TESTS=
+    echo 'cd /non_existent_directory'
+[1209-END]
+
+[1210]
+NAME="Test cd to a file (should fail)"
+SETUP="touch /tmp/test_file"
+CLEAN="rm -f /tmp/test_file"
+TESTS=
+    echo 'cd /tmp/test_file'
+[1210-END]
+
+[1212]
+NAME="Test cd with CDPATH and absolute path"
+SETUP="mkdir -p /tmp/cdpath_test"
+CLEAN="rm -rf /tmp/cdpath_test"
+TESTS=
+    echo 'setenv CDPATH /tmp'
+    echo 'cd /tmp/cdpath_test'
+    echo 'pwd'
+[1212-END]
+
+[1213]
+NAME="Test cd with CDPATH but invalid directory"
+SETUP="export CDPATH=/tmp"
+CLEAN=""
+TESTS=
+    echo 'cd non_existent'
+[1213-END]
+
+[1214]
+NAME="Test cd with symbolic link"
+SETUP="mkdir -p /tmp/real_dir && ln -s /tmp/real_dir /tmp/symlink_dir"
+CLEAN="rm -rf /tmp/real_dir /tmp/symlink_dir"
+TESTS=
+    echo 'cd /tmp/symlink_dir'
+    echo 'pwd'
+[1214-END]
+
+[1506]
+NAME="Builtin cd with absolute and relative paths"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin' ; mkdir -p /tmp/cd_test/subdir"
+CLEAN="rm -rf /tmp/cd_test"
+TESTS=
+  echo 'cd /tmp/cd_test'
+  echo 'pwd'
+  echo 'cd subdir'
+  echo 'pwd'
+  echo 'cd ../'
+  echo 'pwd'
+[1506-END]
+
+[1509]
+NAME="Long command line"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'echo This is a very long command line that continues for quite some time to test the shell ability to handle long input strings without breaking or causing buffer overflows'
+[1509-END]
+
+[2101]
+NAME="PIPE: Testing simple pipe"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "ls -l /etc | grep sh"
+[2101-END]
+
+[2102]
+NAME="PIPE: Multiple pipes"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "ls -l | grep d | wc -l"
+[2102-END]
+
+[2103]
+NAME="PIPE: Nested pipes"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "ls -la | grep d | sort -r | grep tester"
+[2103-END]
+
+[2104]
+NAME="PIPE: Command not found in pipe"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "ls | nonexistentcommand"
+[2104-END]
+
+[2105]
+NAME="PIPE: Pipe with environment variables"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin' ; export TEST_VAR=test_value"
+CLEAN=""
+TESTS=
+  echo "env | grep TEST_VAR"
+[2105-END]
+
+[2106]
+NAME="PIPE: Pipe with builtin commands"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "cd /etc | pwd"
+[2106-END]
+
+[2107]
+NAME="PIPE: Pipe with env vars"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin' ; export TEST_VAR=test_value"
+CLEAN=""
+TESTS=
+  echo "cat segfault.c | grep main"
+[2107-END]
+
+[2108]
+NAME="PIPE: Pipe to cat"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "ls -l | cat"
+[2108-END]
+
+[2110]
+NAME="PIPE: Empty commands in pipes"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "ls | | grep d"
+[2110-END]
+
+[2111]
+NAME="PIPE: Pipe without second command"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "ls | "
+[2111-END]
+
+[2112]
+NAME="PIPE: Quoting in piped commands"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "ls | grep 'include'"
+[2112-END]
+
+[2113]
+NAME="PIPE: Just a pipe"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "|"
+[2113-END]
+
+[2114]
+NAME="PIPE: error in one command"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "ls -l | sqfd | wc -l"
+[2114-END]
+
+[2201]
+NAME="SEMICOLON: Simple semicolons"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "ls -l ; pwd ; whoami"
+[2201-END]
+
+[2202]
+NAME="SEMICOLON: Semicolons with error commands"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "nonexistentcommand ; ls"
+[2202-END]
+
+[2203]
+NAME="SEMICOLON: Semicolons with cd builtin"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "cd /tmp ; pwd ; cd / ; pwd"
+[2203-END]
+
+[2205]
+NAME="SEMICOLON: Multiple semicolons"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "ls;pwd"
+[2205-END]
+
+[2206]
+NAME="SEMICOLON: Multiple adjacent semicolons"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "ls;;pwd;;;pwd"
+[2206-END]
+
+[2207]
+NAME="SEMICOLON: Empty commands with semicolons"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "ls ; ; pwd"
+[2207-END]
+
+[2208]
+NAME="SEMICOLON: Just a semicolon"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo ";"
+[2208-END]
+
+[2209]
+NAME="SEMICOLON: without first command"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "; ls"
+[2209-END]
+
+[2301]
+NAME="REDIRECTION_OUTPUT: Simple output redirection >"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN="rm -f /tmp/test_output"
+TESTS=
+  echo "ls -la > /tmp/test_output"
+  echo "cat /tmp/test_output"
+[2301-END]
+
+[2304]
+NAME="REDIRECTION_OUTPUT: Redirection without file specified"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "ls > "
+[2304-END]
+
+[2401]
+NAME="REDIRECTION_APPEND: Append output redirection >>"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin' ; echo 'first line' > /tmp/test_append"
+CLEAN="rm -f /tmp/test_append"
+TESTS=
+  echo "echo second_line >> /tmp/test_append"
+  echo "cat /tmp/test_append"
+[2401-END]
+
+[2501]
+NAME="REDIRECTION_INPUT: Input redirection <"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin' ; echo 'test content' > /tmp/test_input"
+CLEAN="rm -f /tmp/test_input"
+TESTS=
+  echo "cat < /tmp/test_input"
+[2501-END]
+
+[2503]
+NAME="REDIRECTION_INPUT: Input redirection from directory"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "cat < /tmp"
+[2503-END]
+
+[2504]
+NAME="REDIRECTION_INPUT: Input from special files"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "cat < /dev/null"
+[2504-END]
+
+[2507]
+NAME="REDIRECTION_OUTPUT: To special file"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "echo testing > /dev/null"
+[2507-END]
+
+[2511]
+NAME="PIPE: With builtin on both sides"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin' ; export TESTVAR=testvalue"
+CLEAN=""
+TESTS=
+  echo "env | grep TESTVAR"
+[2511-END]
+
+[2514]
+NAME="SEMICOLON: With directory operations"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin' ; mkdir -p /tmp/semi_test/dir1 /tmp/semi_test/dir2"
+CLEAN="rm -rf /tmp/semi_test"
+TESTS=
+  echo "cd /tmp/semi_test/dir1 ; pwd ; cd ../dir2 ; pwd ; cd / ; pwd"
+[2514-END]
+
+[2515]
+NAME="SEMICOLON: Complex command sequence"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN="rm -f /tmp/semi_output"
+TESTS=
+  echo "date > /tmp/semi_output ; cat /tmp/semi_output ; echo additional content >> /tmp/semi_output ; wc -l /tmp/semi_output"
+[2515-END]
+
+[2519]
+NAME="SEMICOLON: With cd relative paths"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin' ; mkdir -p /tmp/test_paths/a/b/c"
+CLEAN="rm -rf /tmp/test_paths"
+TESTS=
+  echo "cd /tmp/test_paths ; cd a ; cd b ; cd c ; pwd ; cd ../.. ; pwd"
+[2519-END]
+
+[2520]
+NAME="REDIRECT: Both input and output"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin' ; echo 'hello world' > /tmp/input_file"
+CLEAN="rm -f /tmp/input_file /tmp/output_file"
+TESTS=
+  echo "cat < /tmp/input_file > /tmp/output_file && cat /tmp/output_file"
+[2520-END]
+
+[3001]
+NAME="LOGICAL_AND: Simple logical AND"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "ls && echo success"
+[3001-END]
+
+[3003]
+NAME="LOGICAL_AND: Multiple AND operators"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "ls && echo first_success && echo second_success"
+[3003-END]
+
+[3004]
+NAME="LOGICAL_AND: With builtin commands"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "cd /tmp && pwd"
+[3004-END]
+
+[3101]
+NAME="LOGICAL_OR: Simple logical OR"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "ls || echo should_not_appear"
+[3101-END]
+
+[3102]
+NAME="LOGICAL_OR: Fail first command"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "nonexistentcommand || echo fallback_success"
+[3102-END]
+
+[3103]
+NAME="LOGICAL_OR: Multiple OR operators"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "false || false || echo last_resort_success"
+[3103-END]
+
+[3104]
+NAME="LOGICAL_OR: With builtin commands" 
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "cd /nonexistentdir || echo cd_failed"
+[3104-END]
+
+[3201]
+NAME="MIXED_OPERATORS: AND and OR together"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "ls && echo success || echo should_not_appear"
+[3201-END]
+
+[3202]
+NAME="MIXED_OPERATORS: AND and OR with failing command"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "nonexistentcommand && echo should_not_appear || echo fallback"
+[3202-END]
+
+[3203]
+NAME="MIXED_OPERATORS: Complex chain"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "ls && echo first_success && nonexistentcommand || echo recovered"
+[3203-END]
+
+[3301]
+NAME="SUBSHELL: Simple subshell"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "(ls)"
+[3301-END]
+
+[3302]
+NAME="SUBSHELL: Subshell with pipes"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "(ls -la | grep d)"
+[3302-END]
+
+[3303]
+NAME="SUBSHELL: Subshell with semicolons"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "(cd /tmp ; pwd)"
+[3303-END]
+
+[3304]
+NAME="SUBSHELL: Nested subshells"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "((echo inner) && echo outer)"
+[3304-END]
+
+[3305]
+NAME="SUBSHELL: Subshell with logical operators"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "(ls && echo success)"
+[3305-END]
+
+[3306]
+NAME="SUBSHELL: Command outside and inside subshell"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "echo before && (echo inside) && echo after"
+[3306-END]
+
+[3401]
+NAME="COMPLEX: Subshell with pipe and logical operators"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "(ls -l | grep d) && echo found_directories"
+[3401-END]
+
+[3402]
+NAME="COMPLEX: Redirections with logical operators"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN="rm -f /tmp/test_logical"
+TESTS=
+  echo "ls > /tmp/test_logical && cat /tmp/test_logical"
+[3402-END]
+
+[3403]
+NAME="COMPLEX: Subshell with redirection"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN="rm -f /tmp/subshell_output"
+TESTS=
+  echo "(ls -la) > /tmp/subshell_output && cat /tmp/subshell_output"
+[3403-END]
+
+[3404]
+NAME="COMPLEX: Mixed everything"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "(ls && echo in_subshell) || (echo should_not_appear && false) && echo final_success"
+[3404-END]
+
+[3501]
+NAME="LOGICAL_AND: Different directory operations"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "mkdir -p /tmp/test_and_dir && cd /tmp/test_and_dir && pwd && rm -rf /tmp/test_and_dir"
+[3501-END]
+
+[3504]
+NAME="LOGICAL_AND: Check current user"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "id && whoami && echo running_as_user"
+[3504-END]
+
+[3505]
+NAME="LOGICAL_AND: Check file existence"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin' ; touch /tmp/and_test_file"
+CLEAN="rm -f /tmp/and_test_file"
+TESTS=
+  echo "test -f /tmp/and_test_file && echo file_exists && rm /tmp/and_test_file && test ! -f /tmp/and_test_file && echo file_removed"
+[3505-END]
+
+[3506]
+NAME="LOGICAL_OR: Create directory or fallback"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin' ; rm -rf /tmp/or_test_dir"
+CLEAN="rm -rf /tmp/or_test_dir"
+TESTS=
+  echo "mkdir /tmp/or_test_dir || echo dir_creation_failed"
+[3506-END]
+
+[3507]
+NAME="LOGICAL_OR: Multiple fallbacks"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "cat /nonexistent || grep something /nonexistent2 || echo all_failed"
+[3507-END]
+
+[3510]
+NAME="LOGICAL_OR: Attempted directory removal"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin' ; mkdir -p /tmp/protected_dir && chmod 000 /tmp/protected_dir"
+CLEAN="chmod 755 /tmp/protected_dir && rm -rf /tmp/protected_dir"
+TESTS=
+  echo "rmdir /tmp/protected_dir || echo cannot_remove_protected_dir"
+[3510-END]
+
+[3512]
+NAME="MIXED_OPERATORS: Complex file operations"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN="rm -f /tmp/mixedop_file"
+TESTS=
+  echo "touch /tmp/mixedop_file && (ls -l /tmp/mixedop_file || echo 'Not reached') && rm /tmp/mixedop_file && echo cleaned_up"
+[3512-END]
+
+[3513]
+NAME="MIXED_OPERATORS: Directory operations"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN="rm -rf /tmp/mixed_dir"
+TESTS=
+  echo "mkdir -p /tmp/mixed_dir && cd /tmp/mixed_dir && pwd || echo failed && cd - > /dev/null && rmdir /tmp/mixed_dir && echo completed"
+[3513-END]
+
+[3514]
+NAME="MIXED_OPERATORS: Command substitution with operators"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "echo The date is: $(date +%Y-%m-%d) && echo success || echo failure"
+[3514-END]
+
+[3515]
+NAME="MIXED_OPERATORS: Check file types"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin' ; touch /tmp/test_file ; mkdir -p /tmp/test_dir"
+CLEAN="rm -f /tmp/test_file ; rmdir /tmp/test_dir"
+TESTS=
+  echo "test -f /tmp/test_file && echo is_file || echo not_file && test -d /tmp/test_dir && echo is_dir || echo not_dir"
+[3515-END]
+
+[3517]
+NAME="SUBSHELL: Multiple commands in subshell"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "(echo cmd1 && echo cmd2 && echo cmd3)"
+[3517-END]
+
+[3518]
+NAME="SUBSHELL: Directory state preservation"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "pwd && (cd /tmp && pwd) && pwd"
+[3518-END]
+
+[3519]
+NAME="SUBSHELL: Multiple nested subshells"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "(echo level1 && (echo level2 && (echo level3)))"
+[3519-END]
+
+[3521]
+NAME="COMPLEX: Pipe in subshell with external command"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "(ls -l | wc -l) && echo files_counted"
+[3521-END]
+
+[3522]
+NAME="COMPLEX: AND/OR with output redirection"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN="rm -f /tmp/complex_output"
+TESTS=
+  echo "ls /etc > /tmp/complex_output && cat /tmp/complex_output || echo failed"
+[3522-END]

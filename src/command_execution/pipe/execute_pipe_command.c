@@ -40,8 +40,9 @@ static int execute_child_command(command_info_t *command_info, int i,
     if (command_info->pids[i] == 0) {
         execve(full_path, node->data.command->argv, shell_var->env_array);
         handle_command_not_found(node->data.command->argv[0]);
+        exit(1);
     }
-    return -1;
+    return 1;
 }
 
 static void handle_child_process(int i, command_info_t *command_info,
@@ -109,11 +110,25 @@ static void cleanup_command_info(command_info_t *command_info)
     free(command_info);
 }
 
+static int wait_for_children(command_info_t *command_info, shell_t *shell_var)
+{
+    int status = 0;
+    int last_status = 0;
+
+    for (int i = 0; i < command_info->command_count; i++) {
+        waitpid(command_info->pids[i], &status, 0);
+        if ((i == command_info->command_count - 1 && last_status == 0)
+        || WEXITSTATUS(status) == 1)
+            last_status = WEXITSTATUS(status);
+    }
+    shell_var->exit_code = last_status;
+    return last_status;
+}
+
 int execute_pipe(ast_node_t *node, struct shell_s *shell_var)
 {
     command_info_t *command_info = malloc(sizeof(command_info_t));
-    int status = 0;
-    int last_status = 0;
+    int last_status;
 
     if (!command_info)
         return -1;
@@ -124,11 +139,7 @@ int execute_pipe(ast_node_t *node, struct shell_s *shell_var)
         return -1;
     }
     close_pipes(command_info->pipes, command_info->command_count - 1);
-    for (int i = 0; i < command_info->command_count; i++) {
-        waitpid(command_info->pids[i], &status, 0);
-        if (i == command_info->command_count - 1)
-            last_status = WEXITSTATUS(status);
-    }
+    last_status = wait_for_children(command_info, shell_var);
     cleanup_command_info(command_info);
     return last_status;
 }

@@ -10,7 +10,9 @@
 
 int execute_and(ast_node_t *ast, shell_t *shell_info)
 {
-    if (process_command(ast->data.binop.left, shell_info) == 0)
+    int exit_code = process_command(ast->data.binop.left, shell_info);
+
+    if (exit_code == 0)
         return process_command(ast->data.binop.right, shell_info);
-    return -1;
+    return exit_code;
 }

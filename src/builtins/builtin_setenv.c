@@ -7,6 +7,7 @@
 
 #include "shell.h"
 #include "env.h"
+#include "builtins.h"
 #include <unistd.h>
 #include <string.h>
 #include <stdlib.h>
@@ -37,13 +38,14 @@ static int is_valid_env_name(const char *name)
 static int handle_setenv_errors(shell_t *shell, char **args)
 {
     if (args[2] && args[3]) {
-        printf("setenv: Too many arguments.\n");
+        printf_flush("setenv: Too many arguments.\n");
         shell->exit_code = 1;
         return 84;
     }
     if (!is_valid_env_name(args[1])) {
-        printf("setenv: Variable name must contain alphanumeric characters."
-        "\n");
+        printf_flush(
+            "setenv: Variable name must contain alphanumeric characters.\n"
+        );
         shell->exit_code = 1;
         return 1;
     }
@@ -53,7 +55,7 @@ static int handle_setenv_errors(shell_t *shell, char **args)
 static int print_environment(shell_t *shell)
 {
     for (int i = 0; shell->env_array[i]; i++) {
-        printf("%s\n", shell->env_array[i]);
+        printf_flush("%s\n", shell->env_array[i]);
     }
     return 0;
 }
