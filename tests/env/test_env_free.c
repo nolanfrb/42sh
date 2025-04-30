@@ -11,7 +11,7 @@
 #include <string.h>
 #include "shell.h"
 #include "env.h"
-#include "src/env/env_free.c"
+#include "src/commands/builtins/env/env_free.c"
 
 Test(free_shell, should_not_crash_if_shell_is_null)
 {
