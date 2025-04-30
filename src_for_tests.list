@@ -50,3 +50,6 @@ src/line_editing/handlers.c
 src/line_editing/terminal_control.c
 src/line_editing/read_command_line.c
 src/command_execution/execute_subshell_command.c
+src/command_execution/pipe/setup_pipe.c
+src/command_execution/pipe/init_command.c
+src/command_execution/utils/path.c
