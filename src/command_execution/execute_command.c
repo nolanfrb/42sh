@@ -23,11 +23,7 @@ static void child_process(
     char *full_path, ast_node_t *node, struct shell_s *shell_var)
 {
     if (node->type == NODE_COMMAND) {
-        printf("ast_command : %s\n", node->data.command->argv[0]);
-        printf("execve: %s\n", full_path);
         execve(full_path, node->data.command->argv, shell_var->env_array);
-        printf("not found\n");
-        printf("%s: Command not found.\n", node->data.command->argv[0]);
         handle_command_not_found(node->data.command->argv[0]);
         shell_var->exit_code = 1;
     }
