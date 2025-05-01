@@ -37,9 +37,6 @@ src/main_loop/user_input_error_handling.c
 src/command_execution/get_command_path.c
 src/utils/strcat.c
 src/command_execution/get_redirect_handler.c
-src/globbings/get_file.c
-src/globbings/globbings.c
-src/globbings/get_directory.c
 src/builtins/builtin_env.c
 src/builtins/builtins.c
 src/builtins/builtin_setenv.c
@@ -55,3 +52,13 @@ src/command_execution/execute_subshell_command.c
 src/command_execution/pipe/setup_pipe.c
 src/command_execution/pipe/init_command.c
 src/command_execution/utils/path.c
+src/globbings/globbings_argument_utils.c
+src/globbings/globbings_array_utils.c
+src/globbings/globbings_dir.c
+src/globbings/globbings_glob_match.c
+src/globbings/globbings_handle_case.c
+src/globbings/globbings_mem_utils.c
+src/globbings/globbings_path.c
+src/globbings/globbings_process_compenent.c
+src/globbings/globbings_result_utils.c
+src/globbings/globbings.c
