@@ -11,6 +11,7 @@ src/lexer/check_special_token.c
 src/lexer/count_words.c
 src/lexer/extract_word.c
 src/lexer/handle_delimiter.c
+src/lexer/handle_inhibitors.c
 src/lexer/handle_special_token.c
 src/lexer/is_delimiter.c
 src/parser/utils/is_operator.c
