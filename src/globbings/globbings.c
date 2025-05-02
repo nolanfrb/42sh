@@ -61,9 +61,13 @@ static char **update_command_args(char **argv, int arg_idx, char **new_args,
     int old_argc = count_old_args(argv);
     update_args_data_t *data = malloc(sizeof(update_args_data_t));
 
-    data->new_argv = malloc(sizeof(char *) * (old_argc - 1 + new_count + 1));
-    if (!data->new_argv)
+    if (!data)
         return argv;
+    data->new_argv = malloc(sizeof(char *) * (old_argc - 1 + new_count + 1));
+    if (!data->new_argv) {
+        free(data);
+        return argv;
+    }
     data->new_idx = 0;
     copy_args(data, argv, 0, arg_idx);
     copy_args(data, new_args, 0, new_count);
