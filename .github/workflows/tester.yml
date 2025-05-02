@@ -28,6 +28,7 @@ jobs:
            ./tester.sh > test.txt || exit 1
            if grep -q "KO" test.txt; then
              echo "Tests failed!"
+             cat test.txt
              exit 1
            fi
            echo "All tests passed!"
