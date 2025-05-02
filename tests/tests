@@ -1023,3 +1023,179 @@ CLEAN="rm -f /tmp/complex_output"
 TESTS=
   echo "ls /etc > /tmp/complex_output && cat /tmp/complex_output || echo failed"
 [3522-END]
+
+[3601]
+NAME="GLOBBING: Simple asterisk (*) globbing"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "ls src/*"
+[3601-END]
+
+[3602]
+NAME="GLOBBING: Multiple asterisk wildcards"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "ls src*.*"
+[3602-END]
+
+[3603]
+NAME="GLOBBING: Question mark (?) globbing"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "ls src/?.c"
+[3603-END]
+
+[3604]
+NAME="GLOBBING: Character class []"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "ls src/[mp]*.c"
+[3604-END]
+
+[3605]
+NAME="GLOBBING: Range expression [a-z]"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "ls src/[a-m]*.c"
+[3605-END]
+
+[3607]
+NAME="GLOBBING: Combined patterns"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "ls src/*[0-9]*.c"
+[3607-END]
+
+[3608]
+NAME="GLOBBING: Globbing with directories"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "ls -d src/*/"
+[3608-END]
+
+[3609]
+NAME="GLOBBING: Globbing with relative paths"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "cd src && ls *.h"
+[3609-END]
+
+[3610]
+NAME="GLOBBING: Globbing with absolute paths"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "ls $(pwd)/src/*.c"
+[3610-END]
+
+[3611]
+NAME="GLOBBING: Globbing with output redirection"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "ls src/*.c > /tmp/redir_output.txt && cat /tmp/redir_output.txt"
+[3611-END]
+
+[3612]
+NAME="GLOBBING: Globbing with pipes"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "ls src/*.c | wc -l"
+[3612-END]
+
+[3613]
+NAME="GLOBBING: Globbing with logical operators"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "ls src/*.c && echo success"
+[3613-END]
+
+[3615]
+NAME="GLOBBING: Globbing with hidden files"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "ls -a src/.*"
+[3615-END]
+
+[3617]
+NAME="GLOBBING: Multiple glob patterns"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "ls src/*.c src/*.h"
+[3617-END]
+
+[3618]
+NAME="GLOBBING: Globbing in subshell"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "(ls src/*.c)"
+[3618-END]
+
+[3619]
+NAME="GLOBBING: Globbing with cd command"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "cd src/* && pwd"
+[3619-END]
+
+[3620]
+NAME="GLOBBING: Complex file name with special characters"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "ls 'src/*'"
+[3620-END]
+
+[3621]
+NAME="GLOBBING: Find all shell scripts"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "ls src/*.h"
+[3621-END]
+
+[3622]
+NAME="GLOBBING: Matching any single character"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "ls src/?.?"
+[3622-END]
+
+[3623]
+NAME="GLOBBING: Multiple question marks"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "ls src/??*.c"
+[3623-END]
+
+[3624]
+NAME="GLOBBING: Case-sensitive character class"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "ls src/[A-Z]*.c"
+[3624-END]
+
+[3625]
+NAME="GLOBBING: Test all globbing together"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "ls src/[a-z][a-z]*.c src/*.h"
+[3625-END]

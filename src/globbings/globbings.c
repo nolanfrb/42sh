@@ -5,151 +5,104 @@
 ** globbings
 */
 
-#include "ast.h"
-#include "globbings.h"
+#include <glob.h>
 #include <stdio.h>
-#include <fnmatch.h>
-#include <ftw.h>
+#include <stdlib.h>
 #include <string.h>
+#include "globbings.h"
+#include "ast.h"
 
-static int is_globbings_pattern(char *pattern)
+static char **handle_no_match(const char *pattern, int *count)
 {
-    if (pattern == NULL)
-        return 0;
-    if (strchr(pattern, '*') != NULL || strchr(pattern, '?') != NULL ||
-    strchr(pattern, '[') != NULL || strchr(pattern, '{') != NULL)
-        return 1;
-    return 0;
+    char **result = malloc(sizeof(char *));
+
+    if (result == NULL)
+        return NULL;
+    result[0] = strdup(pattern);
+    *count = 1;
+    return result;
 }
 
-static char **get_selected_files(char **files, char *pattern, int count_files)
+static char **allocate_result_array(glob_t *glob_result, int count)
 {
-    char **selected_files = NULL;
-    int count = 0;
+    char **result = malloc(sizeof(char *) * count);
 
-    for (int i = 0; i < count_files; i++) {
-        if (fnmatch(pattern, files[i], 0) == 0) {
-            count++;
-            selected_files = realloc(selected_files, sizeof(char *) *
-            (count + 1));
-            selected_files[count - 1] = strdup(files[i]);
+    if (result == NULL) {
+        globfree(glob_result);
+        return NULL;
+    }
+    for (int i = 0; i < count; i++)
+        result[i] = strdup(glob_result->gl_pathv[i]);
+    return result;
+}
+
+static char **select_file(const char *pattern, int *count)
+{
+    glob_t glob_result;
+    char **result = NULL;
+    int status = glob(pattern, GLOB_TILDE | GLOB_NOCHECK, NULL, &glob_result);
+
+    *count = 0;
+    if (status != 0) {
+        if (status == GLOB_NOMATCH)
+            result = handle_no_match(pattern, count);
+        globfree(&glob_result);
+        return result;
+    }
+    *count = glob_result.gl_pathc;
+    result = allocate_result_array(&glob_result, *count);
+    globfree(&glob_result);
+    return result;
+}
+
+static char **update_command_args(char **argv, int arg_idx, char **new_args,
+    int new_count)
+{
+    int old_argc = count_old_args(argv);
+    update_args_data_t *data = malloc(sizeof(update_args_data_t));
+
+    data->new_argv = malloc(sizeof(char *) * (old_argc - 1 + new_count + 1));
+    if (!data->new_argv)
+        return argv;
+    data->new_idx = 0;
+    copy_args(data, argv, 0, arg_idx);
+    copy_args(data, new_args, 0, new_count);
+    copy_args(data, argv, arg_idx + 1, old_argc);
+    data->new_argv[data->new_idx] = NULL;
+    free_old_args(argv);
+    return data->new_argv;
+}
+
+static char **process_glob_pattern(char **argv, int *index, ast_node_t *node)
+{
+    char **expanded_args;
+    int expanded_count;
+
+    expanded_args = select_file(argv[*index], &expanded_count);
+    if (expanded_args && expanded_count > 0) {
+        argv = update_command_args(argv, *index, expanded_args,
+            expanded_count);
+        node->data.command->argv = argv;
+        *index = 0;
+    }
+    return argv;
+}
+
+static void apply_globbing_to_command(ast_node_t *node)
+{
+    char **argv = node->data.command->argv;
+
+    for (int i = 1; argv[i] != NULL; i++) {
+        if (is_glob_pattern(argv[i])) {
+            argv = process_glob_pattern(argv, &i, node);
         }
     }
-    if (selected_files != NULL)
-        selected_files[count] = NULL;
-    return selected_files;
-}
-
-static char *get_pattern(char *src)
-{
-    char *pattern;
-    char *new_pattern;
-
-    if (src == NULL)
-        return NULL;
-    pattern = strdup(src);
-    if (strchr(pattern, '/')) {
-        while (*pattern != '*' && *pattern != '\0') {
-            pattern++;
-        }
-    }
-    new_pattern = strdup(pattern);
-    if (new_pattern == NULL)
-        return NULL;
-    return new_pattern;
-}
-
-static int get_arg_count(ast_node_t *node)
-{
-    int count = 0;
-
-    while (node->data.command->argv[count] != NULL)
-        count++;
-    return count;
-}
-
-static char **create_new_argv(ast_node_t *node, int arg_idx, char **matches,
-    int match_count)
-{
-    int arg_count = get_arg_count(node);
-    char **new_argv = NULL;
-    int i = 0;
-
-    new_argv = malloc(sizeof(char *) * (arg_count - 1 + match_count + 1));
-    if (!new_argv)
-        return NULL;
-    for (i = 0; i < arg_idx; i++)
-        new_argv[i] = node->data.command->argv[i];
-    for (int j = 0; j < match_count; j++) {
-        new_argv[i] = strdup(matches[j]);
-        i++;
-    }
-    for (int j = arg_idx + 1; j < arg_count; j++) {
-        new_argv[i] = node->data.command->argv[j];
-        i++;
-    }
-    new_argv[i] = NULL;
-    return new_argv;
-}
-
-static void replace_arg_with_matches(ast_node_t *node, int arg_idx,
-    char **matches, int match_count)
-{
-    char **new_argv = NULL;
-
-    new_argv = create_new_argv(node, arg_idx, matches, match_count);
-    if (!new_argv)
-        return;
-    free(node->data.command->argv[arg_idx]);
-    free(node->data.command->argv);
-    node->data.command->argv = new_argv;
-}
-
-static void handle_selected_files(ast_node_t *node, int i,
-    char **selected_file, int selected_count)
-{
-    if (selected_count > 0) {
-        replace_arg_with_matches(node, i, selected_file, selected_count);
-    } else {
-        free(node->data.command->argv[i]);
-        node->data.command->argv[i] = strdup(node->data.command->argv[i]);
-    }
-}
-
-static void put_globbings(ast_node_t *node, int i)
-{
-    int count = 0;
-    char **files = NULL;
-    char **selected_file = NULL;
-    char *pattern = get_pattern(node->data.command->argv[i]);
-    int selected_count = 0;
-
-    if (node->data.command->argv[i][0] == '*')
-        node->data.command->argv[i][0] = '.';
-    if (node->data.command->argv[i][strlen(node->data.command->argv[i]) - 1]
-    == '*' || node->data.command->argv[i][0] == '.')
-        files = get_directory(node->data.command->argv[i], &count);
-    else
-        files = get_files(node->data.command->argv[i], &count);
-    selected_file = get_selected_files(files, pattern, count);
-    if (selected_file != NULL) {
-        while (selected_file[selected_count] != NULL)
-            selected_count++;
-    }
-    handle_selected_files(node, i, selected_file, selected_count);
 }
 
 void globbings(ast_node_t *node)
 {
-    if (!node || !node->data.command || !node->data.command->argv) {
+    if (!node || node->type != NODE_COMMAND || !node->data.command ||
+        !node->data.command->argv)
         return;
-    }
-    if (node->type != NODE_COMMAND) {
-        return;
-    }
-    for (int i = 1; node->data.command->argv[i] != NULL; i++) {
-        if (is_globbings_pattern(node->data.command->argv[i]) == 0)
-            continue;
-        put_globbings(node, i);
-    }
+    apply_globbing_to_command(node);
 }

@@ -14,6 +14,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <signal.h>
+#include "globbings.h"
 
 static int execute_child_command(command_info_t *command_info, int i,
     shell_t *shell_var)
@@ -32,6 +33,7 @@ static int execute_child_command(command_info_t *command_info, int i,
             free(full_path);
             exit(return_value);
         }
+        globbings(node);
         execve(full_path, node->data.command->argv, shell_var->env_array);
         handle_command_not_found(node->data.command->argv[0]);
         exit(1);
