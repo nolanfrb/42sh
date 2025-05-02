@@ -3,6 +3,8 @@ name: tester
 on:
   pull_request:
     branches: ["main"]
+  push:
+    branches: ["main"]
 
 env:
   EXECUTABLES: "42sh"
