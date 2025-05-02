@@ -47,6 +47,7 @@ src/builtins/builtin_echo.c
 src/builtins/echo_utils.c
 src/builtins/builtin_cd.c
 src/builtins/builtin_exit.c
+src/lexer/handle_inhibitors.c
 src/utils/printf_flush.c
 src/builtins/builtin_history.c
 src/parser/error_handling/pipe_error_handling.c

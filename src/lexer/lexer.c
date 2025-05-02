@@ -11,6 +11,7 @@
 #include <stdio.h>
 #include "shell.h"
 #include "lexer.h"
+#include "inhibitors.h"
 
 static int process_special_token(char *cmd_line, int *i,
     word_info_t *word_info)
@@ -29,6 +30,8 @@ static int process_cmd_line(char *cmd_line, word_info_t *word_info,
     int special_token_result;
 
     for (int i = 0; cmd_line[i] != '\0'; i++) {
+        if (is_inhibited_delimiter(cmd_line, i))
+            continue;
         special_token_result = process_special_token(cmd_line, &i, word_info);
         if (special_token_result == 84)
             return 84;
