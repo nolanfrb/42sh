@@ -8,6 +8,22 @@
 #include "ast.h"
 #include "command.h"
 #include <stdio.h>
+#include <unistd.h>
+#include <stdbool.h>
+
+static void flush_stdin(ast_node_t *ast)
+{
+    int c;
+
+    if (ast->type == NODE_REDIRECT && ast->data.redir.type == REDIR_HEREDOC) {
+        c = getchar();
+        while (c != EOF && c != '|') {
+            c = getchar();
+        }
+        if (c == '|')
+            ungetc(c, stdin);
+    }
+}
 
 int process_command(ast_node_t *ast, shell_t *shell_info)
 {
@@ -24,5 +40,6 @@ int process_command(ast_node_t *ast, shell_t *shell_info)
     if (ast == NULL)
         return 0;
     shell_info->exit_code = execute_functions[ast->type](ast, shell_info);
+    flush_stdin(ast);
     return shell_info->exit_code;
 }

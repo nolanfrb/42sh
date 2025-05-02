@@ -11,6 +11,7 @@ src/lexer/check_special_token.c
 src/lexer/count_words.c
 src/lexer/extract_word.c
 src/lexer/handle_delimiter.c
+src/lexer/handle_inhibitors.c
 src/lexer/handle_special_token.c
 src/lexer/is_delimiter.c
 src/parser/utils/is_operator.c
@@ -49,6 +50,8 @@ src/line_editing/escape_mappings.c
 src/line_editing/handlers.c
 src/line_editing/terminal_control.c
 src/line_editing/read_command_line.c
+src/globbings/globbings.c
+src/globbings/globbings_utils.c
 src/command_execution/execute_subshell_command.c
 src/command_execution/pipe/setup_pipe.c
 src/command_execution/pipe/init_command.c

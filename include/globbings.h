@@ -9,22 +9,16 @@
     #define INCLUDED_GLOBBINGS_H
     #include "ast.h"
 
-typedef struct recursive_data {
-    int *count;
-    int deepth;
-    int max_depth;
-    char **files;
-} recursive_data_t;
-
-char **get_files(const char *path, int *count);
-char **get_directory(char *path, int *count);
-void get_all_files_recursive(const char *base_path, int deepth,
-    recursive_data_t *data);
+typedef struct {
+    int new_idx;
+    char **new_argv;
+} update_args_data_t;
 
 void globbings(ast_node_t *node);
-
-void free_selected_files(char **selected_file);
-void free_files(char **files, int count);
-void free_var(char **selected_file, char **files, char *pattern, int count);
-
+// Utils functions
+void free_selected_files(char **selected_files);
+int is_glob_pattern(const char *str);
+int count_old_args(char **argv);
+void copy_args(update_args_data_t *data, char **src, int start, int end);
+void free_old_args(char **argv);
 #endif
