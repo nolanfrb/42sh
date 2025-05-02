@@ -1024,6 +1024,15 @@ TESTS=
   echo "ls /etc > /tmp/complex_output && cat /tmp/complex_output || echo failed"
 [3522-END]
 
+[3523]
+NAME="Simple inhibitor"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "echo 'Hello, World!'"
+  echo "echo 'tests;ls'"
+[3523-END]
+
 [4001]
 NAME="HEREDOC: Basic heredoc redirection"
 SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
@@ -1055,4 +1064,3 @@ TESTS=
   echo 'cat << EOF
 EOF'
 [4004-END]
-
