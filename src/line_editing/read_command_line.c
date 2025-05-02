@@ -76,10 +76,14 @@ static char *read_non_interactive_input(bool *had_error)
 {
     char *line = NULL;
     size_t size = 0;
-    ssize_t len = getline(&line, &size, stdin);
+    ssize_t len;
 
+    len = getline(&line, &size, stdin);
     if (len == -1) {
-        *had_error = true;
+        if (feof(stdin))
+            *had_error = false;
+        else
+            *had_error = true;
         free(line);
         return NULL;
     }
@@ -95,9 +99,9 @@ char *read_command_line(shell_t *shell_info, bool *had_error)
     int index = 0;
     bool reading = true;
 
-    if (!shell_info)
+    if (!shell_info || !had_error)
         return NULL;
-    if (!isatty(fileno(stdin)))
+    if (!isatty(STDIN_FILENO))
         return read_non_interactive_input(had_error);
     if (!buffer)
         return NULL;
