@@ -1005,7 +1005,7 @@ NAME="SUBSHELL: subshell with pipe"
 SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
 CLEAN=""
 TESTS=
-  echo "(echo toto; echo titi) | wc -l)"
+  echo "(echo toto; echo titi) | wc -l"
 [3520-END]
 
 [3521]
