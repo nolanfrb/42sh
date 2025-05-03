@@ -9,6 +9,7 @@
 #include "ast.h"
 #include "env.h"
 #include "lexer.h"
+#include "alias.h"
 #include <unistd.h>
 #include <stdio.h>
 #include <string.h>
@@ -59,6 +60,7 @@ int main(int argc, char **argv, char **env)
 
     (void)argc;
     (void)argv;
+    shell->alias = load_alias();
     main_loop(shell);
     exit_code = shell->exit_code;
     free_shell(shell);
