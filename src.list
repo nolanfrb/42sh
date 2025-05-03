@@ -60,3 +60,6 @@ src/alias/load_alias.c
 src/utils/get_home_directory.c
 src/alias/init_alias.c
 src/alias/free_alias.c
+src/alias/count_aliases.c
+src/alias/extract_alias.c
+src/parser/parse_alias_file.c
