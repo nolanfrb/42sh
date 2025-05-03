@@ -10,12 +10,11 @@
     #define DEFAULT_PATH "/bin:/usr/bin:/usr/local/bin:/sbin:/usr/sbin"
     #include <stdbool.h>
     #include "builtins.h"
+    #include "alias.h"
 
 typedef struct shell_s shell_t;
 typedef struct ast_node_s ast_node_t;
 typedef struct history_s history_t;
-
-
 
 typedef struct command_s {
     char **av;
@@ -35,6 +34,7 @@ struct shell_s {
     char **local_vars;
     int local_size;
     int exit_code;
+    alias_t *alias;
     history_t *history;
 };
 
