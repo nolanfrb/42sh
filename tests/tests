@@ -550,6 +550,22 @@ TESTS=
   echo "ls -l | sqfd | wc -l"
 [2114-END]
 
+[2115]
+NAME="PIPE: builtin command with pipe"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "history | cat -e"
+[2115-END]
+
+[2116]
+NAME="PIPE: ulimit = 10"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin' ; ulimit -n 10"
+CLEAN=""
+TESTS=
+  echo "cat test_main.c | cat | cat | cat | cat | cat | cat | cat | cat | cat"
+[2116-END]
+
 [2201]
 NAME="SEMICOLON: Simple semicolons"
 SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
@@ -663,6 +679,14 @@ CLEAN=""
 TESTS=
   echo "cat < /dev/null"
 [2504-END]
+
+[2505]
+NAME="REDIRECTION_INPUT: Input with a pipe"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "cat < test_main.c | cat > toto"
+[2505-END]
 
 [2507]
 NAME="REDIRECTION_OUTPUT: To special file"
@@ -976,6 +1000,14 @@ TESTS=
   echo "(echo level1 && (echo level2 && (echo level3)))"
 [3519-END]
 
+[3520]
+NAME="SUBSHELL: subshell with pipe"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "(echo toto; echo titi) | wc -l"
+[3520-END]
+
 [3521]
 NAME="COMPLEX: Pipe in subshell with external command"
 SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
@@ -1000,3 +1032,35 @@ TESTS=
   echo "echo 'Hello, World!'"
   echo "echo 'tests;ls'"
 [3523-END]
+
+[4001]
+NAME="HEREDOC: Basic heredoc redirection"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo '/bin/cat << EOF
+Hello World
+This is a heredoc test
+Multiple lines
+EOF'
+[4001-END]
+
+[4003]
+NAME="HEREDOC: With unique delimiter"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'cat << CUSTOM_DELIM
+Line one
+Line two
+CUSTOM_DELIM'
+[4003-END]
+
+[4004]
+NAME="HEREDOC: Empty content"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'cat << EOF
+EOF'
+[4004-END]
