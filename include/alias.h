@@ -26,5 +26,7 @@ char *get_home_directory(void);
 void free_alias(alias_t *alias);
 alias_t *init_alias(int count);
 int count_aliases(int fd);
+alias_info_t *extract_alias(char *line, alias_info_t *alias_info);
+alias_info_t **parse_alias_file(int fd, alias_t *alias);
 
 #endif /* !ALIAS_H_ */
