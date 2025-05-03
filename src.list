@@ -51,6 +51,10 @@ src/lexer/handle_inhibitors.c
 src/utils/printf_flush.c
 src/builtins/builtin_history.c
 src/parser/error_handling/pipe_error_handling.c
+src/line_editing/escape_mappings.c
+src/line_editing/handlers.c
+src/line_editing/terminal_control.c
+src/line_editing/read_command_line.c
 src/command_execution/execute_subshell_command.c
 src/command_execution/pipe/setup_pipe.c
 src/command_execution/pipe/init_command.c
