@@ -25,8 +25,7 @@ static int finalize_current_word(char *cmd_line, int i, word_info_t *word_info)
 int handle_delimiter(char *cmd_line, int *i, word_info_t *word_info,
     char *delimiters)
 {
-    if (is_delimiter(cmd_line[*i], delimiters) &&
-        !is_inhibited_delimiter(cmd_line, *i)) {
+    if (is_delimiter(cmd_line[*i], delimiters)) {
         return finalize_current_word(cmd_line, *i, word_info);
     } else if (word_info->start == -1) {
         word_info->start = *i;

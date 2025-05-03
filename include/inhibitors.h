@@ -7,10 +7,24 @@
 
 #ifndef INHIBITORS_H_
     #define INHIBITORS_H_
-    #define QUOTE '"'
+    #define DOUBLE_QUOTE '"'
+    #define SIMPLE_QUOTE '\''
     #define BACKSLASH '\\'
-    #define ANTI_QUOTE '\''
+    #define BACKTICK '`'
+typedef enum {
+    INHIBITOR_NONE,
+    INHIBITOR_SIMPLE,
+    INHIBITOR_DOUBLE,
+    INHIBITOR_BACKSLASH
+} inhibitor_type_t;
 
-bool is_inhibited_delimiter(const char *line, int pos);
+typedef struct inhibitor_s {
+    char character;
+    int *start;
+    int end;
+} inhibitor_t;
+
+int process_inhibited_zone(char *cmd_line, inhibitor_t *inhibitor, word_info_t *word_info);
+bool is_inhibitor(char c, inhibitor_t *inhibitor);
 
 #endif /* !INHIBITORS_H_ */

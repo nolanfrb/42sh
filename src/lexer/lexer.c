@@ -27,11 +27,16 @@ static int process_special_token(char *cmd_line, int *i,
 static int process_cmd_line(char *cmd_line, word_info_t *word_info,
     char *delimiters)
 {
+    inhibitor_t inhibitor = {0};
     int special_token_result;
 
     for (int i = 0; cmd_line[i] != '\0'; i++) {
-        if (is_inhibited_delimiter(cmd_line, i))
+        inhibitor.start = &i;
+        if (is_inhibitor(cmd_line[i], &inhibitor)) {
+            if (process_inhibited_zone(cmd_line, &inhibitor, word_info) != 0)
+                return 84;
             continue;
+        }
         special_token_result = process_special_token(cmd_line, &i, word_info);
         if (special_token_result == 84)
             return 84;
