@@ -12,6 +12,7 @@
     #include "builtins.h"
     #include "alias.h"
 
+typedef struct alias_s alias_t;
 typedef struct shell_s shell_t;
 typedef struct ast_node_s ast_node_t;
 typedef struct history_s history_t;
