@@ -9,6 +9,14 @@
 #include <string.h>
 #include <stdio.h>
 
+static void free_memory(char *s1, char *s2)
+{
+    if (s1)
+        free(s1);
+    if (s2)
+        free(s2);
+}
+
 /**
  * @brief Concatenate two strings
  * @param dest First string
@@ -46,13 +54,11 @@ char *safe_strcat(char *s1, char *s2)
         return s1;
     result = malloc(len1 + len2 + 1);
     if (!result) {
-        free(s1);
-        free(s2);
+        free_memory(s1, s2);
         return NULL;
     }
     strcpy(result, s1);
     strcat(result, s2);
-    free(s1);
-    free(s2);
+    free_memory(s1, s2);
     return result;
 }

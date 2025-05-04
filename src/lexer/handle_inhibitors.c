@@ -42,18 +42,6 @@ int find_inhibitor_end(char *cmd_line, int start, char inhibitor)
     return -1;
 }
 
-char *extract_inhibited_content(char *cmd_line, int start, int end)
-{
-    int length = end - start - 1;
-    char *content = malloc(sizeof(char) * (length + 1));
-
-    if (!content)
-        return NULL;
-    strncpy(content, &cmd_line[start + 1], length);
-    content[length] = '\0';
-    return content;
-}
-
 static int handle_inhibitor_error(char inhibitor, char *content)
 {
     fprintf(stderr, "Unmatched \"%c\"\n", inhibitor);

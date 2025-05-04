@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "lexer.h"
+#include "inhibitors.h"
 
 char *extract_word(char *input, int start, int len)
 {
@@ -18,4 +19,16 @@ char *extract_word(char *input, int start, int len)
     strncpy(word, input + start, len);
     word[len] = '\0';
     return word;
+}
+
+char *extract_inhibited_content(char *cmd_line, int start, int end)
+{
+    int length = end - start - 1;
+    char *content = malloc(sizeof(char) * (length + 1));
+
+    if (!content)
+        return NULL;
+    strncpy(content, &cmd_line[start + 1], length);
+    content[length] = '\0';
+    return content;
 }
