@@ -21,7 +21,7 @@ static void display_prompt(void)
     write(STDOUT_FILENO, "$>", 2);
 }
 
-static void handle_user_input(shell_t *shell_info, char *user_input)
+void handle_user_input(shell_t *shell_info, char *user_input)
 {
     ast_node_t *ast;
 
