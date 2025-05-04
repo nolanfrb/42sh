@@ -42,6 +42,7 @@ void free_ast(ast_node_t *node)
     free(node);
 }
 
+
 Test(parse_redirect, simple_output_redirection) {
     const char *args[] = {"ls", ">", "out.txt"};
     char **tokens = mock_tokens(args, 3);
