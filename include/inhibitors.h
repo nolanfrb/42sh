@@ -24,7 +24,14 @@ typedef struct inhibitor_s {
     int end;
 } inhibitor_t;
 
-int process_inhibited_zone(char *cmd_line, inhibitor_t *inhibitor, word_info_t *word_info);
-bool is_inhibitor(char c, inhibitor_t *inhibitor);
+int process_inhibited_zone(
+    char *cmd_line, inhibitor_t *inhibitor, word_info_t *word_info
+);
+bool is_inhibitor(char c);
+char *process_inhibitor_sequence(char *cmd_line, int *pos);
+int process_inhibitor(
+    char *cmd_line, int *pos, char **combined
+);
+char *extract_inhibited_content(char *cmd_line, int start, int end);
 
 #endif /* !INHIBITORS_H_ */

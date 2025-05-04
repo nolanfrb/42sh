@@ -18,6 +18,8 @@ struct word_info_s {
     int word_idx;
 };
 
+int process_cmd_line(char *cmd_line, word_info_t *word_info,
+    char *delimiters);
 char **lexer(char *cmd_line);
 int handle_delimiter(char *cmd_line, int *i, word_info_t *word_info,
     char *delimiters);
