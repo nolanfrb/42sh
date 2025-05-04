@@ -11,29 +11,42 @@
 #include "lexer.h"
 #include "shell.h"
 #include "inhibitors.h"
+#include "utils.h"
 
-static int find_inhibitor_end(char *cmd_line, int start, char inhibitor)
+static bool is_escaped(const char *cmd_line, int pos)
+{
+    int backslash_count = 0;
+
+    pos--;
+    while (pos >= 0 && cmd_line[pos] == BACKSLASH) {
+        backslash_count++;
+        pos--;
+    }
+    return (backslash_count % 2) == 1;
+}
+
+int find_inhibitor_end(char *cmd_line, int start, char inhibitor)
 {
     int i = start + 1;
-    
+
     while (cmd_line[i] != '\0') {
-        if (inhibitor == '\\') {
+        if (inhibitor == BACKSLASH)
             return i + 1;
-        } else if (cmd_line[i] == inhibitor) {
+        if (cmd_line[i] == inhibitor && !is_escaped(cmd_line, i))
             return i;
-        }
-        if (inhibitor == DOUBLE_QUOTE && cmd_line[i] == BACKSLASH && cmd_line[i + 1] != '\0')
+        if (inhibitor == DOUBLE_QUOTE && cmd_line[i] == BACKSLASH &&
+            cmd_line[i + 1] != '\0')
             i++;
         i++;
     }
     return -1;
 }
 
-static char *extract_inhibited_content(char *cmd_line, int start, int end)
+char *extract_inhibited_content(char *cmd_line, int start, int end)
 {
     int length = end - start - 1;
     char *content = malloc(sizeof(char) * (length + 1));
-    
+
     if (!content)
         return NULL;
     strncpy(content, &cmd_line[start + 1], length);
@@ -41,49 +54,76 @@ static char *extract_inhibited_content(char *cmd_line, int start, int end)
     return content;
 }
 
-int process_inhibited_zone(char *cmd_line, inhibitor_t *inhibitor, word_info_t *word_info)
+static int handle_inhibitor_error(char inhibitor, char *content)
 {
-    int end = 0;
+    fprintf(stderr, "Unmatched \"%c\"\n", inhibitor);
+    free(content);
+    return -1;
+}
+
+int process_inhibitor(char *cmd_line, int *pos, char **combined)
+{
+    char current_inhibitor = cmd_line[*pos];
+    int end = find_inhibitor_end(cmd_line, *pos, current_inhibitor);
     char *content = NULL;
 
-    inhibitor->character = cmd_line[*inhibitor->start];
-    end = find_inhibitor_end(cmd_line, *inhibitor->start, inhibitor->character);
-    if (end == -1) {
-        fprintf(stderr, "Unmatched \"%c\"\n", inhibitor->character);
-        return 84;
+    if (end == -1)
+        return handle_inhibitor_error(current_inhibitor, *combined);
+    content = extract_inhibited_content(cmd_line, *pos, end);
+    if (!content) {
+        free(*combined);
+        return -1;
     }
-    if (inhibitor->character == BACKSLASH) {
-        *inhibitor->start = end;
-        return 0;
-    }
-    if (is_inhibitor(cmd_line[end + 1], inhibitor)) {
-        *inhibitor->start = end + 1;
-        process_inhibited_zone(cmd_line, inhibitor, word_info);
-        return 0;
-    }
-    content = extract_inhibited_content(cmd_line, *inhibitor->start, end);
-    if (!content)
-        return 84;
-    word_info->words[word_info->word_idx++] = content;
-    *inhibitor->start = end;
+    *combined = safe_strcat(*combined, content);
+    if (!*combined)
+        return -1;
+    *pos = end;
     return 0;
 }
 
-bool is_inhibitor(char c, inhibitor_t *inhibitor)
+char *process_inhibitor_sequence(char *cmd_line, int *pos)
 {
+    char *combined = NULL;
+    int result;
 
+    while (cmd_line[*pos] != '\0') {
+        result = process_inhibitor(cmd_line, pos, &combined);
+        if (result == -1)
+            return NULL;
+        if (is_inhibitor(cmd_line[*pos + 1]))
+            (*pos)++;
+        else
+            break;
+    }
+    return combined;
+}
+
+int process_inhibited_zone(
+    char *cmd_line, inhibitor_t *inhibitor, word_info_t *word_info
+)
+{
+    char *content;
+    int pos = *inhibitor->start;
+
+    content = process_inhibitor_sequence(cmd_line, &pos);
+    if (!content)
+        return 84;
+    word_info->words[word_info->word_idx] = content;
+    word_info->word_idx++;
+    *inhibitor->start = pos;
+    return 0;
+}
+
+bool is_inhibitor(char c)
+{
     switch (c) {
         case BACKSLASH:
-            inhibitor->character = BACKSLASH;
             return true;
         case DOUBLE_QUOTE:
-            inhibitor->character = DOUBLE_QUOTE;
             return true;
         case SIMPLE_QUOTE:
-            inhibitor->character = SIMPLE_QUOTE;
             return true;
         case BACKTICK:
-            inhibitor->character = BACKTICK;
             return true;
     }
     return false;
