@@ -63,3 +63,5 @@ src/alias/free_alias.c
 src/alias/count_aliases.c
 src/alias/extract_alias.c
 src/parser/parse_alias_file.c
+src/alias/search_alias.c
+src/utils/build_str.c
