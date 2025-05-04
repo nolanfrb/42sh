@@ -84,6 +84,7 @@ ast_node_t *parse_subshell(char **tokens, int *pos);
 
 int process_redirect_node(ast_node_t **node, char **tokens, int *pos);
 redirect_type_t get_redirection_type(const char *token);
+void handle_user_input(shell_t *shell_info, char *user_input);
 
 // utils
 bool is_special_op(char *token);
@@ -91,12 +92,13 @@ bool is_redirect_op(char *token);
 ast_node_t *create_binop_node(
     node_type_t type, ast_node_t *left, ast_node_t *right
 );
+int build_str(command_node_t *command, char *alias_value, shell_t *shell);
 
 // error handling
 int and_or_error_handling(ast_node_t *node);
 int ast_error_handling(ast_node_t *node);
 int pipe_error_handling(ast_node_t *node);
-char *user_input_error_handling(char **user_input);
+int user_input_error_handling(char **tokens);
 
 // free
 void free_ast(ast_node_t *node);
