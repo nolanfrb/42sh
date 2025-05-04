@@ -13,41 +13,6 @@
 #include "lexer.h"
 #include "inhibitors.h"
 
-static int process_special_token(char *cmd_line, int *i,
-    word_info_t *word_info)
-{
-    if (check_special_token(cmd_line, *i) != -1) {
-        if (handle_special_token(cmd_line, i, word_info) != 0)
-            return 84;
-        return 1;
-    }
-    return 0;
-}
-
-static int process_cmd_line(char *cmd_line, word_info_t *word_info,
-    char *delimiters)
-{
-    inhibitor_t inhibitor = {0};
-    int special_token_result;
-
-    for (int i = 0; cmd_line[i] != '\0'; i++) {
-        inhibitor.start = &i;
-        if (is_inhibitor(cmd_line[i], &inhibitor)) {
-            if (process_inhibited_zone(cmd_line, &inhibitor, word_info) != 0)
-                return 84;
-            continue;
-        }
-        special_token_result = process_special_token(cmd_line, &i, word_info);
-        if (special_token_result == 84)
-            return 84;
-        if (special_token_result == 1)
-            continue;
-        if (handle_delimiter(cmd_line, &i, word_info, delimiters) != 0)
-            return 84;
-    }
-    return 0;
-}
-
 static word_info_t *init_word_info(char *cmd_line, char *delimiters)
 {
     word_info_t *word_info = malloc(sizeof(word_info_t));
