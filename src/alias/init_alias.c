@@ -17,10 +17,8 @@ alias_t *init_alias(int count)
         return NULL;
     alias->nb_alias = count;
     alias->info = malloc(sizeof(alias_info_t *) * (count + 1));
-    if (!alias->info) {
-        perror("malloc");
+    if (!alias->info)
         return NULL;
-    }
     for (int i = 0; i <= count; i++) {
         alias->info[i] = malloc(sizeof(alias_info_t));
         if (!alias->info[i]) {
@@ -30,5 +28,6 @@ alias_t *init_alias(int count)
         alias->info[i]->name = NULL;
         alias->info[i]->value = NULL;
     }
+    alias->state = DEFAULT;
     return alias;
 }
