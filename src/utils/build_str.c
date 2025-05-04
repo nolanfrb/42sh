@@ -44,6 +44,6 @@ int build_str(command_node_t *command, char *alias_value, shell_t *shell)
         return -1;
     shell->alias->state = ALIAS;
     handle_user_input(shell, str);
-    free(str);
+    shell->alias->state = DEFAULT;
     return shell->exit_code;
 }
