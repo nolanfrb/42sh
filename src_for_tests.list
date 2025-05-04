@@ -12,6 +12,7 @@ src/lexer/count_words.c
 src/lexer/extract_word.c
 src/lexer/handle_delimiter.c
 src/lexer/handle_special_token.c
+src/lexer/process_line.c
 src/lexer/is_delimiter.c
 src/parser/utils/is_operator.c
 src/parser/parse_redirect.c
@@ -41,7 +42,6 @@ src/builtins/builtin_env.c
 src/builtins/builtins.c
 src/builtins/builtin_unsetenv.c
 src/builtins/builtin_exit.c
-src/lexer/handle_inhibitors.c
 src/utils/printf_flush.c
 src/builtins/builtin_history.c
 src/parser/error_handling/pipe_error_handling.c
