@@ -65,3 +65,7 @@ src/alias/extract_alias.c
 src/parser/parse_alias_file.c
 src/alias/search_alias.c
 src/utils/build_str.c
+src/builtins/builtin_alias.c
+src/alias/parse_alias_args.c
+src/alias/print_alias.c
+src/builtins/builtin_unalias.c
