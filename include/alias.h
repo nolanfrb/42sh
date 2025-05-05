@@ -38,5 +38,10 @@ int count_aliases(int fd);
 alias_info_t *extract_alias(char *line, alias_info_t *alias_info);
 alias_info_t **parse_alias_file(int fd, alias_t *alias);
 int search_alias(alias_t *alias, command_node_t *command, shell_t *shell);
+int parse_alias_args(alias_t *alias, char **args);
+void print_alias(alias_t *alias, char *name, bool specific);
+int add_alias(alias_t *alias, char *alias_name, char *alias_value);
+int count_args(char **args);
+int builtin_unalias(shell_t *shell, char **args);
 
 #endif /* !ALIAS_H_ */
