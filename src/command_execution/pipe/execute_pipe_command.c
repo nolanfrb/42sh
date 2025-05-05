@@ -69,7 +69,7 @@ static void handle_child(command_info_t *info, int idx, shell_t *shell)
 {
     ast_node_t *node = info->commands[idx];
 
-    if (node->type == NODE_COMMAND && shell->alias && 
+    if (node->type == NODE_COMMAND && shell->alias &&
         shell->alias->state == DEFAULT) {
         search_alias(shell->alias, node->data.command, shell);
     }
