@@ -84,6 +84,7 @@ shell_t *init_shell(char **env)
     shell->env_array = copy_env_array(env, shell->env_size);
     shell->history = init_history();
     shell->alias = malloc(sizeof(alias_t));
+    shell->ast = NULL;
     if (!init_shell_env(shell, env) || !shell->alias) {
         free(shell);
         return NULL;
