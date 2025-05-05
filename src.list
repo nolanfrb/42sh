@@ -62,3 +62,4 @@ src/lexer/add_token.c
 src/lexer/utils/display_lexer.c
 src/lexer/handler/delimiters/handle_special_chars.c
 src/lexer/handler/delimiters/handle_parenthesis.c
+src/lexer/handler/inhibitors/handle_inhibitor.c
