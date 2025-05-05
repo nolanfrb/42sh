@@ -73,3 +73,4 @@ src/alias/parse_alias_args.c
 src/alias/print_alias.c
 src/builtins/builtin_unalias.c
 src/utils/handle_user_input.c
+src/parser/free_ast.c
