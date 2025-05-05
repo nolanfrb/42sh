@@ -8,26 +8,46 @@
 #ifndef LEXER_H_
     #define LEXER_H_
     #include <stdbool.h>
+    #include "chain.h"
 
 extern const char *SPECIAL_TOKENS[];
-typedef struct word_info_s word_info_t;
 
-struct word_info_s {
+typedef enum {
+    TOKEN_WORD,
+    TOKEN_PIPE,
+    TOKEN_AND,
+    TOKEN_OR,
+    TOKEN_SEMICOLON,
+    TOKEN_REDIRECT_IN,
+    TOKEN_REDIRECT_OUT,
+    TOKEN_APPEND_OUT,
+    TOKEN_HEREDOC,
+    TOKEN_END
+} token_type_t;
+
+typedef struct {
+    token_type_t type;
+    char *value;
+} token_t;
+
+typedef struct {
+    chain_t *tokens;
+    token_t *current;
+    char *input;
     int start;
-    char **words;
-    int word_idx;
-};
+    int pos;
+    int token_count;
+} lexer_t;
 
-int process_cmd_line(char *cmd_line, word_info_t *word_info,
-    char *delimiters);
-char **lexer(char *cmd_line);
-int handle_delimiter(char *cmd_line, int *i, word_info_t *word_info,
-    char *delimiters);
-bool is_delimiter(char character, char *delimiters);
-char *extract_word(char *input, int start, int len);
-int handle_special_token(char *cmd_line, int *i,
-    word_info_t *word_info);
-int check_special_token(const char *cmd_line, int pos);
-int count_words(char *str, char *delimiters);
+lexer_t *lexer_init(const char *input);
+void free_lexer(lexer_t *lexer);
+lexer_t *lexer_build(const char *input);
+int lexer_tokenize(lexer_t *lexer);
+char **lexer_to_strings(lexer_t *lexer);
+
+int lexer_add_token(lexer_t *lexer, token_type_t type, const char *value);
+int lexer_token_count(lexer_t *lexer);
+
+void lexer_print_tokens(lexer_t *lexer);
 
 #endif /* !LEXER_H_ */

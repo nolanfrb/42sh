@@ -1,13 +1,13 @@
 /*
 ** EPITECH PROJECT, 2025
-** 42sh [WSL: Ubuntu-24.04]
+** 42sh
 ** File description:
-** check_special_token
+** is_delimiter
 */
 
+#include "lexer.h"
 #include <stdlib.h>
 #include <string.h>
-#include "lexer.h"
 
 const char *SPECIAL_TOKENS[] = {
     "(", ")", "&&", "||", ">>", "<<", ">", "<", "|", ";", "&", NULL

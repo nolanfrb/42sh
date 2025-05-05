@@ -7,15 +7,6 @@ src/command_execution/execute_and_command.c
 src/command_execution/execute_sequence_command.c
 src/command_execution/execute_redirect_command.c
 src/command_execution/utils.c
-src/lexer/lexer.c
-src/lexer/check_special_token.c
-src/lexer/count_words.c
-src/lexer/extract_word.c
-src/lexer/handle_delimiter.c
-src/lexer/handle_special_token.c
-src/lexer/handle_inhibitors.c
-src/lexer/process_line.c
-src/lexer/is_delimiter.c
 src/parser/utils/is_operator.c
 src/parser/parse_redirect.c
 src/parser/parse_subshell.c
@@ -60,3 +51,8 @@ src/command_execution/execute_subshell_command.c
 src/command_execution/pipe/setup_pipe.c
 src/command_execution/pipe/init_command.c
 src/command_execution/utils/path.c
+src/linked_list/chain.c
+src/lexer/handler/delimiters/is_delimiter.c
+src/lexer/initialization/lexer_init.c
+src/lexer/lexer_build.c
+src/lexer/lexer_to_string.c

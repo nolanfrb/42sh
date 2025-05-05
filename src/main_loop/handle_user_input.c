@@ -73,10 +73,14 @@ ast_node_t *built_ast_struct(char *user_input, shell_t *shell_info)
     char **tokens;
     ast_node_t *ast;
     int pos = 0;
+    lexer_t *lexer_struct = NULL;
 
     if (!user_input || user_input[0] == '\0')
         return NULL;
-    tokens = lexer(user_input);
+    lexer_struct = lexer_build(user_input);
+    if (!lexer_struct)
+        return NULL;
+    tokens = lexer_to_strings(lexer_struct);
     if (handle_user_input_errors(tokens, shell_info))
         return NULL;
     ast = parse_sequence(tokens, &pos);
