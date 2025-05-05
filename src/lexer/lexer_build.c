@@ -9,6 +9,7 @@
 #include <string.h>
 #include "lexer.h"
 #include <stdio.h>
+#include "inhibitors.h"
 
 int handle_word(lexer_t *lexer)
 {
@@ -46,7 +47,16 @@ static int handle_special_char(lexer_t *lexer)
 static int process_char(lexer_t *lexer)
 {
     char c = lexer->input[lexer->pos];
+    int inhibitor_result = handle_inhibitor(lexer);
 
+    if (inhibitor_result != 0)
+        return inhibitor_result < 0 ? -1 : 0;
+    if (c == BACKSLASH && is_special_char(&c)) {
+        lexer->pos++;
+        return 0;
+    }
+    if (handle_inhibitor(lexer) == -1)
+        return -1;
     if (is_special_char(&c)) {
         if (handle_special_char(lexer) != 0)
             return -1;

@@ -7,16 +7,18 @@
 
 #ifndef INHIBITORS_H_
     #define INHIBITORS_H_
+    #include <stdbool.h>
     #define DOUBLE_QUOTE '"'
     #define SIMPLE_QUOTE '\''
     #define BACKSLASH '\\'
     #define BACKTICK '`'
+
 typedef enum {
-    INHIBITOR_NONE,
-    INHIBITOR_SIMPLE,
-    INHIBITOR_DOUBLE,
-    INHIBITOR_BACKSLASH
-} inhibitor_type_t;
+    STATE_NORMAL = 0,
+    STATE_SINGLE_QUOTE,
+    STATE_DOUBLE_QUOTE,
+    STATE_ESCAPE
+} quote_state_t;
 
 typedef struct inhibitor_s {
     char character;
@@ -24,9 +26,6 @@ typedef struct inhibitor_s {
     int end;
 } inhibitor_t;
 
-int process_inhibited_zone(
-    char *cmd_line, inhibitor_t *inhibitor, word_info_t *word_info
-);
 bool is_inhibitor(char c);
 char *process_inhibitor_sequence(char *cmd_line, int *pos);
 int process_inhibitor(

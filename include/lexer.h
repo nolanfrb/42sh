@@ -39,9 +39,6 @@ typedef struct {
     int start;
     int pos;
     int token_count;
-    bool in_single_quote;
-    bool in_double_quote;
-    bool in_backslash;
 } lexer_t;
 
 typedef struct {
