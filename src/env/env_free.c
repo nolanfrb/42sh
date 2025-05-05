@@ -42,5 +42,6 @@ void free_shell(shell_t *shell)
         return;
     free_env_array(shell);
     free_local_vars(shell);
+    free_ast(shell->ast);
     free(shell);
 }
