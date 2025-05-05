@@ -35,7 +35,7 @@ static void parse_unalias_args(alias_t *alias, char **args)
 {
     int count = count_args(args);
 
-    if (count == 0) {
+    if (count == 1) {
         fprintf(stderr, "unalias: Too few arguments.\n");
         return;
     }
