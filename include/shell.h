@@ -55,4 +55,6 @@ ast_node_t *built_ast_struct(char *user_input, shell_t *shell_info);
 int process_command(ast_node_t *ast, shell_t *shell_info);
 char *read_command(shell_t *shell, bool *had_error);
 void printf_flush(const char *format, ...);
+void handle_user_input(shell_t *shell_info, char *user_input);
+
 #endif /* !SHELL_H_ */
