@@ -34,31 +34,43 @@ static int open_alias_file(void)
     }
     if (st.st_size == 0) {
         close(fd);
-        return -1;
+        return -2;
     }
     return fd;
+}
+
+static alias_t *init_alias_from_file(int fd)
+{
+    int alias_count = count_aliases(fd);
+    alias_t *alias = init_alias(alias_count);
+    int close_status = 0;
+
+    if (alias == NULL)
+        return NULL;
+    alias->info = parse_alias_file(fd, alias);
+    close_status = close(fd);
+    if (alias->info == NULL || close_status == -1) {
+        free_alias(alias);
+        return NULL;
+    }
+    return alias;
 }
 
 alias_t *load_alias(void)
 {
     alias_t *alias = NULL;
-    int fd = open_alias_file();
+    int fd = 0;
 
+    fd = open_alias_file();
     if (fd == -1)
         return NULL;
-    alias = init_alias(count_aliases(fd));
-    if (!alias) {
+    if (fd == -2) {
         close(fd);
-        free_alias(alias);
-        return NULL;
+        alias = init_alias(0);
+        if (alias == NULL)
+            return NULL;
+        return alias;
     }
-    alias->info = parse_alias_file(fd, alias);
-    if (close(fd) == -1)
-        return NULL;
-    if (!alias->info) {
-        free_alias(alias);
-        fprintf(stderr, "Error loading alias file\n");
-        return NULL;
-    }
+    alias = init_alias_from_file(fd);
     return alias;
 }
