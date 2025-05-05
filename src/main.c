@@ -10,6 +10,7 @@
 #include "env.h"
 #include "lexer.h"
 #include "alias.h"
+#include "line_editing.h"
 #include <unistd.h>
 #include <stdio.h>
 #include <string.h>
@@ -61,8 +62,11 @@ int main(int argc, char **argv, char **env)
     (void)argc;
     (void)argv;
     shell->alias = load_alias();
+    save_terminal_settings();
+    set_non_canonical_mode();
     main_loop(shell);
     exit_code = shell->exit_code;
     free_shell(shell);
+    restore_terminal_settings();
     return exit_code;
 }
