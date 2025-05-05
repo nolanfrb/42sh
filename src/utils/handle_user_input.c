@@ -10,15 +10,13 @@
 
 void handle_user_input(shell_t *shell_info, char *user_input)
 {
-    ast_node_t *ast;
-
     if (user_input && user_input[0] != '\n') {
-        ast = built_ast_struct(user_input, shell_info);
-        if (ast == NULL) {
+        shell_info->ast = built_ast_struct(user_input, shell_info);
+        if (shell_info->ast == NULL) {
             free(user_input);
             return;
         }
-        process_command(ast, shell_info);
+        process_command(shell_info->ast, shell_info);
         free(user_input);
     }
 }
