@@ -61,7 +61,7 @@ static char *remove_quotes(char *str)
 void print_env_variable(shell_t *shell, char *var)
 {
     char *value = NULL;
-    
+
     if (strcmp(var, "$?") == 0) {
         printf_flush("%d", shell->exit_code);
         return;
