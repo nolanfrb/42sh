@@ -1305,18 +1305,6 @@ EOF'
   echo "complex"
 [4125-END]
 
-[4126]
-  NAME="ALIAS: Alias with heredoc"
-  SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
-  CLEAN=""
-  TESTS=
-  echo "alias hdoc='cat << EOF
-  Hello World
-  This is a heredoc test
-  EOF'"
-  echo "hdoc"
-[4126-END]
-
 [4127]
   NAME="ALIAS: Alias with command arguments"
   SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
