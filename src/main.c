@@ -47,6 +47,8 @@ int main(int argc, char **argv, char **env)
     (void)argc;
     (void)argv;
     shell->alias = load_alias();
+    if (!shell->alias)
+        return 1;
     save_terminal_settings();
     set_non_canonical_mode();
     main_loop(shell);
