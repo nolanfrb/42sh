@@ -42,6 +42,7 @@ int build_str(command_node_t *command, char *alias_value, shell_t *shell)
     str = append_args(str, command->argv);
     if (!str)
         return -1;
+    free_ast(shell->ast);
     shell->alias->state = ALIAS;
     handle_user_input(shell, str);
     shell->alias->state = DEFAULT;
