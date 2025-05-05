@@ -30,5 +30,6 @@ void history_add(history_t *hist, const char *line);
 char *history_resolve(history_t *hist, const char *input);
 int builtin_history(shell_t *shell, char **args);
 int handle_history_error(const char *input);
+int builtin_alias(shell_t *shell, char **args);
 
 #endif
