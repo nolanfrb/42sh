@@ -785,7 +785,7 @@ TESTS=
 [3103-END]
 
 [3104]
-NAME="LOGICAL_OR: With builtin commands" 
+NAME="LOGICAL_OR: With builtin commands"
 SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
 CLEAN=""
 TESTS=
@@ -1064,3 +1064,40 @@ TESTS=
   echo 'cat << EOF
 EOF'
 [4004-END]
+
+[4005]
+NAME="INHIBITOR: Basic inhibitor"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'echo "Hello, World!"'
+  echo 'echo "tests;ls"'
+[4005-END]
+
+[4006]
+NAME="INHIBITOR: Inhibitor with special characters"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'echo "Hello, World!"'
+  echo 'echo "tests;ls"'
+  echo 'echo "test&ls"'
+  echo 'echo "test|ls"'
+[4006-END]
+
+[4007]
+NAME="INHIBITOR: Multiple inhibitors"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo ''l's '-l''
+[4007-END]
+
+[4008]
+NAME="INHIBITOR: Multiple Inhibitor with quotes"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'echo 'h'e'l'l'o''
+  echo 'echo "h"e"l"l"o"'
+[4008-END]
