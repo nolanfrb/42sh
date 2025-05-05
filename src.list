@@ -60,3 +60,5 @@ src/lexer/lexer_build.c
 src/lexer/lexer_to_string.c
 src/lexer/add_token.c
 src/lexer/utils/display_lexer.c
+src/lexer/handler/delimiters/handle_special_chars.c
+src/lexer/handler/delimiters/handle_parenthesis.c
