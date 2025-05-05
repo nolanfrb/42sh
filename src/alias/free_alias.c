@@ -12,7 +12,7 @@ void free_alias(alias_t *alias)
 {
     if (!alias)
         return;
-    for (int i = 0; alias->info[i] != NULL; i++) {
+    for (int i = 0; i < alias->nb_alias; i++) {
         if (alias->info[i]->name)
             free(alias->info[i]->name);
         if (alias->info[i]->value)
