@@ -9,10 +9,11 @@
 #include <string.h>
 #include "lexer.h"
 
-static void free_tokens(char **array, int token_count, int index)
+static void free_tokens(char **array, int start_index, int end_index)
 {
-    while (++index < token_count)
-        free(array[index]);
+    for (int i = start_index; i < end_index; i++) {
+        free(array[i]);
+    }
     free(array);
 }
 
