@@ -35,5 +35,6 @@ char **lexer_to_strings(lexer_t *lexer)
         current = current->prev;
         i--;
     }
+    tokens[lexer->token_count] = NULL;
     return tokens;
 }

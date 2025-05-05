@@ -1091,6 +1091,7 @@ SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
 CLEAN=""
 TESTS=
   echo ''l's '-l''
+  echo 'echo test\;ls'
 [4007-END]
 
 [4008]

@@ -52,7 +52,11 @@ src/command_execution/pipe/setup_pipe.c
 src/command_execution/pipe/init_command.c
 src/command_execution/utils/path.c
 src/linked_list/chain.c
-src/lexer/handler/delimiters/is_delimiter.c
+src/lexer/handler/delimiters/is_special_char.c
+src/lexer/handler/inhibitors/is_inhibitor.c
+src/lexer/utils/is_whitespace.c
 src/lexer/initialization/lexer_init.c
 src/lexer/lexer_build.c
 src/lexer/lexer_to_string.c
+src/lexer/add_token.c
+src/lexer/utils/display_lexer.c

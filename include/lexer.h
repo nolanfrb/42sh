@@ -37,6 +37,9 @@ typedef struct {
     int start;
     int pos;
     int token_count;
+    bool in_single_quote;
+    bool in_double_quote;
+    bool in_backslash;
 } lexer_t;
 
 lexer_t *lexer_init(const char *input);
@@ -49,5 +52,9 @@ int lexer_add_token(lexer_t *lexer, token_type_t type, const char *value);
 int lexer_token_count(lexer_t *lexer);
 
 void lexer_print_tokens(lexer_t *lexer);
+
+// Utility functions
+bool is_special_char(char *str);
+bool is_whitespace(char c);
 
 #endif /* !LEXER_H_ */

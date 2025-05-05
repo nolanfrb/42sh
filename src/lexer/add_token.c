@@ -7,6 +7,8 @@
 
 #include <stdlib.h>
 #include "lexer.h"
+#include "chain.h"
+#include <string.h>
 
 static token_t *create_token(token_type_t type, const char *value)
 {
