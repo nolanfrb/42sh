@@ -38,6 +38,7 @@ struct shell_s {
     alias_t *alias;
     int history_index;
     history_t *history;
+    ast_node_t *ast;
 };
 
 typedef struct {
