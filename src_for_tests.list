@@ -20,7 +20,6 @@ src/parser/parse_command.c
 src/parser/parse_sequence.c
 src/parser/parse_pipes.c
 src/parser/parse_and_or.c
-src/main_loop/handle_user_input.c
 src/main_loop/process_command.c
 src/env/env_get.c
 src/env/env_init.c
@@ -66,4 +65,6 @@ src/builtins/builtin_alias.c
 src/alias/parse_alias_args.c
 src/alias/print_alias.c
 src/builtins/builtin_unalias.c
+src/utils/handle_user_input.c
 src/parser/free_ast.c
+src/main_loop/built_ast_struct.c
