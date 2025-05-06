@@ -32,7 +32,7 @@ void set_non_canonical_mode(void)
     tcsetattr(STDIN_FILENO, TCSANOW, &t);
 }
 
-bool handle_escape_sequence(shell_t *shell, char *buffer, int *index)
+bool handle_escape_sequence(shell_t *shell, char **buffer, int *index)
 {
     char seq[2];
 

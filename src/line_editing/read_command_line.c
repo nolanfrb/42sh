@@ -18,13 +18,14 @@
 
 static void handle_backspace(char *buffer, int *index)
 {
+    (void)buffer;
     if (*index > 0) {
         (*index)--;
         write(STDOUT_FILENO, "\b \b", 3);
     }
 }
 
-static char *resize_buffer(char *buffer, int *capacity)
+char *resize_buffer(char *buffer, int *capacity)
 {
     char *new_buffer;
     int new_capacity = *capacity * 2;
@@ -37,23 +38,24 @@ static char *resize_buffer(char *buffer, int *capacity)
 }
 
 static bool handle_input_character(
-    shell_t *shell_info, char c, char *buffer, int *index)
+    shell_t *shell_info, char **buffer, int *index, int *capacity)
 {
-    if (c == 27) {
+    (void)capacity;
+    if ((*buffer)[*index] == 27) {
         handle_escape_sequence(shell_info, buffer, index);
         return true;
     }
-    if (c == 127) {
-        handle_backspace(buffer, index);
+    if ((*buffer)[*index] == 127) {
+        handle_backspace(*buffer, index);
         return true;
     }
-    if (c == '\n') {
+    if ((*buffer)[*index] == '\n') {
         write(STDOUT_FILENO, "\n", 1);
         return false;
     }
-    buffer[*index] = c;
+    (*buffer)[*index] = (*buffer)[*index];
     (*index)++;
-    write(STDOUT_FILENO, &c, 1);
+    write(STDOUT_FILENO, &(*buffer)[*index - 1], 1);
     return true;
 }
 
@@ -68,8 +70,10 @@ bool process_character(
         *buffer = resize_buffer(*buffer, capacity);
         if (!*buffer)
             return false;
+        shell_info->buffer_capacity = *capacity;
     }
-    return handle_input_character(shell_info, c, *buffer, index);
+    (*buffer)[*index] = c;
+    return handle_input_character(shell_info, buffer, index, capacity);
 }
 
 static char *read_non_interactive_input(bool *had_error)
@@ -105,10 +109,12 @@ char *read_command_line(shell_t *shell_info, bool *had_error)
         return read_non_interactive_input(had_error);
     if (!buffer)
         return NULL;
+    shell_info->buffer_capacity = capacity;
     while (reading)
         reading = process_character(shell_info, &buffer, &index, &capacity);
     buffer[index] = '\0';
-    if (index == 0)
+    if (index == 0) {
         *had_error = true;
+    }
     return buffer;
 }
