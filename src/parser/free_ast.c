@@ -30,7 +30,7 @@ static void free_ast_children(ast_node_t *node)
 
 void free_ast(ast_node_t *node)
 {
-    if (node == NULL)
+    if (!node)
         return;
     if (node->type == NODE_COMMAND)
         free_ast_command(node);
