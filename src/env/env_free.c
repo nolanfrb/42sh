@@ -17,7 +17,8 @@ static void free_env_array(shell_t *shell)
     if (!shell->env_array)
         return;
     while (i < shell->env_size) {
-        free(shell->env_array[i]);
+        if (shell->env_array[i])
+            free(shell->env_array[i]);
         i++;
     }
     free(shell->env_array);
@@ -30,7 +31,8 @@ static void free_local_vars(shell_t *shell)
     if (!shell->local_vars)
         return;
     while (i < shell->local_size) {
-        free(shell->local_vars[i]);
+        if (shell->local_vars[i])
+            free(shell->local_vars[i]);
         i++;
     }
     free(shell->local_vars);
