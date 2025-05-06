@@ -30,6 +30,7 @@ $(BINARY): $(OBJ)
 
 tests_run: fclean create_cover
 	@echo "🔁 Running tests..."
+	@rm -f *.gcda *.gcno *.gcov
 	@gcc -o $(T_BINARY) $(T_SRC) $(SRC_FOR_TESTS) \
 		$(CFLAGS) $(CRITERION) -iquote .
 	@./$(T_BINARY)
