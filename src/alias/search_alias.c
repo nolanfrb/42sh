@@ -16,5 +16,5 @@ int search_alias(alias_t *alias, command_node_t *command, shell_t *shell)
             return build_str(command, alias->info[i]->value, shell);
         }
     }
-    return 0;
+    return -1;
 }
