@@ -10,40 +10,40 @@
 
 
 
-static void free_env_array(shell_t *shell)
+static void free_env_array(char **env_array, int env_size)
 {
     int i = 0;
 
-    if (!shell->env_array)
+    if (!env_array)
         return;
-    while (i < shell->env_size) {
-        if (shell->env_array[i])
-            free(shell->env_array[i]);
+    while (i < env_size) {
+        if (env_array[i])
+            free(env_array[i]);
         i++;
     }
-    free(shell->env_array);
+    free(env_array);
 }
 
-static void free_local_vars(shell_t *shell)
+static void free_local_vars(char **local_vars, int local_size)
 {
     int i = 0;
 
-    if (!shell->local_vars)
+    if (!local_vars)
         return;
-    while (i < shell->local_size) {
-        if (shell->local_vars[i])
-            free(shell->local_vars[i]);
+    while (i < local_size) {
+        if (local_vars[i])
+            free(local_vars[i]);
         i++;
     }
-    free(shell->local_vars);
+    free(local_vars);
 }
 
 void free_shell(shell_t *shell)
 {
     if (!shell)
         return;
-    free_env_array(shell);
-    free_local_vars(shell);
+    free_env_array(shell->env_array, shell->env_size);
+    free_local_vars(shell->local_vars, shell->local_size);
     free_ast(shell->ast);
     free(shell);
 }
