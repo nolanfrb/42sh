@@ -11,6 +11,8 @@ on:
 env:
   MIRROR_URL: "git@github.com:EpitechPGEPromo2029/B-PSU-200-NAN-2-1-42sh-nolan.fribault.git"
   EXECUTABLES: "42sh"
+  GCOV_PREFIX: build_${{ github.run_id }}
+  GCOV_PREFIX_STRIP: 1
 
 jobs:
   is_mirror_repo:
