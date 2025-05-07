@@ -22,7 +22,7 @@ all: $(BINARY)
 
 $(BINARY): $(OBJ)
 	@echo "🛠️  [BUILD] Compilation du binaire..."
-	@gcc $(SRC) -o $(BINARY) $(CFLAGS) -g
+	@gcc $(OBJ) -o $(BINARY) $(CFLAGS) -g
 	@echo "✅ Compilation réussie ! 🎯"
 
 %.o: %.c

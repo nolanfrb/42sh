@@ -1,6 +1,6 @@
 /*
 ** EPITECH PROJECT, 2025
-** 42sh [WSL: Ubuntu-24.04]
+** 42sh
 ** File description:
 ** shell
 */
@@ -35,6 +35,8 @@ struct shell_s {
     char **local_vars;
     int local_size;
     int exit_code;
+    int history_index;
+    int buffer_capacity;
     history_t *history;
 };
 
