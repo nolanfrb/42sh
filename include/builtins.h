@@ -34,5 +34,7 @@ int builtin_set(shell_t *shell, char **args);
 void set_local_value(shell_t *shell, const char *var, const char *value);
 void unset_local_value(shell_t *shell, const char *var);
 int builtin_unset_local(shell_t *shell, char **args);
+char *get_local_value(shell_t *shell, const char *var);
+int builtin_get(shell_t *shell, char **args);
 
 #endif
