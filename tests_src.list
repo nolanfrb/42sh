@@ -31,3 +31,5 @@ tests/builtins/test_builtin_echo.c
 tests/builtins/test_builtin_env.c
 tests/builtins/test_builtin_exit.c
 tests/builtins/test_builtins.c
+tests/builtins/test_bultin_get.c
+tests/builtins/test_builtin_set.c

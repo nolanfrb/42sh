@@ -227,6 +227,14 @@ TESTS=
   echo 'setenv test'
 [1034-END]
 
+[1037]
+NAME="Test setenv with special characters"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'setenv TEST_VAR value\ with\ spaces'
+[1037-END]
+
 [1035]
 NAME="unsetenv no args"
 SETUP="/usr/bin/env > .lstenv ; while read varenv ; do unset $varenv ; done < <(/bin/cat .lstenv | /usr/bin/cut -f1 -d=) ; export PATH=/bin:/usr/bin ; export _=ls ; export LS_COLORS=RID ; export MYBG=4 ; export LVL=4 ; export NOTE=2"
@@ -566,6 +574,14 @@ TESTS=
   echo "cat test_main.c | cat | cat | cat | cat | cat | cat | cat | cat | cat"
 [2116-END]
 
+[2117]
+NAME="PIPE: With environment modification"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "setenv TESTVAR value | grep TESTVAR"
+[2117-END]
+
 [2201]
 NAME="SEMICOLON: Simple semicolons"
 SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
@@ -736,6 +752,15 @@ TESTS=
   echo "cat < /tmp/input_file > /tmp/output_file && cat /tmp/output_file"
 [2520-END]
 
+[2522]
+NAME="REDIRECT: Redirect errors"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN="rm -f /tmp/error_output"
+TESTS=
+  echo "ls /nonexistent 2> /tmp/error_output"
+  echo "cat /tmp/error_output"
+[2522-END]
+
 [3001]
 NAME="LOGICAL_AND: Simple logical AND"
 SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
@@ -816,6 +841,22 @@ TESTS=
   echo "ls && echo first_success && nonexistentcommand || echo recovered"
 [3203-END]
 
+[3204]
+NAME="MIXED_OPERATORS: Operator precedence"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "false && echo not_shown || echo shown && echo also_shown"
+[3204-END]
+
+[3205]
+NAME="MIXED_OPERATORS: Multiple conditions"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "false || false || false || echo 'final fallback'"
+[3205-END]
+
 [3301]
 NAME="SUBSHELL: Simple subshell"
 SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
@@ -863,6 +904,46 @@ CLEAN=""
 TESTS=
   echo "echo before && (echo inside) && echo after"
 [3306-END]
+
+[3307]
+NAME="SUBSHELL: Empty subshell"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "()"
+[3307-END]
+
+[3308]
+NAME="SUBSHELL: Subshell with errors"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "(nonexistentcommand) || echo 'subshell failed'"
+[3308-END]
+
+[3309]
+NAME="SUBSHELL: With environment changes"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "(setenv TESTVAR inside_subshell) && env | grep TESTVAR"
+[3309-END]
+
+[3310]
+NAME="SUBSHELL: With redirection inside"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN="rm -f /tmp/inside_subshell"
+TESTS=
+  echo "(ls > /tmp/inside_subshell) && cat /tmp/inside_subshell"
+[3310-END]
+
+[3311]
+NAME="SUBSHELL: Command substitution"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "echo Result: $(echo substituted)"
+[3311-END]
 
 [3401]
 NAME="COMPLEX: Subshell with pipe and logical operators"
@@ -1033,6 +1114,32 @@ TESTS=
   echo "echo 'tests;ls'"
 [3523-END]
 
+[3524]
+NAME="Complex inhibitors with nested quotes"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "echo 'outer \"inner\" quotes'"
+  echo "echo \"outer 'inner' quotes\""
+[3524-END]
+
+[3525]
+NAME="Inhibitors with special characters"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "echo '$PATH'"
+  echo "echo \"The current path is: $PATH\""
+[3525-END]
+
+[3600]
+NAME="Input redirection from non-existent file"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "ls < Make"
+[3600-END]
+
 [4001]
 NAME="HEREDOC: Basic heredoc redirection"
 SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
@@ -1044,6 +1151,17 @@ This is a heredoc test
 Multiple lines
 EOF'
 [4001-END]
+
+[4002]
+NAME="HEREDOC: With tab indentation"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'cat << EOF
+    This line is indented with a tab
+  This line is indented with spaces
+EOF'
+[4002-END]
 
 [4003]
 NAME="HEREDOC: With unique delimiter"
@@ -1064,6 +1182,81 @@ TESTS=
   echo 'cat << EOF
 EOF'
 [4004-END]
+
+[4007]
+NAME="HEREDOC: With quotes in content"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'cat << EOF
+Line with "double quotes"
+Line with '\''single quotes'\''
+EOF'
+[4007-END]
+
+[4101]
+NAME="simple globbings with *"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'ls *.c'
+[4101-END]
+
+[4102]
+NAME="Globbing: With pipe"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'ls *.c | wc -l'
+[4102-END]
+
+[4103]
+NAME="Globbing: Hidden files with .*"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'ls .*'
+[4103-END]
+
+[4104]
+NAME="Globbing: Combined * and ? patterns"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'ls *?'
+[4104-END]
+
+[4105]
+NAME="Globbing: With redirection"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN="rm -f /tmp/glob_output"
+TESTS=
+  echo 'ls *.c > /tmp/glob_output && cat /tmp/glob_output'
+[4105-END]
+
+[4107]
+NAME="Globbing: With character ranges"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin' ; touch /tmp/file{1..5}.txt"
+CLEAN="rm -f /tmp/file*.txt"
+TESTS=
+  echo 'ls /tmp/file[1-3].txt'
+[4107-END]
+
+[4109]
+NAME="Globbing: Multiple types"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'ls *.[ch] | sort'
+[4109-END]
+
+[4110]
+NAME="Globbing: With subshell"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo '(ls *.c) | wc -l'
+[4110-END]
 
 [4005]
 NAME="INHIBITOR: Basic inhibitor"

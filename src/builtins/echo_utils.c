@@ -60,8 +60,13 @@ static char *remove_quotes(char *str)
 
 void print_env_variable(shell_t *shell, char *var)
 {
-    char *value = get_env_value(shell, var + 1);
+    char *value = NULL;
 
+    if (strcmp(var, "$?") == 0) {
+        printf_flush("%d", shell->exit_code);
+        return;
+    }
+    value = get_env_value(shell, var + 1);
     if (!value) {
         printf_flush("%s: Undefined variable.\n", var + 1);
         shell->exit_code = 1;

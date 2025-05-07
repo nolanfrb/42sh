@@ -7,6 +7,8 @@
 
 #include "ast.h"
 #include <stdio.h>
+#include <unistd.h>
+#include <stdlib.h>
 #include <string.h>
 
 const char *REDIRECTION_TOKENS[] = {
@@ -50,21 +52,33 @@ ast_node_t *create_redir_node(
     return node;
 }
 
+int check_redirect(char **toks, int *pos, redirect_type_t *redir, char **name)
+{
+    *redir = get_redirection_type(toks[*pos]);
+    if (*redir == REDIR_NONE)
+        return -1;
+    (*pos)++;
+    if (!toks[*pos]) {
+        fprintf(stderr, "Missing name for redirect.\n");
+        return -1;
+    }
+    *name = toks[*pos];
+    if (access(*name, F_OK) == -1 && *redir == REDIR_IN) {
+        fprintf(stderr, "%s: No such file or directory.\n", *name);
+        return -1;
+    }
+    (*pos)++;
+    return 0;
+}
+
 int process_redirect_node(ast_node_t **node, char **tokens, int *pos)
 {
     char *filename = NULL;
     ast_node_t *redir = NULL;
-    redirect_type_t redir_type = get_redirection_type(tokens[*pos]);
+    redirect_type_t redir_type;
 
-    if (redir_type == REDIR_NONE)
+    if (check_redirect(tokens, pos, &redir_type, &filename) == -1)
         return -1;
-    (*pos)++;
-    if (!tokens[*pos]) {
-        fprintf(stderr, "Missing name for redirect.\n");
-        return -1;
-    }
-    filename = tokens[*pos];
-    (*pos)++;
     redir = create_redir_node(*node, redir_type, filename);
     if (!redir) {
         fprintf(stderr, "error: failed to create redirection node\n");

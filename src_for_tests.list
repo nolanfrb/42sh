@@ -53,3 +53,5 @@ src/command_execution/execute_subshell_command.c
 src/command_execution/pipe/setup_pipe.c
 src/command_execution/pipe/init_command.c
 src/command_execution/utils/path.c
+src/builtins/builtin_unset_local.c
+src/builtins/builtin_get.c
