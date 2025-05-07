@@ -60,3 +60,4 @@ src/command_execution/pipe/setup_pipe.c
 src/command_execution/pipe/init_command.c
 src/command_execution/utils/path.c
 src/builtins/builtin_set.c
+src/builtins/builtin_unset_local.c
