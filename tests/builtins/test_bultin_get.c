@@ -1,5 +1,3 @@
-
-
 /*
 ** EPITECH PROJECT, 2025
 ** 42sh
