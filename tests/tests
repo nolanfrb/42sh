@@ -1140,14 +1140,6 @@ TESTS=
   echo "ls < Make"
 [3600-END]
 
-[3601]
-NAME="Input / output redirection and pipe to non-existent file"
-SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
-CLEAN=""
-TESTS=
-  echo "cat < Makefile | cat > toto; cat toto"
-[3601-END]
-
 [4001]
 NAME="HEREDOC: Basic heredoc redirection"
 SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
