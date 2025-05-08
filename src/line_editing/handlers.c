@@ -74,7 +74,8 @@ void handle_history_up(shell_t *shell, char **buffer, int *index)
     command = shell->history->entries[shell->history_index].command;
     if (!command)
         return;
-    write_prompt();
+    write(STDOUT_FILENO, "\r\033[K", 4);
+    display_prompt(shell);
     clear_buffer(*buffer, shell->buffer_capacity);
     len = strlen(command);
     if (!reallocate_buffer(buffer, &shell->buffer_capacity, len))
@@ -92,7 +93,8 @@ void handle_history_down(shell_t *shell, char **buffer, int *index)
     last_command = shell->history->entries[shell->history->count - 1].command;
     if (!last_command)
         return;
-    write_prompt();
+    write(STDOUT_FILENO, "\r\033[K", 4);
+    display_prompt(shell);
     clear_buffer(*buffer, shell->buffer_capacity);
     len = strlen(last_command);
     if (!reallocate_buffer(buffer, &shell->buffer_capacity, len))

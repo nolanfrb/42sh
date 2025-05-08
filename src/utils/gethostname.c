@@ -22,14 +22,14 @@ char *my_gethostname(void)
     char *hostname = NULL;
 
     if (fd == -1)
-        return strdup("");
+        return strdup("42sh");
     if (bytes_read <= 0)
-        return strdup("");
+        return strdup("42sh");
     close(fd);
     buffer[bytes_read] = '\0';
     hostname = malloc(bytes_read);
     if (!hostname)
-        return strdup("");
+        return strdup("42sh");
     for (ssize_t i = 0; i < bytes_read; i++)
         hostname[i] = buffer[i];
     hostname[bytes_read - 1] = '\0';
