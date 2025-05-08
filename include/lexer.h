@@ -30,6 +30,12 @@ typedef enum {
     TOKEN_END
 } token_type_t;
 
+typedef enum {
+    LEXER_NORMAL,
+    LEXER_INHIBITOR,
+    LEXER_VARIABLE,
+} lexer_state_t;
+
 typedef struct {
     token_type_t type;
     char *value;
@@ -42,8 +48,10 @@ typedef struct {
     int start;
     int pos;
     int token_count;
+    lexer_state_t state;
     quote_state_t inhibitor_state;
     shell_t *shell;
+    char *concat_buffer;
 } lexer_t;
 
 typedef struct {

@@ -43,6 +43,33 @@ static char *get_current_word_part(lexer_t *lexer)
     return word_part;
 }
 
+static int check_continue_concat(lexer_t *lexer, int end, char *result)
+{
+    if (lexer->input[end + 1] == '$') {
+        lexer->pos = end + 1;
+        lexer->state = LEXER_VARIABLE;
+        lexer->concat_buffer = strdup(result);
+        return 1;
+    }
+    return 0;
+}
+
+static int finalize_variable_token(lexer_t *lexer, char *result, int end)
+{
+    int continue_concat = check_continue_concat(lexer, end, result);
+
+    if (continue_concat)
+        return 1;
+    if (lexer_add_token(lexer, TOKEN_VARIABLE, result) != 0) {
+        free(result);
+        return -1;
+    }
+    free(result);
+    lexer->pos = end + 1;
+    lexer->start = lexer->pos;
+    return 1;
+}
+
 static int process_variable_value(lexer_t *lexer, char *var_value, int end,
                                   int is_concat)
 {
@@ -51,27 +78,21 @@ static int process_variable_value(lexer_t *lexer, char *var_value, int end,
 
     if (!var_value)
         return -1;
-    if (is_concat) {
+    if (lexer->state == LEXER_VARIABLE && lexer->concat_buffer) {
+        result = safe_strcat(lexer->concat_buffer, var_value);
+        lexer->concat_buffer = NULL;
+    } else if (is_concat) {
         word_part = get_current_word_part(lexer);
         if (!word_part) {
             free(var_value);
             return -1;
         }
         result = safe_strcat(word_part, var_value);
-        if (!result)
-            return -1;
-        if (lexer_add_token(lexer, TOKEN_WORD, result) != 0) {
-            free(result);
-            return -1;
-        }
-        free(result);
-    } else if (lexer_add_token(lexer, TOKEN_WORD, var_value) != 0) {
-        free(var_value);
+    } else
+        result = var_value;
+    if (!result)
         return -1;
-    }
-    lexer->pos = end + 1;
-    lexer->start = lexer->pos;
-    return 1;
+    return finalize_variable_token(lexer, result, end);
 }
 
 int handle_variable(lexer_t *lexer, shell_t *shell)
@@ -83,7 +104,7 @@ int handle_variable(lexer_t *lexer, shell_t *shell)
 
     if (lexer->input[lexer->pos] != '$')
         return 0;
-    is_concat = (lexer->start != lexer->pos);
+    is_concat = (lexer->start != lexer->pos && lexer->state != LEXER_VARIABLE);
     var_name = extract_variable_name(lexer->input, lexer->pos, &end);
     if (!var_name)
         return -1;
