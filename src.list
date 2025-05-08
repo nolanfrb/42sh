@@ -56,7 +56,6 @@ src/lexer/handler/delimiters/is_special_char.c
 src/lexer/handler/inhibitors/is_inhibitor.c
 src/lexer/utils/is_whitespace.c
 src/lexer/initialization/lexer_init.c
-src/lexer/lexer_build.c
 src/lexer/lexer_to_string.c
 src/lexer/add_token.c
 src/lexer/utils/display_lexer.c
@@ -66,3 +65,8 @@ src/lexer/handler/inhibitors/handle_inhibitor.c
 src/builtins/builtin_set.c
 src/builtins/builtin_unset_local.c
 src/builtins/builtin_get.c
+src/lexer/handler/variables/handle_variables.c
+src/lexer/handler/variables/parse_variables_format.c
+src/lexer/lexer_create.c
+src/lexer/build_tokens.c
+src/lexer/free/free_lexer.c
