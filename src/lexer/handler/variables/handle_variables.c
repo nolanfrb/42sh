@@ -28,7 +28,7 @@ static char *get_variable_value(shell_t *shell, char *var_name)
     return NULL;
 }
 
-static char *get_current_word_part(lexer_t *lexer)
+char *get_current_word_part(lexer_t *lexer)
 {
     int len = lexer->pos - lexer->start;
     char *word_part = NULL;
@@ -41,58 +41,6 @@ static char *get_current_word_part(lexer_t *lexer)
     strncpy(word_part, lexer->input + lexer->start, len);
     word_part[len] = '\0';
     return word_part;
-}
-
-static int check_continue_concat(lexer_t *lexer, int end, char *result)
-{
-    if (lexer->input[end + 1] == '$') {
-        lexer->pos = end + 1;
-        lexer->state = LEXER_VARIABLE;
-        lexer->concat_buffer = strdup(result);
-        return 1;
-    }
-    return 0;
-}
-
-static int finalize_variable_token(lexer_t *lexer, char *result, int end)
-{
-    int continue_concat = check_continue_concat(lexer, end, result);
-
-    if (continue_concat)
-        return 1;
-    if (lexer_add_token(lexer, TOKEN_VARIABLE, result) != 0) {
-        free(result);
-        return -1;
-    }
-    free(result);
-    lexer->pos = end + 1;
-    lexer->start = lexer->pos;
-    return 1;
-}
-
-static int process_variable_value(lexer_t *lexer, char *var_value, int end,
-                                  int is_concat)
-{
-    char *word_part = NULL;
-    char *result = NULL;
-
-    if (!var_value)
-        return -1;
-    if (lexer->state == LEXER_VARIABLE && lexer->concat_buffer) {
-        result = safe_strcat(lexer->concat_buffer, var_value);
-        lexer->concat_buffer = NULL;
-    } else if (is_concat) {
-        word_part = get_current_word_part(lexer);
-        if (!word_part) {
-            free(var_value);
-            return -1;
-        }
-        result = safe_strcat(word_part, var_value);
-    } else
-        result = var_value;
-    if (!result)
-        return -1;
-    return finalize_variable_token(lexer, result, end);
 }
 
 int handle_variable(lexer_t *lexer, shell_t *shell)

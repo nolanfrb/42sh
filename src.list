@@ -70,3 +70,4 @@ src/lexer/handler/variables/parse_variables_format.c
 src/lexer/lexer_create.c
 src/lexer/build_tokens.c
 src/lexer/free/free_lexer.c
+src/lexer/handler/variables/process_variables.c

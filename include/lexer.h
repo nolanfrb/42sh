@@ -69,7 +69,6 @@ int lexer_tokenize(lexer_t *lexer);
 char **lexer_to_strings(lexer_t *lexer);
 
 int lexer_add_token(lexer_t *lexer, token_type_t type, const char *value);
-int lexer_token_count(lexer_t *lexer);
 
 void lexer_print_tokens(lexer_t *lexer);
 
@@ -82,7 +81,13 @@ int handle_redirect_out(lexer_t *lexer);
 int handle_semicolon(lexer_t *lexer);
 int handle_left_parenthesis(lexer_t *lexer);
 int handle_right_parenthesis(lexer_t *lexer);
+
+// Handling Variables
 int handle_variable(lexer_t *lexer, shell_t *shell);
+int process_variable_value(
+    lexer_t *lexer, char *var_value, int end, int is_concat
+);
+char *get_current_word_part(lexer_t *lexer);
 
 char *extract_variable_name(char *input, int start, int *end);
 
