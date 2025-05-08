@@ -15,7 +15,8 @@
 char *my_getenv(char const *name, char **env)
 {
     for (int i = 0; env[i]; i++) {
-        if (strncmp(name, env[i], strlen(name)) == 0)
+        if (strncmp(env[i], name, strlen(name)) == 0 &&
+            env[i][strlen(name)] == '=')
             return env[i] + strlen(name) + 1;
     }
     return NULL;
