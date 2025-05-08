@@ -9,11 +9,14 @@
     #define LEXER_H_
     #include <stdbool.h>
     #include "chain.h"
+    #include "inhibitors.h"
+    #include "shell.h"
 
 extern const char *SPECIAL_TOKENS[];
 
 typedef enum {
     TOKEN_WORD,
+    TOKEN_VARIABLE,
     TOKEN_PIPE,
     TOKEN_AND,
     TOKEN_OR,
@@ -39,6 +42,8 @@ typedef struct {
     int start;
     int pos;
     int token_count;
+    quote_state_t inhibitor_state;
+    shell_t *shell;
 } lexer_t;
 
 typedef struct {
@@ -47,10 +52,11 @@ typedef struct {
 } special_char_handler_t;
 
 extern const special_char_handler_t SPECIAL_CHARS[];
+char **build_tokens(const char *input, shell_t *shell);
 
-lexer_t *lexer_init(const char *input);
+lexer_t *lexer_init(const char *input, shell_t *shell);
 void free_lexer(lexer_t *lexer);
-lexer_t *lexer_build(const char *input);
+lexer_t *lexer_create(const char *input, shell_t *shell);
 int lexer_tokenize(lexer_t *lexer);
 char **lexer_to_strings(lexer_t *lexer);
 
@@ -68,6 +74,9 @@ int handle_redirect_out(lexer_t *lexer);
 int handle_semicolon(lexer_t *lexer);
 int handle_left_parenthesis(lexer_t *lexer);
 int handle_right_parenthesis(lexer_t *lexer);
+int handle_variable(lexer_t *lexer, shell_t *shell);
+
+char *extract_variable_name(char *input, int start, int *end);
 
 // Utility functions
 bool is_special_char(char *str);
