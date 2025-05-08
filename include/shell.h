@@ -10,6 +10,7 @@
     #define DEFAULT_PATH "/bin:/usr/bin:/usr/local/bin:/sbin:/usr/sbin"
     #include <stdbool.h>
     #include "builtins.h"
+    #define BUFFER_SIZE 1024
 
 typedef struct shell_s shell_t;
 typedef struct ast_node_s ast_node_t;
@@ -55,4 +56,8 @@ ast_node_t *built_ast_struct(char *user_input, shell_t *shell_info);
 int process_command(ast_node_t *ast, shell_t *shell_info);
 char *read_command(shell_t *shell, bool *had_error);
 void printf_flush(const char *format, ...);
+char *my_getenv(char const *name, char **env);
+char *my_gethostname(void);
+void display_prompt(shell_t *shell);
+
 #endif /* !SHELL_H_ */

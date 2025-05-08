@@ -47,6 +47,8 @@ src/command_execution/pipe/init_command.c
 src/command_execution/utils/path.c
 src/builtins/builtin_unset_local.c
 src/builtins/builtin_get.c
+src/utils/display_prompt.c
+src/utils/gethostname.c
 src/lexer/handler/delimiters/is_special_char.c
 src/lexer/handler/inhibitors/is_inhibitor.c
 src/lexer/utils/is_whitespace.c
