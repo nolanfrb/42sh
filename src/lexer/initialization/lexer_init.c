@@ -19,7 +19,7 @@ token_t *token_create_default(void)
     return token;
 }
 
-lexer_t *lexer_init(const char *input)
+lexer_t *lexer_init(const char *input, shell_t *shell)
 {
     lexer_t *lexer = malloc(sizeof(lexer_t));
 
@@ -38,5 +38,6 @@ lexer_t *lexer_init(const char *input)
         free(lexer);
         return NULL;
     }
+    lexer->shell = shell;
     return lexer;
 }
