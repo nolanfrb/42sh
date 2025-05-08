@@ -76,7 +76,7 @@ ast_node_t *built_ast_struct(char *user_input, shell_t *shell_info)
 
     if (!user_input || user_input[0] == '\0')
         return NULL;
-    tokens = lexer(user_input);
+    tokens = build_tokens(user_input, shell_info);
     if (handle_user_input_errors(tokens, shell_info))
         return NULL;
     ast = parse_sequence(tokens, &pos);
