@@ -47,20 +47,17 @@ static int handle_special_char(lexer_t *lexer)
 static int process_char(lexer_t *lexer)
 {
     char c = lexer->input[lexer->pos];
-    int inhibitor_result = handle_inhibitor(lexer);
+    int var_result = 0;
 
-    if (inhibitor_result != 0)
-        return inhibitor_result < 0 ? -1 : 0;
-    if (c == BACKSLASH && is_special_char(&c)) {
-        lexer->pos++;
-        return 0;
+    if (c == '$' && lexer->inhibitor_state != STATE_SINGLE_QUOTE) {
+        var_result = handle_variable(lexer, lexer->shell);
+        if (var_result != 0)
+            return var_result < 0 ? -1 : 0;
     }
-    if (handle_inhibitor(lexer) == -1)
-        return -1;
     if (is_special_char(&c)) {
         if (handle_special_char(lexer) != 0)
             return -1;
-        lexer->start = lexer->pos + 1;
+        lexer->start = lexer->pos;
         return 0;
     }
     if (is_whitespace(c)) {
@@ -68,6 +65,7 @@ static int process_char(lexer_t *lexer)
             return -1;
         lexer->start = lexer->pos + 1;
     }
+    lexer->pos++;
     return 0;
 }
 
@@ -78,16 +76,15 @@ int lexer_tokenize(lexer_t *lexer)
     while (lexer->input[lexer->pos] != '\0') {
         if (process_char(lexer) != 0)
             return -1;
-        lexer->pos++;
     }
     if (lexer->start != lexer->pos && handle_word(lexer) != 0)
         return -1;
     return 0;
 }
 
-lexer_t *lexer_build(const char *input)
+lexer_t *lexer_create(const char *input, shell_t *shell)
 {
-    lexer_t *lexer = lexer_init(input);
+    lexer_t *lexer = lexer_init(input, shell);
 
     if (!lexer)
         return NULL;
