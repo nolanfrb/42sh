@@ -81,6 +81,7 @@ int handle_redirect_out(lexer_t *lexer);
 int handle_semicolon(lexer_t *lexer);
 int handle_left_parenthesis(lexer_t *lexer);
 int handle_right_parenthesis(lexer_t *lexer);
+int handle_special_char(lexer_t *lexer);
 
 // Handling Variables
 int handle_variable(lexer_t *lexer, shell_t *shell);
@@ -88,8 +89,12 @@ int process_variable_value(
     lexer_t *lexer, char *var_value, int end, int is_concat
 );
 char *get_current_word_part(lexer_t *lexer);
-
 char *extract_variable_name(char *input, int start, int *end);
+
+// Handling Inhibitors
+int handle_inhibitor(lexer_t *lexer, char c);
+
+int process_char(lexer_t *lexer);
 
 // Utility functions
 bool is_special_char(char *str);
