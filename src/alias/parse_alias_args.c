@@ -21,11 +21,11 @@ int parse_alias_args(alias_t *alias, char **args)
 {
     int count = count_args(args);
 
-    if (count == 1)
+    if (count == NO_ARGS)
         print_alias(alias, NULL, 0);
-    if (count == 2)
+    if (count == ONE_ARG)
         print_alias(alias, args[1], 1);
-    if (count == 3)
+    if (count == TWO_ARGS)
         add_alias(alias, args[1], args[2]);
     return 0;
 }

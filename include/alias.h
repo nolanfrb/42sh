@@ -8,6 +8,9 @@
 #ifndef ALIAS_H_
     #define ALIAS_H_
     #include "ast.h"
+    #define NO_ARGS 1
+    #define ONE_ARG 2
+    #define TWO_ARGS 3
 
 typedef struct command_node_s command_node_t;
 typedef struct alias_s alias_t;
