@@ -16,14 +16,11 @@ void free_token(token_t *token)
     }
 }
 
-void free_lexer(lexer_t *lexer)
+void lexer_destroy(lexer_t *lexer)
 {
-    if (lexer) {
-        for (size_t i = 0; i < lexer->token_count; i++) {
-            free_token(&lexer->tokens[i]);
-        }
-        free(lexer->tokens);
-        free_token(lexer->current);
-        free(lexer);
-    }
+    // if (lexer) {
+    //     free(lexer->tokens);
+    //     free_token(lexer->current);
+    //     free(lexer);
+    // }
 }
