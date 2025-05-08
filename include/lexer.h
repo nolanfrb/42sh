@@ -59,7 +59,9 @@ typedef struct {
     int (*handler)(lexer_t *);
 } special_char_handler_t;
 
-extern const special_char_handler_t SPECIAL_CHARS[];
+const special_char_handler_t *get_special_chars(void);
+
+extern const special_char_handler_t special_chars[];
 char **build_tokens(const char *input, shell_t *shell);
 
 lexer_t *lexer_init(const char *input, shell_t *shell);

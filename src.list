@@ -72,3 +72,4 @@ src/lexer/build_tokens.c
 src/lexer/free/free_lexer.c
 src/lexer/handler/variables/process_variables.c
 src/lexer/factory/process_character.c
+src/lexer/handler/delimiters/special_chars.c

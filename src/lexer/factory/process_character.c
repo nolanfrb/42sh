@@ -11,7 +11,7 @@
 #include "inhibitors.h"
 #include "utils.h"
 
-static int should_ignore_special_char(lexer_t *lexer, char c)
+static int should_ignore(lexer_t *lexer, char c)
 {
     if (lexer->inhibitor_state == STATE_SINGLE_QUOTE)
         return 1;
@@ -40,7 +40,7 @@ static int process_variables(lexer_t *lexer)
     char c = lexer->input[lexer->pos];
     int var_result = 0;
 
-    if (c == '$' && lexer->inhibitor_state != STATE_SINGLE_QUOTE) {
+    if (c == '$' && lexer->state != LEXER_INHIBITOR) {
         var_result = handle_variable(lexer, lexer->shell);
         if (var_result != 0)
             return var_result < 0 ? -1 : 1;
@@ -52,7 +52,7 @@ static int process_special_chars(lexer_t *lexer)
 {
     char c = lexer->input[lexer->pos];
 
-    if (is_special_char(&c)) {
+    if (is_special_char(&c) && lexer->inhibitor_state == STATE_NORMAL) {
         if (handle_special_char(lexer) != 0)
             return -1;
         lexer->start = lexer->pos;

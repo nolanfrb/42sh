@@ -18,9 +18,4 @@ void free_token(token_t *token)
 
 void lexer_destroy(lexer_t *lexer)
 {
-    // if (lexer) {
-    //     free(lexer->tokens);
-    //     free_token(lexer->current);
-    //     free(lexer);
-    // }
 }

@@ -31,7 +31,7 @@ int handle_word(lexer_t *lexer)
 int handle_special_char(lexer_t *lexer)
 {
     char c = lexer->input[lexer->pos];
-    const special_char_handler_t *handler = SPECIAL_CHARS;
+    const special_char_handler_t *handler = get_special_chars();
 
     if (lexer->start != lexer->pos && handle_word(lexer) != 0)
         return -1;

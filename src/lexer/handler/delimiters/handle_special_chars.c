@@ -9,17 +9,6 @@
 #include <string.h>
 #include "lexer.h"
 
-const special_char_handler_t SPECIAL_CHARS[] = {
-    {'(', handle_left_parenthesis},
-    {')', handle_right_parenthesis},
-    {'|', handle_pipe},
-    {'&', handle_and},
-    {'<', handle_redirect_in},
-    {'>', handle_redirect_out},
-    {';', handle_semicolon},
-    {'\0', NULL}
-};
-
 int handle_pipe(lexer_t *lexer)
 {
     if (lexer->input[lexer->pos + 1] == '|') {
