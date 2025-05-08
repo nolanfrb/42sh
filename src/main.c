@@ -14,8 +14,6 @@
 #include <stdio.h>
 #include <string.h>
 
-
-
 static void display_prompt(void)
 {
     write(STDOUT_FILENO, "$>", 2);
