@@ -1,56 +1,74 @@
 /*
 ** EPITECH PROJECT, 2025
-** 42sh [WSL: Ubuntu-24.04]
+** 42sh
 ** File description:
-** handle_backslash
+** inhibitors
 */
 
-#include "inhibitors.h"
+#include <stdlib.h>
+#include <string.h>
 #include "lexer.h"
+#include "inhibitors.h"
+#include <stdio.h>
+#include "utils.h"
+
+static void update_inhibitor_state(lexer_t *lexer, char c)
+{
+    if (lexer->inhibitor_state == STATE_NORMAL) {
+        if (c == '"')
+            lexer->inhibitor_state = STATE_DOUBLE_QUOTE;
+        else if (c == '\'')
+            lexer->inhibitor_state = STATE_SINGLE_QUOTE;
+    } else if (lexer->inhibitor_state == STATE_DOUBLE_QUOTE && c == '"') {
+        lexer->inhibitor_state = STATE_NORMAL;
+    } else if (lexer->inhibitor_state == STATE_SINGLE_QUOTE && c == '\'') {
+        lexer->inhibitor_state = STATE_NORMAL;
+    }
+}
+
+static int handle_quote_start(lexer_t *lexer, char c)
+{
+    if (lexer->start != lexer->pos && handle_word(lexer) != 0)
+        return -1;
+    update_inhibitor_state(lexer, c);
+    lexer->pos++;
+    lexer->start = lexer->pos;
+    return 0;
+}
+
+static int handle_quote_end(lexer_t *lexer, char c)
+{
+    if (lexer->start != lexer->pos && handle_word(lexer) != 0)
+        return -1;
+    update_inhibitor_state(lexer, c);
+    lexer->pos++;
+    lexer->start = lexer->pos;
+    return 0;
+}
 
 static int handle_backslash(lexer_t *lexer)
 {
-    if (lexer->input[lexer->pos] == BACKSLASH) {
-        if (lexer->input[lexer->pos + 1] == '\0')
-            return 0;
-        lexer->pos++;
-        return 1;
-    }
+    if (lexer->input[lexer->pos + 1] == '\0')
+        return 0;
+    lexer->pos += 2;
     return 0;
 }
 
-int handle_quote(lexer_t *lexer, char quote_type)
+int handle_inhibitor(lexer_t *lexer, char c)
 {
-    lexer->pos++;
-    while (lexer->input[lexer->pos] != '\0') {
-        if (lexer->input[lexer->pos] == quote_type)
-            break;
-        if (quote_type == DOUBLE_QUOTE && handle_backslash(lexer))
-            continue;
-        lexer->pos++;
+    if (c == BACKSLASH)
+        return handle_backslash(lexer);
+    if (c == DOUBLE_QUOTE) {
+        if (lexer->inhibitor_state == STATE_NORMAL)
+            return handle_quote_start(lexer, c);
+        else if (lexer->inhibitor_state == STATE_DOUBLE_QUOTE)
+            return handle_quote_end(lexer, c);
     }
-    if (lexer->input[lexer->pos] == '\0')
-        return -1;
-    return 0;
-}
-
-int handle_inhibitor(lexer_t *lexer)
-{
-    char c = lexer->input[lexer->pos];
-
-    if (handle_backslash(lexer) != 0)
-        return -1;
-    if (c == SIMPLE_QUOTE || c == DOUBLE_QUOTE) {
-        if (lexer->start != lexer->pos && handle_word(lexer) != 0)
-            return -1;
-        lexer->start = lexer->pos;
-        if (handle_quote(lexer, c) != 0)
-            return -1;
-        lexer->pos++;
-        if (handle_word(lexer) != 0)
-            return -1;
-        lexer->start = lexer->pos + 1;
-        return 1;
+    if (c == SIMPLE_QUOTE) {
+        if (lexer->inhibitor_state == STATE_NORMAL)
+            return handle_quote_start(lexer, c);
+        else if (lexer->inhibitor_state == STATE_SINGLE_QUOTE)
+            return handle_quote_end(lexer, c);
     }
     return 0;
 }
