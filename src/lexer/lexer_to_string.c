@@ -19,7 +19,7 @@ static void free_tokens(char **array, int start_index, int end_index)
 
 char **lexer_to_strings(lexer_t *lexer)
 {
-    char **tokens = malloc(sizeof(char *) * lexer->token_count);
+    char **tokens = malloc(sizeof(char *) * lexer->token_count + 1);
     chain_node_t *current = lexer->tokens->tail;
     int i = lexer->token_count - 1;
     token_t *token = NULL;
