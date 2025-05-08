@@ -62,9 +62,6 @@ src/lexer/utils/display_lexer.c
 src/lexer/handler/delimiters/handle_special_chars.c
 src/lexer/handler/delimiters/handle_parenthesis.c
 src/lexer/handler/inhibitors/handle_inhibitor.c
-src/builtins/builtin_set.c
-src/builtins/builtin_unset_local.c
-src/builtins/builtin_get.c
 src/lexer/handler/variables/handle_variables.c
 src/lexer/handler/variables/parse_variables_format.c
 src/lexer/lexer_create.c
@@ -73,3 +70,6 @@ src/lexer/free/free_lexer.c
 src/lexer/handler/variables/process_variables.c
 src/lexer/factory/process_character.c
 src/lexer/handler/delimiters/special_chars.c
+src/builtins/builtin_set.c
+src/builtins/builtin_unset_local.c
+src/builtins/builtin_get.c
