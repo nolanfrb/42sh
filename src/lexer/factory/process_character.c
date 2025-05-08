@@ -11,16 +11,6 @@
 #include "inhibitors.h"
 #include "utils.h"
 
-static int should_ignore(lexer_t *lexer, char c)
-{
-    if (lexer->inhibitor_state == STATE_SINGLE_QUOTE)
-        return 1;
-    if (lexer->inhibitor_state == STATE_DOUBLE_QUOTE &&
-        c != '"' && c != '$' && c != '\\')
-        return 1;
-    return 0;
-}
-
 static int process_inhibitors(lexer_t *lexer)
 {
     char c = lexer->input[lexer->pos];

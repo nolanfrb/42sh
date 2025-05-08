@@ -24,5 +24,6 @@ char **build_tokens(const char *input, shell_t *shell)
         lexer_destroy(lexer_struct);
         return NULL;
     }
+    lexer_destroy(lexer_struct);
     return tokens;
 }

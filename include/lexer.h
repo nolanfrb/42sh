@@ -63,6 +63,7 @@ const special_char_handler_t *get_special_chars(void);
 
 extern const special_char_handler_t special_chars[];
 char **build_tokens(const char *input, shell_t *shell);
+void lexer_destroy(lexer_t *lexer);
 
 lexer_t *lexer_init(const char *input, shell_t *shell);
 void free_lexer(lexer_t *lexer);
