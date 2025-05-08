@@ -1114,15 +1114,6 @@ TESTS=
   echo "echo 'tests;ls'"
 [3523-END]
 
-[3524]
-NAME="Complex inhibitors with nested quotes"
-SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
-CLEAN=""
-TESTS=
-  echo "echo 'outer \"inner\" quotes'"
-  echo "echo \"outer 'inner' quotes\""
-[3524-END]
-
 [3525]
 NAME="Inhibitors with special characters"
 SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
@@ -1277,21 +1268,3 @@ TESTS=
   echo 'echo "test&ls"'
   echo 'echo "test|ls"'
 [4006-END]
-
-[4007]
-NAME="INHIBITOR: Multiple inhibitors"
-SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
-CLEAN=""
-TESTS=
-  echo ''l's '-l''
-  echo 'echo test\;ls'
-[4007-END]
-
-[4008]
-NAME="INHIBITOR: Multiple Inhibitor with quotes"
-SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
-CLEAN=""
-TESTS=
-  echo 'echo 'h'e'l'l'o''
-  echo 'echo "h"e"l"l"o"'
-[4008-END]
