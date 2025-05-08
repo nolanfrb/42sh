@@ -28,7 +28,7 @@ int handle_word(lexer_t *lexer)
     return 0;
 }
 
-static int handle_special_char(lexer_t *lexer)
+int handle_special_char(lexer_t *lexer)
 {
     char c = lexer->input[lexer->pos];
     const special_char_handler_t *handler = SPECIAL_CHARS;
@@ -41,31 +41,6 @@ static int handle_special_char(lexer_t *lexer)
             return handler->handler(lexer);
         handler++;
     }
-    return 0;
-}
-
-static int process_char(lexer_t *lexer)
-{
-    char c = lexer->input[lexer->pos];
-    int var_result = 0;
-
-    if (c == '$' && lexer->inhibitor_state != STATE_SINGLE_QUOTE) {
-        var_result = handle_variable(lexer, lexer->shell);
-        if (var_result != 0)
-            return var_result < 0 ? -1 : 0;
-    }
-    if (is_special_char(&c)) {
-        if (handle_special_char(lexer) != 0)
-            return -1;
-        lexer->start = lexer->pos;
-        return 0;
-    }
-    if (is_whitespace(c)) {
-        if (lexer->start != lexer->pos && handle_word(lexer) != 0)
-            return -1;
-        lexer->start = lexer->pos + 1;
-    }
-    lexer->pos++;
     return 0;
 }
 

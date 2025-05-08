@@ -38,6 +38,7 @@ lexer_t *lexer_init(const char *input, shell_t *shell)
         free(lexer);
         return NULL;
     }
+    lexer->inhibitor_state = STATE_NORMAL;
     lexer->shell = shell;
     return lexer;
 }
