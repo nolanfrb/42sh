@@ -1132,6 +1132,14 @@ TESTS=
   echo "echo \"The current path is: $PATH\""
 [3525-END]
 
+[3600]
+NAME="Input redirection from non-existent file"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo "ls < Make"
+[3600-END]
+
 [4001]
 NAME="HEREDOC: Basic heredoc redirection"
 SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"

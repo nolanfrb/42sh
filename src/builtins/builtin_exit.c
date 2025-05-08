@@ -8,6 +8,7 @@
 #include "shell.h"
 #include "env.h"
 #include "command.h"
+#include "line_editing.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -21,6 +22,7 @@ int builtin_exit(shell_t *shell, char **args)
     if (args[1]) {
         exit_code = atoi(args[1]);
     }
+    restore_terminal_settings();
     free_shell(shell);
     exit(exit_code);
 }

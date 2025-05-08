@@ -19,6 +19,9 @@ static const builtin_t builtins[] = {
     {"history", &builtin_history},
     {"alias", &builtin_alias},
     {"unalias", &builtin_unalias},
+    {"set", &builtin_set},
+    {"unset", &builtin_unset_local},
+    {"get", &builtin_get},
     {NULL, NULL}
 };
 

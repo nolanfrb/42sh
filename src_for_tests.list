@@ -68,3 +68,5 @@ src/builtins/builtin_unalias.c
 src/utils/handle_user_input.c
 src/parser/free_ast.c
 src/main_loop/built_ast_struct.c
+src/builtins/builtin_unset_local.c
+src/builtins/builtin_get.c
