@@ -11,10 +11,12 @@
 
 int handle_left_parenthesis(lexer_t *lexer)
 {
+    lexer->pos++;
     return lexer_add_token(lexer, TOKEN_LPAREN, "(");
 }
 
 int handle_right_parenthesis(lexer_t *lexer)
 {
+    lexer->pos++;
     return lexer_add_token(lexer, TOKEN_RPAREN, ")");
 }

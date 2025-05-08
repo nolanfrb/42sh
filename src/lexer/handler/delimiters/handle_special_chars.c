@@ -23,16 +23,17 @@ const special_char_handler_t SPECIAL_CHARS[] = {
 int handle_pipe(lexer_t *lexer)
 {
     if (lexer->input[lexer->pos + 1] == '|') {
-        lexer->pos++;
+        lexer->pos += 2;
         return lexer_add_token(lexer, TOKEN_OR, "||");
     }
+    lexer->pos++;
     return lexer_add_token(lexer, TOKEN_PIPE, "|");
 }
 
 int handle_and(lexer_t *lexer)
 {
     if (lexer->input[lexer->pos + 1] == '&') {
-        lexer->pos++;
+        lexer->pos += 2;
         return lexer_add_token(lexer, TOKEN_AND, "&&");
     }
     lexer->pos++;
@@ -42,22 +43,25 @@ int handle_and(lexer_t *lexer)
 int handle_redirect_in(lexer_t *lexer)
 {
     if (lexer->input[lexer->pos + 1] == '<') {
-        lexer->pos++;
+        lexer->pos += 2;
         return lexer_add_token(lexer, TOKEN_HEREDOC, "<<");
     }
+    lexer->pos++;
     return lexer_add_token(lexer, TOKEN_REDIRECT_IN, "<");
 }
 
 int handle_redirect_out(lexer_t *lexer)
 {
     if (lexer->input[lexer->pos + 1] == '>') {
-        lexer->pos++;
+        lexer->pos += 2;
         return lexer_add_token(lexer, TOKEN_APPEND_OUT, ">>");
     }
+    lexer->pos++;
     return lexer_add_token(lexer, TOKEN_REDIRECT_OUT, ">");
 }
 
 int handle_semicolon(lexer_t *lexer)
 {
+    lexer->pos++;
     return lexer_add_token(lexer, TOKEN_SEMICOLON, ";");
 }
