@@ -14,13 +14,7 @@
 #include <unistd.h>
 #include <stdio.h>
 #include <string.h>
-
-
-
-static void display_prompt(void)
-{
-    write(STDOUT_FILENO, "$>", 2);
-}
+#include <limits.h>
 
 static void main_loop(shell_t *shell_info)
 {
@@ -31,7 +25,7 @@ static void main_loop(shell_t *shell_info)
     while (1) {
         had_error = false;
         if (is_interactive)
-            display_prompt();
+            display_prompt(shell_info);
         user_input = read_command(shell_info, &had_error);
         if (user_input == NULL && !had_error)
             break;

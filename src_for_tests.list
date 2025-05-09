@@ -70,3 +70,5 @@ src/parser/free_ast.c
 src/main_loop/built_ast_struct.c
 src/builtins/builtin_unset_local.c
 src/builtins/builtin_get.c
+src/utils/display_prompt.c
+src/utils/gethostname.c
