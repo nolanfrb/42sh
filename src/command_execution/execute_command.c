@@ -67,9 +67,16 @@ static int execute_external_command(
 
 int execute_command(ast_node_t *node, struct shell_s *shell_var)
 {
-    char *full_path = build_path(shell_var, node->data.command->argv[0]);
-    int result = execute_builtin(node, shell_var);
+    char *full_path = NULL;
+    int result = 0;
 
+    if (node->type == NODE_COMMAND && shell_var->alias->state == DEFAULT) {
+        result = search_alias(shell_var->alias, node->data.command, shell_var);
+        if (result != -1)
+            return shell_var->exit_code;
+    }
+    full_path = build_path(shell_var, node->data.command->argv[0]);
+    result = execute_builtin(node, shell_var);
     if (result != -1) {
         free(full_path);
         return result;

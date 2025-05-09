@@ -11,12 +11,12 @@
     #include <stdbool.h>
     #include "builtins.h"
     #define BUFFER_SIZE 1024
+    #include "alias.h"
 
+typedef struct alias_s alias_t;
 typedef struct shell_s shell_t;
 typedef struct ast_node_s ast_node_t;
 typedef struct history_s history_t;
-
-
 
 typedef struct command_s {
     char **av;
@@ -36,9 +36,11 @@ struct shell_s {
     char **local_vars;
     int local_size;
     int exit_code;
+    alias_t *alias;
     int history_index;
     int buffer_capacity;
     history_t *history;
+    ast_node_t *ast;
 };
 
 typedef struct {
@@ -59,5 +61,7 @@ void printf_flush(const char *format, ...);
 char *my_getenv(char const *name, char **env);
 char *my_gethostname(void);
 void display_prompt(shell_t *shell);
+
+void handle_user_input(shell_t *shell_info, char *user_input);
 
 #endif /* !SHELL_H_ */

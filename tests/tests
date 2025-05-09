@@ -1268,3 +1268,257 @@ TESTS=
   echo 'echo "test&ls"'
   echo 'echo "test|ls"'
 [4006-END]
+
+[5000]
+NAME="ALIAS: Simple alias creation"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+echo "alias ll='ls -l'"
+echo "ll"
+[5000-END]
+[5001]
+NAME="ALIAS: Multiple aliases"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+echo "alias ll='ls -l'"
+echo "alias la='ls -la'"
+echo "ll"
+echo "la"
+[5001-END]
+[5002]
+NAME="ALIAS: List all aliases"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+echo "alias ll='ls -l'"
+echo "alias la='ls -la'"
+echo "alias"
+[5002-END]
+[5003]
+NAME="ALIAS: Show specific alias"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+echo "alias ll='ls -l'"
+echo "alias la='ls -la'"
+echo "alias ll"
+[5003-END]
+[5004]
+NAME="ALIAS: Unalias specific command"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+echo "alias ll='ls -l'"
+echo "alias la='ls -la'"
+echo "unalias ll"
+echo "ll"
+echo "la"
+[5004-END]
+[5005]
+NAME="ALIAS: Unalias all commands"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+echo "alias ll='ls -l'"
+echo "alias la='ls -la'"
+echo "unalias -a"
+echo "ll"
+echo "la"
+[5005-END]
+[5006]
+NAME="ALIAS: Alias with pipe"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+echo "alias lsg='ls -l | grep d'"
+echo "lsg"
+[5006-END]
+[5007]
+NAME="ALIAS: Alias with redirection"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN="rm -f /tmp/alias_test"
+TESTS=
+echo "alias lsf='ls -l > /tmp/alias_test'"
+echo "lsf"
+echo "cat /tmp/alias_test"
+[5007-END]
+[5008]
+NAME="ALIAS: Alias with logical operators"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+echo "alias lsc='ls && echo success'"
+echo "lsc"
+[5008-END]
+[5009]
+NAME="ALIAS: Alias referring to another alias"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+echo "alias ll='ls -l'"
+echo "alias lll='ll | grep d'"
+echo "lll"
+[5009-END]
+[5010]
+NAME="ALIAS: Invalid alias format"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+echo "alias ll"
+echo "alias ll ls -l"
+[5010-END]
+[5011]
+NAME="ALIAS: Unalias non-existent alias"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+echo "unalias nonexistentalias"
+[5011-END]
+[5012]
+NAME="ALIAS: Alias with quotes"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+echo "alias echo_test='echo "Hello, World!"'"
+echo "echo_test"
+[5012-END]
+[5013]
+NAME="ALIAS: Alias with semicolons"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+echo "alias multi='ls -l ; pwd ; echo Done'"
+echo "multi"
+[5013-END]
+[5014]
+NAME="ALIAS: Alias with subshell"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+echo "alias sub='(ls -l && echo Inside subshell)'"
+echo "sub"
+[5014-END]
+[5015]
+NAME="ALIAS: Redefine existing alias"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+echo "alias ll='ls -l'"
+echo "ll"
+echo "alias ll='ls -la'"
+echo "ll"
+[5015-END]
+[5016]
+NAME="ALIAS: Use alias in pipe"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+echo "alias ll='ls -l'"
+echo "ll | grep d"
+[5016-END]
+[5017]
+NAME="ALIAS: Alias with built-in command"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+echo "alias cdtmp='cd /tmp'"
+echo "cdtmp"
+echo "pwd"
+[5017-END]
+[5018]
+NAME="ALIAS: Complex alias with multiple features"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN="rm -f /tmp/complex_alias"
+TESTS=
+echo "alias complex='ls -l | grep d > /tmp/complex_alias && cat /tmp/complex_alias'"
+echo "complex"
+[5018-END]
+[5019]
+NAME="ALIAS: Unalias with no arguments"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+echo "alias ll='ls -l'"
+echo "unalias"
+echo "ll"
+[5019-END]
+[5020]
+NAME="ALIAS: Recursive alias definition"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+echo "alias loop='loop'"
+echo "loop"
+[5020-END]
+[5021]
+NAME="ALIAS: Alias with special characters"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+echo "alias special='echo $PATH'"
+echo "special"
+[5021-END]
+[5022]
+NAME="ALIAS: Alias with environment variables"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin' ; export TEST_VAR=test_value"
+CLEAN=""
+TESTS=
+echo "alias ev='echo $TEST_VAR'"
+echo "ev"
+[5022-END]
+[5023]
+NAME="ALIAS: Alias command in subshell"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+echo "alias ll='ls -l'"
+echo "(ll)"
+[5023-END]
+[5024]
+NAME="ALIAS: Alias with complex logical operators"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+echo "alias complex='ls && echo success || echo failure'"
+echo "complex"
+[5024-END]
+[5025]
+NAME="ALIAS: Alias with command arguments"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+echo "alias ls_dir='ls -l'"
+echo "ls_dir /etc"
+[5025-END]
+[5026]
+NAME="ALIAS: Alias with wildcards"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+echo "alias ls_all='ls -l *'"
+echo "ls_all"
+[5026-END]
+[5027]
+NAME="ALIAS: Alias and unalias together"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+echo "alias test1='echo test1'"
+echo "alias test2='echo test2'"
+echo "test1"
+echo "unalias test1"
+echo "test1"
+echo "test2"
+[5027-END]
+[5028]
+NAME="ALIAS: Alias with double alias substitution"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+echo "alias cmd1='echo step1'"
+echo "alias cmd2='cmd1 && echo step2'"
+echo "alias cmd3='cmd2 && echo step3'"
+echo "cmd3"
+[5028-END]

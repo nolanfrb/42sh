@@ -9,26 +9,12 @@
 #include "ast.h"
 #include "env.h"
 #include "lexer.h"
+#include "alias.h"
 #include "line_editing.h"
 #include <unistd.h>
 #include <stdio.h>
 #include <string.h>
 #include <limits.h>
-
-static void handle_user_input(shell_t *shell_info, char *user_input)
-{
-    ast_node_t *ast;
-
-    if (user_input && user_input[0] != '\n') {
-        ast = built_ast_struct(user_input, shell_info);
-        if (ast == NULL) {
-            free(user_input);
-            return;
-        }
-        process_command(ast, shell_info);
-        free(user_input);
-    }
-}
 
 static void main_loop(shell_t *shell_info)
 {
@@ -54,6 +40,9 @@ int main(int argc, char **argv, char **env)
 
     (void)argc;
     (void)argv;
+    shell->alias = load_alias();
+    if (!shell->alias)
+        return 1;
     save_terminal_settings();
     set_non_canonical_mode();
     main_loop(shell);

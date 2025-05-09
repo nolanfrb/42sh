@@ -8,10 +8,11 @@
 #ifndef INCLUDED_COMMAND_H
     #define INCLUDED_COMMAND_H
     #include "shell.h"
-    #include "ast.h"
     #include <sys/types.h>
-
+typedef struct ast_node_s ast_node_t;
 typedef enum redirect_type_e redirect_type_t;
+    #include "ast.h"
+
 
 typedef struct command_info_s {
     int command_count;
@@ -69,4 +70,5 @@ int process_pipe_command(command_info_t *info, int idx,
     shell_t *shell, pipe_state_t *state);
 void close_parent_pipes(int prev_pipe[2]);
 void setup_pipes(pipe_state_t *state, int idx, int count);
+
 #endif

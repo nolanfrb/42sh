@@ -25,6 +25,8 @@ Test(free_shell, should_not_crash_if_env_array_is_null)
     shell->env_array = NULL;
     shell->local_vars = NULL;
     shell->env_size = 0;
+    shell->local_size = 0;
+    shell->ast = NULL;
 
     free_shell(shell);
     cr_assert(1); // Ne doit pas segfault
