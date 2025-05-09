@@ -17,11 +17,6 @@ static void clear_buffer(char *buffer, int capacity)
         buffer[i] = '\0';
 }
 
-static void write_prompt(void)
-{
-    write(STDOUT_FILENO, "\r\033[K$>", 6);
-}
-
 static void copy_command_to_buffer(
     const char *command, char *buffer, int *index)
 {
