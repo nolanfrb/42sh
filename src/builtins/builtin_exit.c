@@ -23,6 +23,7 @@ int builtin_exit(shell_t *shell, char **args)
         exit_code = atoi(args[1]);
     }
     restore_terminal_settings();
+    printf_flush("exit\n");
     free_shell(shell);
     exit(exit_code);
 }
