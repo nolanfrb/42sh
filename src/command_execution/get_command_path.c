@@ -11,6 +11,7 @@
 #include "shell.h"
 #include "command.h"
 #include "env.h"
+#include "utils.h"
 
 /**
  * @brief Expand tilde (~) in path to home directory

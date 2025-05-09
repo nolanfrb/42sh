@@ -54,7 +54,6 @@ int execute_builtin(ast_node_t *node, struct shell_s *shell_var);
 int execute_subshell_command(ast_node_t *ast, shell_t *shell_var);
 
 char *build_path(shell_t *shell, char *command);
-char *my_strcat(char *dest, char const *str);
 
 // Function prototypes for builtins
 const builtin_t *get_builtins(void);

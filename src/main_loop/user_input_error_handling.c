@@ -32,10 +32,8 @@ static int check_parentheses(char **tokens)
 
 int user_input_error_handling(char **tokens)
 {
-    if (!tokens) {
-        fprintf(stderr, "Error: user_input is NULL\n");
+    if (!tokens)
         return 84;
-    }
     if (check_parentheses(tokens) == -1)
         return 84;
     return 0;

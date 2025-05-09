@@ -8,8 +8,7 @@
 #include <criterion/criterion.h>
 #include <string.h>
 #include <stdlib.h>
-
-char *my_strcat(char *dest, char *str);
+#include "utils.h"
 
 Test(my_strcat, basic_concatenation)
 {
@@ -48,4 +47,13 @@ Test(my_strcat, returns_new_allocated_string)
     cr_assert_neq(res, "foobar");
     cr_assert_str_eq(res, "foobar");
     free(res);
+}
+
+Test(safe_strcat, basic_concatenation)
+{
+    char *result = safe_strcat(strdup("Hello"), strdup(" World"));
+
+    cr_assert_not_null(result);
+    cr_assert_str_eq(result, "Hello World");
+    free(result);
 }

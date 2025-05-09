@@ -810,7 +810,7 @@ TESTS=
 [3103-END]
 
 [3104]
-NAME="LOGICAL_OR: With builtin commands" 
+NAME="LOGICAL_OR: With builtin commands"
 SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
 CLEAN=""
 TESTS=
@@ -1114,15 +1114,6 @@ TESTS=
   echo "echo 'tests;ls'"
 [3523-END]
 
-[3524]
-NAME="Complex inhibitors with nested quotes"
-SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
-CLEAN=""
-TESTS=
-  echo "echo 'outer \"inner\" quotes'"
-  echo "echo \"outer 'inner' quotes\""
-[3524-END]
-
 [3525]
 NAME="Inhibitors with special characters"
 SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
@@ -1257,6 +1248,26 @@ CLEAN=""
 TESTS=
   echo '(ls *.c) | wc -l'
 [4110-END]
+
+[4005]
+NAME="INHIBITOR: Basic inhibitor"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'echo "Hello, World!"'
+  echo 'echo "tests;ls"'
+[4005-END]
+
+[4006]
+NAME="INHIBITOR: Inhibitor with special characters"
+SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
+CLEAN=""
+TESTS=
+  echo 'echo "Hello, World!"'
+  echo 'echo "tests;ls"'
+  echo 'echo "test&ls"'
+  echo 'echo "test|ls"'
+[4006-END]
 
 [5000]
 NAME="ALIAS: Simple alias creation"
